@@ -67,36 +67,36 @@ function App() {
       </div>
 
       {/* ==================== HERO SECTION ==================== */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-12">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-16 pb-8 sm:pb-12">
         <div className={`text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           
           {/* Identity Hook */}
-          <div className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 text-amber-400 px-5 py-2 rounded-full text-sm font-medium mb-8">
-            <Target className="w-4 h-4" />
-            For entrepreneurs & business owners who want profitable ads
+          <div className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 text-amber-400 px-3 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-medium mb-6 sm:mb-8">
+            <Target className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+            <span>For entrepreneurs & business owners who want profitable ads</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-[1.1] tracking-tight">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4 sm:mb-6 leading-[1.1] tracking-tight px-1 sm:px-0">
             Launch Your First
             <span className="block bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 bg-clip-text text-transparent">
               Profitable Ad Campaign
             </span>
-            <span className="block text-3xl sm:text-4xl md:text-5xl mt-2 text-slate-300 font-bold">
+            <span className="block text-xl sm:text-4xl md:text-5xl mt-2 text-slate-300 font-bold">
               in 7 Days — Even If You're Starting From Zero
             </span>
           </h1>
 
-          <p className="text-lg sm:text-xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-xl text-slate-400 mb-6 sm:mb-10 max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
             Get the complete paid ads training system that's helped over 10,000 entrepreneurs stop wasting money on ads and start running campaigns that actually convert.
           </p>
 
           {/* Product Image */}
-          <div className="mb-10 relative">
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent z-10 pointer-events-none rounded-2xl"></div>
+          <div className="mb-6 sm:mb-10 relative px-0 sm:px-4">
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent z-10 pointer-events-none rounded-xl sm:rounded-2xl"></div>
             <img
               src="/freedom_club_kenji_7dollar.png"
               alt="Paid Ads Freedom Club - Complete Training System"
-              className="w-full max-w-3xl mx-auto rounded-2xl shadow-2xl shadow-blue-500/10"
+              className="w-full max-w-[90vw] sm:max-w-2xl md:max-w-3xl mx-auto rounded-xl sm:rounded-2xl shadow-2xl shadow-blue-500/10 object-contain"
             />
           </div>
 
