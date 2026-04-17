@@ -19,28 +19,28 @@ function App() {
 
   const faqs = [
     {
-      q: "I'm a complete beginner — is this for me?",
-      a: "Absolutely. This training starts from the fundamentals and walks you through everything step by step. You don't need any prior experience with paid ads. If you can follow along with a video tutorial, you can do this."
+      q: "I'm a complete beginner. Is this for me?",
+      a: "Yes. We start from the basics and walk you through everything step by step. No experience with paid ads needed. If you can follow a video tutorial, you can do this."
     },
     {
       q: "Which ad platforms does this cover?",
-      a: "The core training covers Facebook/Meta Ads, Google Ads, and YouTube Ads. You'll learn the principles that work across all platforms, plus platform-specific strategies for each."
+      a: "We cover Facebook/Meta Ads, Google Ads, and YouTube Ads. You'll learn the principles that work across all platforms, plus strategies specific to each one."
     },
     {
       q: "Why is it only $7? What's the catch?",
-      a: "No catch. We used to sell this training for $399. We dropped the price to $7 because we want to remove every barrier to entry. Our goal is to get you results — and once you see the value, many students choose to join our advanced programs. But there's zero obligation to buy anything else."
+      a: "No catch. We used to sell this for $399. We dropped it to $7 because we want as many people as possible to get in and see what we're about. Once you see the value, some students join our advanced programs, but there's zero obligation to buy anything else."
     },
     {
       q: "How quickly can I expect results?",
-      a: "Many of our students launch their first profitable campaign within 7-14 days. The training is designed to get you running real ads fast, not just learning theory. Your speed depends on how quickly you implement what you learn."
+      a: "A lot of our students launch their first profitable campaign within 7 to 14 days. The training is built to get you running real ads fast, not just learning theory. How fast you see results depends on how fast you take action."
     },
     {
       q: "What if I don't like it?",
-      a: "You're covered by our 30-day money-back guarantee. If the training isn't what you expected, email our support team and we'll refund your $7 — no questions asked. You have nothing to lose."
+      a: "You're covered by our 30-day money-back guarantee. If it's not what you expected, just email us and we'll refund your $7. No questions asked."
     },
     {
       q: "How is this different from free YouTube tutorials?",
-      a: "YouTube gives you fragments. This is a structured, start-to-finish system built on 12 years of running paid ads for real businesses. You get the exact frameworks, templates, and strategies in the right order — plus a community and live training you can't get from YouTube."
+      a: "YouTube gives you random pieces. This is a full system built on 12 years of running paid ads for real businesses. You get the exact templates, strategies, and steps in the right order, plus a community and live training you won't find on YouTube."
     }
   ];
 
@@ -82,12 +82,12 @@ function App() {
               Profitable Ad Campaign
             </span>
             <span className="block text-xl sm:text-4xl md:text-5xl mt-2 text-slate-300 font-bold">
-              in 7 Days — Even If You're Starting From Zero
+              in 7 Days, Even If You're Starting From Zero
             </span>
           </h1>
 
           <p className="text-base sm:text-xl text-slate-400 mb-6 sm:mb-10 max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
-            Get the complete paid ads training system that's helped over 10,000 entrepreneurs stop wasting money on ads and start running campaigns that actually convert.
+            The same paid ads training that's helped over 10,000 business owners stop burning money on ads and start running campaigns that actually bring in customers.
           </p>
 
           {/* Product Image */}
@@ -123,14 +123,14 @@ function App() {
               </div>
             </div>
             <p className="text-slate-400 text-sm mb-6">
-              We used to charge $399. We dropped it to $7 to remove every barrier. No catch — just results.
+              Used to be $399. Now it's $7. No catch, no tricks. Just the training.
             </p>
             <button
               onClick={handleCTAClick}
               id="hero-cta"
               className="w-full sm:w-auto bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold text-lg sm:text-xl px-10 py-5 rounded-2xl shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 transform hover:scale-[1.03] transition-all duration-300 inline-flex items-center justify-center gap-3"
             >
-              Start Running Profitable Ads — $7
+              Get Instant Access for $7
               <ArrowRight className="w-5 h-5" />
             </button>
             <p className="text-slate-500 text-xs mt-4">
@@ -156,7 +156,7 @@ function App() {
               "You know paid ads work for other people, but every campaign you launch bleeds cash",
               "You're overwhelmed by targeting options, bidding strategies, and platform changes that happen every month",
               "You've watched countless free YouTube tutorials but still can't put the pieces together into a system that works",
-              "You're stuck relying on organic reach and referrals — which means unpredictable income month to month",
+              "You're stuck relying on organic reach and referrals, which means unpredictable income month to month",
               "You've thought about hiring an agency but can't justify $2,000+/month when you're not sure ads will work for your business"
             ].map((pain, i) => (
               <div key={i} className="flex items-start gap-3 bg-slate-800/50 border border-slate-700/50 rounded-xl p-5">
@@ -172,7 +172,7 @@ function App() {
                 It's not your fault. Nobody taught you the system.
               </p>
               <p className="text-slate-300 leading-relaxed">
-                The difference between entrepreneurs who waste money on ads and those who print money with them isn't talent — it's having a proven framework. That's exactly what the Paid Ads Freedom Club gives you.
+                The difference between people who waste money on ads and people who make money with them? It's not talent. It's having the right system. That's what the Paid Ads Freedom Club gives you.
               </p>
             </div>
           </div>
@@ -187,7 +187,7 @@ function App() {
               Everything You Get for $7
             </h2>
             <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-              A complete business growth system — not just another course. Here's what's inside:
+              Not just another course. This is a full business growth system. Here's what's inside:
             </p>
           </div>
 
@@ -198,17 +198,17 @@ function App() {
                 <TrendingUp className="w-7 h-7 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-2">Paid Ads Freedom Club</h3>
-              <p className="text-amber-400/80 text-sm font-medium mb-4">Previously $399 — Now included</p>
+              <p className="text-amber-400/80 text-sm font-medium mb-4">Was $399. Now included.</p>
               <p className="text-slate-300 mb-6 leading-relaxed">
-                Our flagship training program. Step-by-step video modules that walk you from zero to running profitable campaigns on Facebook, Google, and YouTube.
+                The main training. Step-by-step video modules that take you from zero to running profitable campaigns on Facebook, Google, and YouTube.
               </p>
               <ul className="space-y-3">
                 {[
-                  "Complete Facebook/Meta Ads training (beginner → advanced)",
+                  "Full Facebook/Meta Ads training (beginner to advanced)",
                   "Google Ads search & display campaign setup",
                   "YouTube Ads for reach and lead generation",
-                  "Proven ad templates you can customize and launch today",
-                  "Campaign optimization framework to cut waste and scale winners"
+                  "Ad templates you can customize and launch today",
+                  "How to cut wasted spend and scale the campaigns that are working"
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-3 text-slate-300 text-sm">
                     <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0 mt-0.5" />
@@ -224,17 +224,17 @@ function App() {
                 <Video className="w-7 h-7 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-2">Live Daily Training</h3>
-              <p className="text-red-400/80 text-sm font-medium mb-4">Ongoing support — not just pre-recorded videos</p>
+              <p className="text-red-400/80 text-sm font-medium mb-4">Ongoing support, not just pre-recorded videos</p>
               <p className="text-slate-300 mb-6 leading-relaxed">
                 Every day, our team goes live to break down what's working right now, answer your questions, and help you troubleshoot campaigns in real time.
               </p>
               <ul className="space-y-3">
                 {[
-                  "Daily live sessions — ask questions, get answers, see live walkthroughs",
+                  "Daily live sessions where you can ask questions and get answers",
                   "Full replay library so you never miss a session",
-                  "Real-time strategy updates when platforms change their algorithms",
-                  "Campaign reviews — submit your ads and get expert feedback",
-                  "Private community access with other serious students"
+                  "Strategy updates when platforms change their rules",
+                  "Campaign reviews where you submit your ads and get feedback",
+                  "Private community with other serious students"
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-3 text-slate-300 text-sm">
                     <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0 mt-0.5" />
@@ -248,7 +248,7 @@ function App() {
           {/* Bonus Courses */}
           <div className="mb-10">
             <h3 className="text-xl font-bold text-white text-center mb-6">
-              <span className="text-amber-400">Plus</span> — these bonus training modules:
+              <span className="text-amber-400">Plus</span> these bonus training modules:
             </h3>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
@@ -358,28 +358,8 @@ function App() {
         </div>
       </div>
 
-      {/* ==================== ABOUT / AUTHORITY ==================== */}
-      <div className="py-16 sm:py-20 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-slate-700/50 rounded-2xl p-8 sm:p-10 flex flex-col md:flex-row items-center gap-8">
-            <div className="flex-shrink-0">
-              <div className="w-32 h-32 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/30 flex items-center justify-center">
-                <Award className="w-16 h-16 text-amber-400" />
-              </div>
-            </div>
-            <div>
-              <p className="text-amber-400 text-sm font-semibold mb-1">Your Instructor</p>
-              <h3 className="text-2xl font-bold text-white mb-4">Kenji</h3>
-              <p className="text-slate-300 leading-relaxed mb-4">
-                With over 12 years of experience in paid advertising, Kenji has helped thousands of entrepreneurs go from zero to profitable with paid ads. His training programs have produced a community of 10,000+ members who use his frameworks to run successful campaigns across Facebook, Google, and YouTube.
-              </p>
-              <p className="text-slate-300 leading-relaxed">
-                He created the Paid Ads Freedom Club because he was tired of seeing good entrepreneurs waste money on bad ad strategies. This $7 training is the same system he used to charge $399 for — now made accessible for everyone who's serious about growth.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+
+
 
       {/* ==================== GUARANTEE ==================== */}
       <div className="bg-slate-900/50 border-y border-slate-800/50 py-16 sm:py-20 px-4">
@@ -391,7 +371,7 @@ function App() {
             100% Money-Back Guarantee
           </h2>
           <p className="text-slate-300 text-lg leading-relaxed mb-6 max-w-xl mx-auto">
-            Try the Paid Ads Freedom Club for 30 days. Go through the training, join the live sessions, use the templates. If you're not completely satisfied — for any reason — email us and we'll refund your $7. No questions asked.
+            Try the Paid Ads Freedom Club for 30 days. Go through the training, join the live sessions, use the templates. If you don't love it, email us and we'll refund your $7. No questions asked.
           </p>
           <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
             <div>
@@ -461,7 +441,7 @@ function App() {
             </span>
           </h2>
           <p className="text-xl text-slate-300 mb-10 max-w-xl mx-auto leading-relaxed">
-            For less than a coffee, you get the complete system — training, templates, live support, and a community of 10,000+ entrepreneurs who've been where you are.
+            For less than a coffee you get the full training, templates, live support, and a community of 10,000+ people who've been exactly where you are right now.
           </p>
 
           <div className="bg-slate-900/80 border border-slate-700/50 rounded-2xl p-8 mb-8 backdrop-blur-sm">
@@ -479,7 +459,7 @@ function App() {
               id="final-cta"
               className="w-full sm:w-auto bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold text-xl sm:text-2xl px-12 py-6 rounded-2xl shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 transform hover:scale-[1.03] transition-all duration-300 inline-flex items-center justify-center gap-3"
             >
-              Start Running Profitable Ads — $7
+              Get Instant Access for $7
               <ArrowRight className="w-6 h-6" />
             </button>
 
