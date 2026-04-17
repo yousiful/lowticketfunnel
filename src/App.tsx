@@ -93,11 +93,22 @@ function App() {
           {/* Product Image */}
           <div className="mb-6 sm:mb-10 relative px-0 sm:px-4">
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent z-10 pointer-events-none rounded-xl sm:rounded-2xl"></div>
-            <img
-              src="/freedom_club_kenji_7dollar.png"
-              alt="Paid Ads Freedom Club - Complete Training System"
-              className="w-full max-w-[90vw] sm:max-w-2xl md:max-w-3xl mx-auto rounded-xl sm:rounded-2xl shadow-2xl shadow-blue-500/10 object-contain"
-            />
+            <picture>
+              <source
+                type="image/webp"
+                srcSet="/freedom-club-bundle-800w.webp 800w, /freedom-club-bundle-1200w.webp 1024w"
+                sizes="(max-width: 640px) 90vw, (max-width: 768px) 42rem, 48rem"
+              />
+              <img
+                src="/freedom-club-bundle.jpg"
+                alt="Paid Ads Freedom Club - Complete Training System including Close 4 Survival, Escape 9-5, Paid Ads Certified, Self-Liquidating Meta Ads, Client Attraction Secrets, AI Tools Overview, and Paid Ads Bootcamp"
+                width={1024}
+                height={1024}
+                fetchPriority="high"
+                decoding="async"
+                className="w-full max-w-[90vw] sm:max-w-2xl md:max-w-3xl mx-auto rounded-xl sm:rounded-2xl shadow-2xl shadow-blue-500/10 object-contain"
+              />
+            </picture>
           </div>
 
           {/* Quick Value + CTA */}
