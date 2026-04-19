@@ -46,8 +46,28 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+      {/* High-Octane Spots Remaining Meter */}
+      <div
+        className="w-full relative overflow-hidden z-50 shadow-md"
+        style={{
+          background: 'linear-gradient(90deg, #111827 0%, #1f2937 50%, #111827 100%)',
+          borderBottom: '1px solid rgba(245, 158, 11, 0.3)'
+        }}
+      >
+        <div className="absolute inset-0 bg-amber-500/5 animate-pulse"></div>
+        <div className="flex flex-wrap items-center justify-center gap-4 px-4 py-2.5 sm:py-3 text-sm sm:text-base text-center relative z-10">
+          <div className="flex items-center gap-2 bg-red-500/20 px-3 py-1 rounded-full border border-red-500/30">
+            <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+            <span className="text-red-400 font-bold uppercase tracking-wider text-xs">Closing Soon</span>
+          </div>
+          <span className="flex items-center gap-1.5 font-bold text-white tracking-wide text-xs sm:text-sm">
+            ONLY 8 SPOTS REMAINING IN THE CURRENT COHORT
+          </span>
+        </div>
+      </div>
+
       {/* Clean Trust Banner */}
-      <div className="bg-gradient-to-r from-slate-800 to-slate-800 text-white py-3 px-4 text-center sticky top-0 z-50 border-b border-slate-700/50 backdrop-blur-sm">
+      <div className="bg-gradient-to-r from-slate-800 to-slate-800 text-white py-3 px-4 text-center sticky top-0 z-40 border-b border-slate-700/50 backdrop-blur-sm">
         <div className="flex items-center justify-center gap-3 flex-wrap">
           <span className="flex items-center gap-1.5 text-sm text-slate-300">
             <Shield className="w-4 h-4 text-emerald-400" />
@@ -101,7 +121,7 @@ function App() {
               />
               <img
                 src="/freedom-club-bundle.jpg"
-                alt="Paid Ads Freedom Club - Complete Training System including Close 4 Survival, Escape 9-5, Paid Ads Certified, Self-Liquidating Meta Ads, Client Attraction Secrets, AI Tools Overview, and Paid Ads Bootcamp"
+                alt="AI Client Acquisition Engine - Complete Training System including Close 4 Survival, Escape 9-5, Paid Ads Certified, Self-Liquidating Meta Ads, Client Attraction Secrets, AI Tools Overview, and Paid Ads Bootcamp"
                 width={1024}
                 height={1024}
                 fetchPriority="high"
@@ -128,16 +148,39 @@ function App() {
             <button
               onClick={handleCTAClick}
               id="hero-cta"
-              className="w-full sm:w-auto bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold text-lg sm:text-xl px-10 py-5 rounded-2xl shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 transform hover:scale-[1.03] transition-all duration-300 inline-flex items-center justify-center gap-3"
+              className="w-full sm:w-auto group relative overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 text-white font-black text-lg sm:text-xl px-12 py-5 rounded-2xl shadow-[0_0_30px_rgba(245,158,11,0.3)] hover:shadow-[0_0_50px_rgba(245,158,11,0.5)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-amber-400/50"
             >
-              Get Instant Access for $7
-              <ArrowRight className="w-5 h-5" />
+              <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <span className="relative flex items-center gap-3">
+                Get Instant Access for $7
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </span>
             </button>
             <p className="text-slate-500 text-xs mt-4">
               One-time payment · Instant access · 30-day money-back guarantee
             </p>
           </div>
         </div>
+      </div>
+
+      {/* Live Social Proof Ticker */}
+      <div className="w-full overflow-hidden py-3 bg-slate-900/50 border-y border-slate-800">
+        <div className="flex gap-12 whitespace-nowrap animate-[scroll_20s_linear_infinite] items-center h-8">
+          {[...Array(2)].map((_, i) => (
+            <div key={i} className="flex gap-12 items-center">
+              <span className="text-slate-400 text-sm font-medium flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Mark T. just secured his spot</span>
+              <span className="text-slate-400 text-sm font-medium flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Sarah K. launched 3 campaigns in 48 hours</span>
+              <span className="text-slate-400 text-sm font-medium flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span> 8 spots remaining for this cohort</span>
+              <span className="text-slate-400 text-sm font-medium flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> David R. added 15 qualified leads using the AI templates</span>
+            </div>
+          ))}
+        </div>
+        <style>{`
+          @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+          }
+        `}</style>
       </div>
 
       {/* ==================== PAIN AGITATION ==================== */}
@@ -172,7 +215,7 @@ function App() {
                 It's not your fault. Nobody taught you the system.
               </p>
               <p className="text-slate-300 leading-relaxed">
-                The difference between people who waste money on ads and people who make money with them? It's not talent. It's having the right system. That's what the Paid Ads Freedom Club gives you.
+                The difference between people who waste money on ads and people who make money with them? It's not talent. It's having the right system. That's what the AI Client Acquisition Engine gives you.
               </p>
             </div>
           </div>
@@ -192,12 +235,12 @@ function App() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-6 mb-10">
-            {/* Paid Ads Freedom Club */}
-            <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-slate-700/50 rounded-2xl p-8 hover:border-amber-500/30 transition-all duration-300 group">
+            {/* AI Client Acquisition Engine */}
+            <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-slate-700/50 rounded-2xl p-8 hover:border-amber-500/50 hover:shadow-[0_8px_30px_rgba(245,158,11,0.15)] hover:-translate-y-2 transition-all duration-500 group">
               <div className="bg-gradient-to-br from-amber-500 to-orange-500 w-14 h-14 rounded-xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform">
                 <TrendingUp className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-white mb-2">Paid Ads Freedom Club</h3>
+              <h3 className="text-2xl font-bold text-white mb-2">AI Client Acquisition Engine</h3>
               <p className="text-amber-400/80 text-sm font-medium mb-4">Was $399. Now included.</p>
               <p className="text-slate-300 mb-6 leading-relaxed">
                 The main training. Step-by-step video modules that take you from zero to running profitable campaigns on Facebook, Google, and YouTube.
@@ -219,7 +262,7 @@ function App() {
             </div>
 
             {/* Live Daily Training */}
-            <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-slate-700/50 rounded-2xl p-8 hover:border-red-500/30 transition-all duration-300 group">
+            <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-slate-700/50 rounded-2xl p-8 hover:border-red-500/50 hover:shadow-[0_8px_30px_rgba(239,68,68,0.15)] hover:-translate-y-2 transition-all duration-500 group">
               <div className="bg-gradient-to-br from-red-500 to-rose-500 w-14 h-14 rounded-xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform">
                 <Video className="w-7 h-7 text-white" />
               </div>
@@ -257,7 +300,7 @@ function App() {
                 { icon: BarChart3, title: "Sales Systems", desc: "Close more deals from the leads your ads generate", color: "from-green-500 to-emerald-500" },
                 { icon: BookOpen, title: "Tax Strategies", desc: "Keep more profit with legal tax optimization for entrepreneurs", color: "from-purple-500 to-pink-500" }
               ].map((course, i) => (
-                <div key={i} className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-5 hover:border-amber-500/20 transition-all duration-300">
+                <div key={i} className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-5 hover:border-amber-500/40 hover:shadow-[0_4px_20px_rgba(245,158,11,0.1)] hover:-translate-y-1 transition-all duration-500">
                   <div className={`bg-gradient-to-br ${course.color} w-10 h-10 rounded-lg flex items-center justify-center mb-3`}>
                     <course.icon className="w-5 h-5 text-white" />
                   </div>
@@ -273,10 +316,13 @@ function App() {
             <button
               onClick={handleCTAClick}
               id="mid-cta"
-              className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold text-lg px-10 py-5 rounded-2xl shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 transform hover:scale-[1.03] transition-all duration-300 inline-flex items-center gap-3"
+              className="group relative overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 text-white font-black text-lg sm:text-xl px-12 py-5 rounded-2xl shadow-[0_0_30px_rgba(245,158,11,0.3)] hover:shadow-[0_0_50px_rgba(245,158,11,0.5)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-amber-400/50 gap-3"
             >
-              Get Everything for Just $7
-              <ArrowRight className="w-5 h-5" />
+              <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <span className="relative flex items-center gap-3">
+                Get Everything for Just $7
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </span>
             </button>
           </div>
         </div>
@@ -331,7 +377,7 @@ function App() {
                 stars: 5
               }
             ].map((testimonial, i) => (
-              <div key={i} className="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-6">
+              <div key={i} className="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-6 hover:shadow-[0_4px_20px_rgba(255,255,255,0.05)] hover:-translate-y-1 hover:border-slate-600 transition-all duration-500">
                 <div className="flex gap-1 mb-4">
                   {Array.from({ length: testimonial.stars }).map((_, j) => (
                     <Star key={j} className="w-4 h-4 text-amber-400 fill-amber-400" />
@@ -371,7 +417,7 @@ function App() {
             100% Money-Back Guarantee
           </h2>
           <p className="text-slate-300 text-lg leading-relaxed mb-6 max-w-xl mx-auto">
-            Try the Paid Ads Freedom Club for 30 days. Go through the training, join the live sessions, use the templates. If you don't love it, email us and we'll refund your $7. No questions asked.
+            Try the AI Client Acquisition Engine for 30 days. Go through the training, join the live sessions, use the templates. If you don't love it, email us and we'll refund your $7. No questions asked.
           </p>
           <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
             <div>
@@ -457,10 +503,13 @@ function App() {
             <button
               onClick={handleCTAClick}
               id="final-cta"
-              className="w-full sm:w-auto bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold text-xl sm:text-2xl px-12 py-6 rounded-2xl shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 transform hover:scale-[1.03] transition-all duration-300 inline-flex items-center justify-center gap-3"
+              className="w-full sm:w-auto group relative overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 text-white font-black text-xl sm:text-2xl px-14 py-6 rounded-2xl shadow-[0_0_30px_rgba(245,158,11,0.3)] hover:shadow-[0_0_50px_rgba(245,158,11,0.6)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-amber-400/50 gap-3"
             >
-              Get Instant Access for $7
-              <ArrowRight className="w-6 h-6" />
+              <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <span className="relative flex items-center gap-3">
+                Get Instant Access for $7
+                <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+              </span>
             </button>
 
             <div className="flex items-center justify-center gap-6 mt-6 text-slate-400 text-xs flex-wrap">
@@ -487,7 +536,7 @@ function App() {
 
       {/* Footer */}
       <div className="bg-slate-950 py-8 px-4 text-center text-slate-600 text-sm border-t border-slate-800/50">
-        <p>&copy; 2026 Paid Ads Freedom Club. All rights reserved.</p>
+        <p>&copy; 2026 AI Client Acquisition Engine. All rights reserved.</p>
         <p className="mt-2 text-slate-700">Results vary. This is an educational product, not a guarantee of income.</p>
       </div>
     </div>
