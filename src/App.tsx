@@ -288,6 +288,54 @@ function App() {
             </div>
           </div>
 
+          {/* Featured Bonus: Pre-Converted Ebook */}
+          <div className="mb-10">
+            <div className="relative bg-gradient-to-br from-amber-500/10 via-slate-800/80 to-slate-900/80 border-2 border-amber-500/40 rounded-2xl p-6 sm:p-8 overflow-hidden shadow-[0_8px_40px_rgba(245,158,11,0.15)]">
+              <div className="absolute top-4 right-4 bg-amber-500 text-slate-950 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-full">
+                Free Bonus · $97 Value
+              </div>
+              <div className="grid md:grid-cols-[200px_1fr] gap-6 sm:gap-8 items-center">
+                <div className="mx-auto md:mx-0">
+                  <img
+                    src="/preconverted-cover.png"
+                    alt="Pre-Converted ebook by Yousif Alias — How to Get High-Quality Leads Who Pay You First"
+                    width={200}
+                    height={300}
+                    loading="lazy"
+                    className="w-40 sm:w-48 md:w-full rounded-lg shadow-2xl shadow-amber-500/20 border border-amber-500/20"
+                  />
+                </div>
+                <div>
+                  <div className="inline-flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-wider mb-2">
+                    <BookOpen className="w-3.5 h-3.5" />
+                    New Bonus Added
+                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-black text-white mb-2 leading-tight">
+                    Pre-Converted
+                  </h3>
+                  <p className="text-amber-300 text-base sm:text-lg font-semibold mb-3">
+                    How to Get High-Quality Leads Who Pay You First
+                  </p>
+                  <p className="text-slate-400 italic text-sm mb-5">
+                    The system they never teach you. By Yousif Alias.
+                  </p>
+                  <ul className="space-y-2.5">
+                    {[
+                      "The exact framework for attracting leads who are ready to buy before they ever talk to you",
+                      "How to flip the script so prospects chase you, not the other way around",
+                      "Real templates and scripts you can deploy this week"
+                    ].map((item, i) => (
+                      <li key={i} className="flex items-start gap-3 text-slate-300 text-sm">
+                        <CheckCircle2 className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Bonus Courses */}
           <div className="mb-10">
             <h3 className="text-xl font-bold text-white text-center mb-6">
