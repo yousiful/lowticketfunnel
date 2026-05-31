@@ -11,6 +11,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="preload" as="image" type="image/webp" href="/freedom-club-bundle-1200w.webp" fetchpriority="high">
 
+    <!-- Meta Pixel -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '2406747486323295');
+      fbq('track', 'PageView');
+      fbq('track', 'ViewContent', {
+        content_name: 'AI Client Acquisition Engine',
+        content_ids: ['ace-7'],
+        content_type: 'product',
+        value: 7.00,
+        currency: 'USD'
+      });
+    </script>
+    <!-- End Meta Pixel -->
+
     <!-- DataTagManager Pixel -->
     <script type="text/javascript">
     (function(s, p, i, c, e) {
@@ -25,6 +47,7 @@
     <script id="datatagmanager-id" src="https://cdn.pixel.datatagmanager.com/pixels/0219d3e9-3cad-42f3-9bd1-111525982334/p.js" async></script>
   </head>
   <body>
+    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2406747486323295&ev=PageView&noscript=1" /></noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -10,6 +10,16 @@ function App() {
   }, []);
 
   const handleCTAClick = () => {
+    if (typeof window !== 'undefined' && (window as Window & { fbq?: (...args: unknown[]) => void }).fbq) {
+      (window as Window & { fbq: (...args: unknown[]) => void }).fbq('track', 'InitiateCheckout', {
+        content_name: 'AI Client Acquisition Engine',
+        content_ids: ['ace-7'],
+        content_type: 'product',
+        value: 7.00,
+        currency: 'USD',
+        num_items: 1
+      });
+    }
     window.location.href = 'https://freedom.kenjiai.com/7-dollar-new-funnel-704974';
   };
 
