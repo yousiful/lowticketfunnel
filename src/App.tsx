@@ -41,8 +41,39 @@ function App() {
     {
       q: "How is this different from free YouTube tutorials?",
       a: "YouTube gives you random pieces. This is a full system built on 12 years of running paid ads for real businesses. You get the exact templates, strategies, and steps in the right order, plus a community and live training you won't find on YouTube."
+    },
+    {
+      q: "How much time per week does this take?",
+      a: "Most members spend 3 to 5 hours per week to start. You can move faster if you have the time, slower if you don't. The training is broken into short modules so you can fit it around a full-time job."
+    },
+    {
+      q: "Do I need a big ad budget to start?",
+      a: "No. We show you how to test campaigns with as little as $10 to $20 per day. The goal is to find what's working at a small budget, then scale only when the numbers prove out. We'd rather you start small and learn than blow $500 in the dark."
+    },
+    {
+      q: "What if I don't have a product or business yet?",
+      a: "You'll still get value, but this is built for people who have something to sell. Inside the community you'll see members in every niche from coaching to e-commerce to local services. If you're pre-product, the lessons still apply once you're ready to launch."
+    },
+    {
+      q: "Will this work outside the US?",
+      a: "Yes. The platforms and principles work globally. We have members running profitable campaigns in over 40 countries. The templates and frameworks translate to any market."
+    },
+    {
+      q: "What happens after I buy?",
+      a: "You'll get instant access to the member area, all training modules, the bonus library including the Pre-Converted ebook, and an invite to the live daily training. You can start watching the first module within 60 seconds of checkout."
     }
   ];
+
+  const valueStack = [
+    { name: "AI Client Acquisition Engine", value: 399 },
+    { name: "Live Daily Training (90 days)", value: 497 },
+    { name: "Pre-Converted Ebook", value: 97 },
+    { name: "Paid Ads Mastery", value: 297 },
+    { name: "Business Funding Playbook", value: 197 },
+    { name: "Sales Systems Training", value: 197 },
+    { name: "Tax Strategies for Entrepreneurs", value: 197 }
+  ];
+  const totalValue = valueStack.reduce((sum, item) => sum + item.value, 0);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
@@ -152,7 +183,7 @@ function App() {
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center gap-3">
-                Get Instant Access for $7
+                Yes, I Want In For $7
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
@@ -359,6 +390,41 @@ function App() {
             </div>
           </div>
 
+          {/* Value Stack */}
+          <div className="max-w-3xl mx-auto mb-10">
+            <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-amber-500/30 rounded-2xl p-6 sm:p-8 shadow-[0_8px_40px_rgba(245,158,11,0.08)]">
+              <h3 className="text-xl sm:text-2xl font-black text-white text-center mb-6">
+                Here's What You're Actually Getting
+              </h3>
+              <ul className="space-y-3 mb-6">
+                {valueStack.map((item, i) => (
+                  <li key={i} className="flex items-center justify-between gap-4 py-2 border-b border-slate-700/40 last:border-0">
+                    <span className="flex items-center gap-3 text-slate-300 text-sm sm:text-base">
+                      <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                      {item.name}
+                    </span>
+                    <span className="text-slate-400 font-mono text-sm sm:text-base flex-shrink-0">
+                      ${item.value}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <div className="border-t-2 border-amber-500/40 pt-5 space-y-2">
+                <div className="flex items-center justify-between text-base sm:text-lg">
+                  <span className="text-slate-400 font-semibold">Total Real Value</span>
+                  <span className="text-slate-300 font-bold line-through">${totalValue.toLocaleString()}</span>
+                </div>
+                <div className="flex items-center justify-between text-xl sm:text-2xl">
+                  <span className="text-white font-black">Your Price Today</span>
+                  <span className="text-amber-400 font-black">$7</span>
+                </div>
+                <p className="text-emerald-400 text-center text-sm font-bold pt-2">
+                  You save ${(totalValue - 7).toLocaleString()} — that's 99.6% off.
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Mid-page CTA */}
           <div className="text-center">
             <button
@@ -368,10 +434,13 @@ function App() {
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center gap-3">
-                Get Everything for Just $7
+                Yes, I Want In For $7
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
+            <p className="text-slate-500 text-xs mt-3">
+              You'll be inside the member area in under 60 seconds.
+            </p>
           </div>
         </div>
       </div>
@@ -555,7 +624,7 @@ function App() {
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center gap-3">
-                Get Instant Access for $7
+                Lock In My $7 Access Now
                 <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
@@ -583,9 +652,30 @@ function App() {
       </div>
 
       {/* Footer */}
-      <div className="bg-slate-950 py-8 px-4 text-center text-slate-600 text-sm border-t border-slate-800/50">
+      <div className="bg-slate-950 py-8 px-4 pb-28 sm:pb-8 text-center text-slate-600 text-sm border-t border-slate-800/50">
         <p>&copy; 2026 AI Client Acquisition Engine. All rights reserved.</p>
         <p className="mt-2 text-slate-700">Results vary. This is an educational product, not a guarantee of income.</p>
+      </div>
+
+      {/* Sticky Mobile Bottom CTA */}
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-md border-t border-amber-500/30 px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.6)]">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex flex-col leading-tight">
+            <span className="text-slate-400 text-[10px] uppercase tracking-wider font-bold">Lock In</span>
+            <span className="flex items-baseline gap-1.5">
+              <span className="text-slate-500 text-sm line-through font-bold">$399</span>
+              <span className="text-white text-2xl font-black">$7</span>
+            </span>
+          </div>
+          <button
+            onClick={handleCTAClick}
+            id="sticky-mobile-cta"
+            className="flex-1 group relative overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 text-white font-black text-base px-5 py-3.5 rounded-xl shadow-[0_0_20px_rgba(245,158,11,0.4)] border border-amber-400/50 inline-flex items-center justify-center gap-2"
+          >
+            <span>Get Instant Access</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
       </div>
     </div>
   );
