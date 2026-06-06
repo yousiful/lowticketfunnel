@@ -11,7 +11,7 @@ function App() {
 
   const handleCTAClick = () => {
     if (typeof window !== 'undefined' && (window as Window & { fbq?: (...args: unknown[]) => void }).fbq) {
-      (window as Window & { fbq: (...args: unknown[]) => void }).fbq('track', 'InitiateCheckout', {
+      (window as Window & { fbq?: (...args: unknown[]) => void }).fbq!('track', 'InitiateCheckout', {
         content_name: 'AI Client Acquisition Engine',
         content_ids: ['ace-7'],
         content_type: 'product',
