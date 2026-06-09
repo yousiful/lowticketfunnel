@@ -40,21 +40,22 @@ function KickoffBar() {
       />
       <div className="relative mx-auto flex max-w-6xl flex-col items-center justify-center gap-2 px-4 py-2 text-center sm:flex-row sm:gap-4">
         <p className="text-xs font-semibold sm:text-sm">
-          <span aria-hidden="true">⚽</span> The whole world's watching the beautiful game this summer —{' '}
-          <span className="font-extrabold">don't watch from the bench.</span>
+          <span aria-hidden="true">⚽</span> The whole world is glued to the beautiful game this summer.{' '}
+          <span aria-hidden="true">🔥</span>{' '}
+          <span className="font-extrabold">This is your shot. Don&apos;t blow it.</span>
         </p>
         <div className="flex shrink-0 items-center gap-3">
           <div className="flex items-center gap-1.5">
-            <span className="hidden text-[10px] font-bold uppercase tracking-wider opacity-80 sm:inline">Closes in</span>
-            <div className="flex items-center gap-1 rounded-lg bg-black/25 px-2 py-1 font-mono text-sm font-bold tabular-nums">
+            <span className="hidden text-[10px] font-bold uppercase tracking-wider opacity-80 sm:inline">Ends in</span>
+            <div className="flex items-center gap-1 rounded-lg bg-black/30 px-2 py-1 font-mono text-sm font-bold tabular-nums ring-1 ring-white/40">
               <span>{h}</span><span className="opacity-60">:</span><span>{m}</span><span className="opacity-60">:</span><span>{s}</span>
             </div>
           </div>
           <button
             onClick={scrollToCTA}
-            className="rounded-full bg-white px-4 py-1.5 text-xs font-extrabold uppercase tracking-wide text-emerald-700 shadow-sm transition-transform hover:-translate-y-0.5 active:scale-95"
+            className="rounded-full bg-white px-4 py-1.5 text-xs font-extrabold uppercase tracking-wide text-emerald-700 shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-[0_0_16px_rgba(255,255,255,0.5)] active:scale-95"
           >
-            Get started →
+            Claim your spot →
           </button>
         </div>
       </div>
