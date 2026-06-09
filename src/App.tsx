@@ -1,6 +1,67 @@
 import { useState, useEffect } from 'react';
 import { CheckCircle2, Users, Video, BookOpen, TrendingUp, DollarSign, Lock, ArrowRight, Zap, Award, Star, MessageCircle, ChevronDown, ChevronUp, Play, Shield, Target, BarChart3 } from 'lucide-react';
 
+/**
+ * Soccer-season urgency bar. "Biggest summer in sports" energy, no trademarked
+ * names/teams/logos. Evergreen 48h rolling countdown per visitor so urgency
+ * never expires to 00:00:00.
+ */
+const KICKOFF_WINDOW_MS = 48 * 60 * 60 * 1000;
+const KICKOFF_STORAGE_KEY = 'kenji_kickoff_deadline';
+
+function KickoffBar() {
+  const [remaining, setRemaining] = useState(KICKOFF_WINDOW_MS);
+
+  useEffect(() => {
+    let deadline = Number(localStorage.getItem(KICKOFF_STORAGE_KEY));
+    if (!deadline || Number.isNaN(deadline) || deadline < Date.now()) {
+      deadline = Date.now() + KICKOFF_WINDOW_MS;
+      localStorage.setItem(KICKOFF_STORAGE_KEY, String(deadline));
+    }
+    const tick = () => setRemaining(Math.max(0, deadline - Date.now()));
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const total = Math.floor(remaining / 1000);
+  const h = String(Math.floor(total / 3600)).padStart(2, '0');
+  const m = String(Math.floor((total % 3600) / 60)).padStart(2, '0');
+  const s = String(total % 60).padStart(2, '0');
+
+  const scrollToCTA = () =>
+    document.getElementById('cta-section')?.scrollIntoView({ behavior: 'smooth' });
+
+  return (
+    <div className="relative z-50 w-full overflow-hidden bg-gradient-to-r from-emerald-700 via-green-600 to-emerald-700 text-white">
+      <div
+        className="pointer-events-none absolute inset-0 opacity-20"
+        style={{ backgroundImage: 'repeating-linear-gradient(90deg, rgba(255,255,255,0.12) 0 28px, transparent 28px 56px)' }}
+      />
+      <div className="relative mx-auto flex max-w-6xl flex-col items-center justify-center gap-2 px-4 py-2 text-center sm:flex-row sm:gap-4">
+        <p className="text-xs font-semibold sm:text-sm">
+          <span aria-hidden="true">⚽</span> The whole world's watching the beautiful game this summer —{' '}
+          <span className="font-extrabold">don't watch from the bench.</span>
+        </p>
+        <div className="flex shrink-0 items-center gap-3">
+          <div className="flex items-center gap-1.5">
+            <span className="hidden text-[10px] font-bold uppercase tracking-wider opacity-80 sm:inline">Closes in</span>
+            <div className="flex items-center gap-1 rounded-lg bg-black/25 px-2 py-1 font-mono text-sm font-bold tabular-nums">
+              <span>{h}</span><span className="opacity-60">:</span><span>{m}</span><span className="opacity-60">:</span><span>{s}</span>
+            </div>
+          </div>
+          <button
+            onClick={scrollToCTA}
+            className="rounded-full bg-white px-4 py-1.5 text-xs font-extrabold uppercase tracking-wide text-emerald-700 shadow-sm transition-transform hover:-translate-y-0.5 active:scale-95"
+          >
+            Get started →
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function App() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -87,6 +148,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+      <KickoffBar />
       {/* High-Octane Spots Remaining Meter */}
       <div
         className="w-full relative overflow-hidden z-50 shadow-md"
