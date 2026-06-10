@@ -662,6 +662,30 @@ function App() {
         </div>
       </div>
 
+      {/* ==================== SHOW-UP BONUS (2nd incentive) ==================== */}
+      <div className="bg-slate-900 border-t border-emerald-500/20 py-14 px-4">
+        <div className="max-w-3xl mx-auto">
+          <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-7 sm:p-9 text-center">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 mb-4">
+              <span className="text-emerald-300 text-xs font-bold tracking-wide uppercase">Free Show-Up Bonus</span>
+            </div>
+            <h3 className="text-2xl sm:text-3xl font-black text-white mb-3">Show Up to a Quick Call, Get the 35x Playbook</h3>
+            <p className="text-slate-300 text-base leading-relaxed max-w-xl mx-auto mb-6">
+              Book a short meeting with our team and show up live. We hand you the playbook that took the same traffic from 3 sales to 15, a 35x lift at the same price. It is yours just for showing up.
+            </p>
+            <a
+              href="https://kenjiai.com/the-35x-playbook.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-black text-slate-900"
+              style={{ background: 'linear-gradient(90deg, #34d399, #60a5fa)' }}
+            >
+              Preview the 35x Playbook
+            </a>
+          </div>
+        </div>
+      </div>
+
       {/* ==================== FINAL CTA ==================== */}
       <div id="cta-section" className="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800 border-t border-slate-700/50 py-20 px-4 relative overflow-hidden">
         <div className="absolute inset-0">
