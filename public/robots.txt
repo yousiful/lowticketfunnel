@@ -1,0 +1,2 @@
+User-agent: *
+Disallow: /founders-199
