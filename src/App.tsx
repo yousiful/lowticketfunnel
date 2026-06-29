@@ -299,12 +299,12 @@ function App() {
 
           <div className="grid sm:grid-cols-2 gap-4 mb-12">
             {[
-              "You've boosted posts on Facebook and watched your money disappear with nothing to show for it",
-              "You know paid ads work for other people, but every campaign you launch bleeds cash",
-              "You're overwhelmed by targeting options, bidding strategies, and platform changes that happen every month",
-              "You've watched countless free YouTube tutorials but still can't put the pieces together into a system that works",
-              "You're stuck relying on organic reach and referrals, which means unpredictable income month to month",
-              "You've thought about hiring an agency but can't justify $2,000+/month when you're not sure ads will work for your business"
+              "You've boosted posts on Facebook and watched the money vanish with nothing to show for it.",
+              "You know ads work for other people, but every campaign you run just bleeds cash.",
+              "Targeting, bidding, platform updates every month. It's overwhelming and you can't tell what actually matters.",
+              "You've watched a hundred YouTube tutorials but still can't turn them into a system that works.",
+              "You're leaning on organic reach and referrals, so income swings wildly month to month.",
+              "Agencies want $2,000+ a month, and you can't justify that when you're not even sure ads will work for you."
             ].map((pain, i) => (
               <div key={i} className="flex items-start gap-3 bg-slate-800/50 border border-slate-700/50 rounded-xl p-5">
                 <span className="text-red-400 text-lg mt-0.5 flex-shrink-0">✕</span>
@@ -402,7 +402,7 @@ function App() {
                 <div className="mx-auto md:mx-0">
                   <img
                     src="/preconverted-cover.png"
-                    alt="Pre-Converted ebook by Yousif Alias — How to Get High-Quality Leads Who Pay You First"
+                    alt="Pre-Converted ebook by Yousif Alias: How to Get High-Quality Leads Who Pay You First"
                     width={200}
                     height={300}
                     loading="lazy"
@@ -492,7 +492,7 @@ function App() {
                   <span className="text-amber-400 font-black">$7</span>
                 </div>
                 <p className="text-emerald-400 text-center text-sm font-bold pt-2">
-                  You save ${(totalValue - 7).toLocaleString()} — that's 99.6% off.
+                  You save ${(totalValue - 7).toLocaleString()}. That's 99.6% off.
                 </p>
               </div>
             </div>
@@ -658,30 +658,6 @@ function App() {
                 )}
               </div>
             ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ==================== SHOW-UP BONUS (2nd incentive) ==================== */}
-      <div className="bg-slate-900 border-t border-emerald-500/20 py-14 px-4">
-        <div className="max-w-3xl mx-auto">
-          <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-7 sm:p-9 text-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 mb-4">
-              <span className="text-emerald-300 text-xs font-bold tracking-wide uppercase">Free Show-Up Bonus</span>
-            </div>
-            <h3 className="text-2xl sm:text-3xl font-black text-white mb-3">Show Up to a Quick Call, Get the 35x Playbook</h3>
-            <p className="text-slate-300 text-base leading-relaxed max-w-xl mx-auto mb-6">
-              Book a short meeting with our team and show up live. We hand you the playbook that took the same traffic from 3 sales to 15, a 35x lift at the same price. It is yours just for showing up.
-            </p>
-            <a
-              href="https://kenjiai.com/the-35x-playbook.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-black text-slate-900"
-              style={{ background: 'linear-gradient(90deg, #34d399, #60a5fa)' }}
-            >
-              Preview the 35x Playbook
-            </a>
           </div>
         </div>
       </div>
