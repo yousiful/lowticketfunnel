@@ -196,7 +196,7 @@ export default function FoundersOffer() {
           </span>
           <span className="text-slate-600 hidden sm:inline">•</span>
           <span className="flex items-center gap-1.5 text-sm text-slate-300">
-            <Users className="w-4 h-4 text-blue-400" /> 10,247 Members
+            <Users className="w-4 h-4 text-blue-400" /> 1,000+ Members
           </span>
         </div>
       </div>

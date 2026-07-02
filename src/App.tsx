@@ -1,68 +1,6 @@
 import { useState, useEffect } from 'react';
 import { CheckCircle2, Users, Video, BookOpen, TrendingUp, DollarSign, Lock, ArrowRight, Zap, Award, Star, MessageCircle, ChevronDown, ChevronUp, Play, Shield, Target, BarChart3 } from 'lucide-react';
 
-/**
- * Soccer-season urgency bar. "Biggest summer in sports" energy, no trademarked
- * names/teams/logos. Evergreen 48h rolling countdown per visitor so urgency
- * never expires to 00:00:00.
- */
-const KICKOFF_WINDOW_MS = 48 * 60 * 60 * 1000;
-const KICKOFF_STORAGE_KEY = 'kenji_kickoff_deadline';
-
-function KickoffBar() {
-  const [remaining, setRemaining] = useState(KICKOFF_WINDOW_MS);
-
-  useEffect(() => {
-    let deadline = Number(localStorage.getItem(KICKOFF_STORAGE_KEY));
-    if (!deadline || Number.isNaN(deadline) || deadline < Date.now()) {
-      deadline = Date.now() + KICKOFF_WINDOW_MS;
-      localStorage.setItem(KICKOFF_STORAGE_KEY, String(deadline));
-    }
-    const tick = () => setRemaining(Math.max(0, deadline - Date.now()));
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, []);
-
-  const total = Math.floor(remaining / 1000);
-  const h = String(Math.floor(total / 3600)).padStart(2, '0');
-  const m = String(Math.floor((total % 3600) / 60)).padStart(2, '0');
-  const s = String(total % 60).padStart(2, '0');
-
-  const scrollToCTA = () =>
-    document.getElementById('cta-section')?.scrollIntoView({ behavior: 'smooth' });
-
-  return (
-    <div className="relative z-50 w-full overflow-hidden bg-gradient-to-r from-emerald-700 via-green-600 to-emerald-700 text-white">
-      <div
-        className="pointer-events-none absolute inset-0 opacity-20"
-        style={{ backgroundImage: 'repeating-linear-gradient(90deg, rgba(255,255,255,0.12) 0 28px, transparent 28px 56px)' }}
-      />
-      <div className="relative mx-auto flex max-w-6xl flex-col items-center justify-center gap-2 px-4 py-2 text-center sm:flex-row sm:gap-4">
-        <p className="text-xs font-semibold sm:text-sm">
-          <span aria-hidden="true">⚽</span> The whole world is glued to the beautiful game this summer.{' '}
-          <span aria-hidden="true">🔥</span>{' '}
-          <span className="font-extrabold">This is your shot. Don&apos;t blow it.</span>
-        </p>
-        <div className="flex shrink-0 items-center gap-3">
-          <div className="flex items-center gap-1.5">
-            <span className="hidden text-[10px] font-bold uppercase tracking-wider opacity-80 sm:inline">Ends in</span>
-            <div className="flex items-center gap-1 rounded-lg bg-black/30 px-2 py-1 font-mono text-sm font-bold tabular-nums ring-1 ring-white/40">
-              <span>{h}</span><span className="opacity-60">:</span><span>{m}</span><span className="opacity-60">:</span><span>{s}</span>
-            </div>
-          </div>
-          <button
-            onClick={scrollToCTA}
-            className="rounded-full bg-white px-4 py-1.5 text-xs font-extrabold uppercase tracking-wide text-emerald-700 shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-[0_0_16px_rgba(255,255,255,0.5)] active:scale-95"
-          >
-            Claim your spot →
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function App() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -149,8 +87,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
-      <KickoffBar />
-      {/* High-Octane Spots Remaining Meter */}
+      {/* Price-anchored urgency bar */}
       <div
         className="w-full relative overflow-hidden z-50 shadow-md"
         style={{
@@ -160,12 +97,12 @@ function App() {
       >
         <div className="absolute inset-0 bg-amber-500/5 animate-pulse"></div>
         <div className="flex flex-wrap items-center justify-center gap-4 px-4 py-2.5 sm:py-3 text-sm sm:text-base text-center relative z-10">
-          <div className="flex items-center gap-2 bg-red-500/20 px-3 py-1 rounded-full border border-red-500/30">
-            <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
-            <span className="text-red-400 font-bold uppercase tracking-wider text-xs">Closing Soon</span>
+          <div className="flex items-center gap-2 bg-amber-500/20 px-3 py-1 rounded-full border border-amber-500/30">
+            <div className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></div>
+            <span className="text-amber-300 font-bold uppercase tracking-wider text-xs">Limited Offer</span>
           </div>
           <span className="flex items-center gap-1.5 font-bold text-white tracking-wide text-xs sm:text-sm">
-            ONLY 8 SPOTS REMAINING IN THE CURRENT COHORT
+            THE $399 TRAINING IS YOURS FOR $7 WHILE THIS PROMO IS LIVE
           </span>
         </div>
       </div>
@@ -185,7 +122,7 @@ function App() {
           <span className="text-slate-600 hidden sm:inline">•</span>
           <span className="flex items-center gap-1.5 text-sm text-slate-300">
             <Users className="w-4 h-4 text-blue-400" />
-            10,247 Members
+            1,000+ Members
           </span>
         </div>
       </div>
@@ -211,7 +148,7 @@ function App() {
           </h1>
 
           <p className="text-base sm:text-xl text-slate-400 mb-6 sm:mb-10 max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
-            The same paid ads training that's helped over 10,000 business owners stop burning money on ads and start running campaigns that actually bring in customers.
+            The same paid ads training that's helped over 1,000 business owners stop burning money on ads and start running campaigns that actually bring in customers.
           </p>
 
           {/* Product Image */}
@@ -274,7 +211,7 @@ function App() {
             <div key={i} className="flex gap-12 items-center">
               <span className="text-slate-400 text-sm font-medium flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Mark T. just secured his spot</span>
               <span className="text-slate-400 text-sm font-medium flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Sarah K. launched 3 campaigns in 48 hours</span>
-              <span className="text-slate-400 text-sm font-medium flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span> 8 spots remaining for this cohort</span>
+              <span className="text-slate-400 text-sm font-medium flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Jessica M. booked 5 sales calls from one campaign</span>
               <span className="text-slate-400 text-sm font-medium flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> David R. added 15 qualified leads using the AI templates</span>
             </div>
           ))}
@@ -534,7 +471,7 @@ function App() {
           <div className="grid grid-cols-3 gap-4 mb-12 max-w-3xl mx-auto">
             {[
               { value: "12", label: "Years in Business", icon: Award },
-              { value: "10K+", label: "Members Trained", icon: Users },
+              { value: "1,000+", label: "Members Trained", icon: Users },
               { value: "Daily", label: "Live Training Sessions", icon: Video }
             ].map((stat, i) => (
               <div key={i} className="text-center bg-slate-800/50 border border-slate-700/50 rounded-xl py-5 px-3">
@@ -677,7 +614,7 @@ function App() {
             </span>
           </h2>
           <p className="text-xl text-slate-300 mb-10 max-w-xl mx-auto leading-relaxed">
-            For less than a coffee you get the full training, templates, live support, and a community of 10,000+ people who've been exactly where you are right now.
+            For less than a coffee you get the full training, templates, live support, and a community of 1,000+ people who've been exactly where you are right now.
           </p>
 
           <div className="bg-slate-900/80 border border-slate-700/50 rounded-2xl p-8 mb-8 backdrop-blur-sm">
