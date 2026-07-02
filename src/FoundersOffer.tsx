@@ -84,7 +84,7 @@ export default function FoundersOffer() {
 
     // Keep this page out of search — it's a private price.
     const prevTitle = document.title;
-    document.title = 'Pre-Converted + Community — Founders Access';
+    document.title = 'Pre-Converted + Community · Founders Access';
     const robots = document.createElement('meta');
     robots.name = 'robots';
     robots.content = 'noindex,nofollow';
@@ -141,7 +141,7 @@ export default function FoundersOffer() {
   const faqs = [
     {
       q: 'What exactly do I get for $1.99?',
-      a: 'You get Pre-Converted — the full book on attracting high-quality leads who pay you first — plus instant access to the private community and the bonus training stack. One payment, lifetime access.',
+      a: 'You get Pre-Converted, the full book on attracting high-quality leads who pay you first, plus instant access to the private community and the bonus training stack. One payment, lifetime access.',
     },
     {
       q: 'Why is this only $1.99?',
@@ -149,7 +149,7 @@ export default function FoundersOffer() {
     },
     {
       q: 'Is this just the book, or more?',
-      a: 'The book is the core. But you also get the community and the full bonus library — the ad-training engine, live daily sessions, sales systems, funding and tax playbooks — all included at this price.',
+      a: 'The book is the core. But you also get the community and the full bonus library: the ad-training engine, live daily sessions, sales systems, funding and tax playbooks, all included at this price.',
     },
     {
       q: 'Do I need to be running ads already?',
@@ -161,7 +161,7 @@ export default function FoundersOffer() {
     },
     {
       q: 'How fast do I get access?',
-      a: 'Instantly. The moment you check out you get the book and your community invite — you can be reading inside 60 seconds.',
+      a: 'Instantly. The moment you check out you get the book and your community invite, so you can be reading inside 60 seconds.',
     },
   ];
 
@@ -173,7 +173,7 @@ export default function FoundersOffer() {
         <div className="relative mx-auto flex max-w-6xl flex-col items-center justify-center gap-2 px-4 py-2 text-center sm:flex-row sm:gap-4">
           <p className="text-xs font-semibold sm:text-sm">
             <Sparkles className="inline w-3.5 h-3.5 -mt-0.5" /> You&apos;re on a private founders link.{' '}
-            <span className="font-extrabold">This $1.99 price isn&apos;t public — please don&apos;t share it.</span>
+            <span className="font-extrabold">This $1.99 price isn&apos;t public, so please don&apos;t share it.</span>
           </p>
           <button
             onClick={scrollToCTA}
@@ -212,7 +212,7 @@ export default function FoundersOffer() {
                 <div className="absolute -inset-4 bg-amber-500/20 blur-3xl rounded-full" />
                 <img
                   src="/preconverted-cover.png"
-                  alt="Pre-Converted by Yousif Alias — How to Get High-Quality Leads Who Pay You First"
+                  alt="Pre-Converted by Yousif Alias: How to Get High-Quality Leads Who Pay You First"
                   width={300}
                   height={450}
                   fetchPriority="high"

@@ -1,25 +1,90 @@
 import { useState, useEffect } from 'react';
 import { CheckCircle2, Users, Video, BookOpen, TrendingUp, DollarSign, Lock, ArrowRight, Zap, Award, Star, MessageCircle, ChevronDown, ChevronUp, Play, Shield, Target, BarChart3 } from 'lucide-react';
 
+/**
+ * Headline A/B/n test. Each visitor is assigned one headline variant on first
+ * load, persisted in localStorage so returns stay consistent, and reported to
+ * Meta Pixel + the GTM dataLayer so checkouts can be segmented by variant.
+ * Variant 'A' is the control. To retire the test, keep only the winner here.
+ */
+type HeadlineVariant = { id: string; pre: string; highlight: string; sub: string };
+
+const HEADLINE_VARIANTS: HeadlineVariant[] = [
+  {
+    id: 'A',
+    pre: 'Launch Your First',
+    highlight: 'Profitable Ad Campaign',
+    sub: "in 7 Days, Even If You're Starting From Zero",
+  },
+  {
+    id: 'B',
+    pre: 'Turn $10 a Day in Ad Spend Into',
+    highlight: 'Real Paying Customers',
+    sub: "Even If Every Campaign You've Tried So Far Has Flopped",
+  },
+  {
+    id: 'C',
+    pre: 'Stop Burning Money on Ads and',
+    highlight: 'Start Getting Customers',
+    sub: 'The exact system the pros use, for the price of lunch',
+  },
+];
+
+const HEADLINE_STORAGE_KEY = 'kenji_headline_variant';
+
+function pickHeadlineVariant(): HeadlineVariant {
+  if (typeof window === 'undefined') return HEADLINE_VARIANTS[0];
+  let saved = '';
+  try {
+    saved = localStorage.getItem(HEADLINE_STORAGE_KEY) || '';
+  } catch {
+    /* localStorage blocked (private mode) — fall through to a random pick */
+  }
+  let variant = HEADLINE_VARIANTS.find((v) => v.id === saved);
+  if (!variant) {
+    variant = HEADLINE_VARIANTS[Math.floor(Math.random() * HEADLINE_VARIANTS.length)];
+    try {
+      localStorage.setItem(HEADLINE_STORAGE_KEY, variant.id);
+    } catch {
+      /* ignore persistence failure */
+    }
+  }
+  return variant;
+}
+
+type TrackingWindow = Window & {
+  fbq?: (...args: unknown[]) => void;
+  dataLayer?: Record<string, unknown>[];
+};
+
 function App() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [headline] = useState<HeadlineVariant>(pickHeadlineVariant);
 
   useEffect(() => {
     setIsVisible(true);
   }, []);
 
+  // Report the assigned headline variant once so checkouts can be segmented by it.
+  useEffect(() => {
+    const w = window as TrackingWindow;
+    w.fbq?.('trackCustom', 'HeadlineVariant', { variant: headline.id });
+    w.dataLayer?.push({ event: 'headline_variant_assigned', headline_variant: headline.id });
+  }, [headline]);
+
   const handleCTAClick = () => {
-    if (typeof window !== 'undefined' && (window as Window & { fbq?: (...args: unknown[]) => void }).fbq) {
-      (window as Window & { fbq?: (...args: unknown[]) => void }).fbq!('track', 'InitiateCheckout', {
-        content_name: 'AI Client Acquisition Engine',
-        content_ids: ['ace-7'],
-        content_type: 'product',
-        value: 7.00,
-        currency: 'USD',
-        num_items: 1
-      });
-    }
+    const w = window as TrackingWindow;
+    w.fbq?.('track', 'InitiateCheckout', {
+      content_name: 'AI Client Acquisition Engine',
+      content_ids: ['ace-7'],
+      content_type: 'product',
+      value: 7.00,
+      currency: 'USD',
+      num_items: 1,
+      headline_variant: headline.id
+    });
+    w.dataLayer?.push({ event: 'initiate_checkout', headline_variant: headline.id });
     window.location.href = 'https://freedom.kenjiai.com/7-dollar-new-funnel-704974';
   };
 
@@ -138,12 +203,12 @@ function App() {
           </div>
 
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4 sm:mb-6 leading-[1.1] tracking-tight px-1 sm:px-0">
-            Launch Your First
+            {headline.pre}
             <span className="block bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 bg-clip-text text-transparent">
-              Profitable Ad Campaign
+              {headline.highlight}
             </span>
             <span className="block text-xl sm:text-4xl md:text-5xl mt-2 text-slate-300 font-bold">
-              in 7 Days, Even If You're Starting From Zero
+              {headline.sub}
             </span>
           </h1>
 
