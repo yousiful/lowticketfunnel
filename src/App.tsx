@@ -26,7 +26,7 @@ const HEADLINE_VARIANTS: HeadlineVariant[] = [
     id: 'C',
     pre: 'Stop Burning Money on Ads and',
     highlight: 'Start Getting Customers',
-    sub: 'The exact system the pros use, for the price of lunch',
+    sub: 'The exact system the pros use to actually get clients',
   },
 ];
 
@@ -102,8 +102,8 @@ function App() {
       a: "We cover Facebook/Meta Ads, Google Ads, and YouTube Ads. You'll learn the principles that work across all platforms, plus strategies specific to each one."
     },
     {
-      q: "Why is it only $7? What's the catch?",
-      a: "No catch. We used to sell this for $399. We dropped it to $7 because we want as many people as possible to get in and see what we're about. Once you see the value, some students join our advanced programs, but there's zero obligation to buy anything else."
+      q: "What's the catch?",
+      a: "No catch. We priced access low because we want as many people as possible to get in and see what we're about. Once you see the value, some students join our advanced programs, but there's zero obligation to buy anything else."
     },
     {
       q: "How quickly can I expect results?",
@@ -111,7 +111,7 @@ function App() {
     },
     {
       q: "What if I don't like it?",
-      a: "You're covered by our 30-day money-back guarantee. If it's not what you expected, just email us and we'll refund your $7. No questions asked."
+      a: "You're covered by our 30-day money-back guarantee. If it's not what you expected, just email us and we'll refund you in full. No questions asked."
     },
     {
       q: "How is this different from free YouTube tutorials?",
@@ -140,15 +140,14 @@ function App() {
   ];
 
   const valueStack = [
-    { name: "AI Client Acquisition Engine", value: 399 },
-    { name: "Live Daily Training (90 days)", value: 497 },
-    { name: "Pre-Converted Ebook", value: 97 },
-    { name: "Paid Ads Mastery", value: 297 },
-    { name: "Business Funding Playbook", value: 197 },
-    { name: "Sales Systems Training", value: 197 },
-    { name: "Tax Strategies for Entrepreneurs", value: 197 }
+    "AI Client Acquisition Engine",
+    "Live Daily Training (90 days)",
+    "Pre-Converted Ebook",
+    "Paid Ads Mastery",
+    "Business Funding Playbook",
+    "Sales Systems Training",
+    "Tax Strategies for Entrepreneurs"
   ];
-  const totalValue = valueStack.reduce((sum, item) => sum + item.value, 0);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
@@ -167,7 +166,7 @@ function App() {
             <span className="text-amber-300 font-bold uppercase tracking-wider text-xs">Limited Offer</span>
           </div>
           <span className="flex items-center gap-1.5 font-bold text-white tracking-wide text-xs sm:text-sm">
-            THE $399 TRAINING IS YOURS FOR $7 WHILE THIS PROMO IS LIVE
+            FULL ACCESS TO THE TRAINING IS OPEN WHILE ENROLLMENT IS LIVE
           </span>
         </div>
       </div>
@@ -239,18 +238,10 @@ function App() {
 
           {/* Quick Value + CTA */}
           <div className="max-w-xl mx-auto mb-4">
-            <div className="flex items-center justify-center gap-4 mb-6">
-              <div className="text-slate-500">
-                <span className="text-2xl font-bold line-through">$399</span>
-              </div>
-              <ArrowRight className="w-5 h-5 text-slate-600" />
-              <div>
-                <span className="text-5xl font-black text-white">$7</span>
-              </div>
+            <div className="flex items-center justify-center gap-2 mb-6 text-emerald-400 font-bold text-sm sm:text-base">
+              <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
+              <span>Full training, live daily sessions, and every bonus included</span>
             </div>
-            <p className="text-slate-400 text-sm mb-6">
-              Used to be $399. Now it's $7. No catch, no tricks. Just the training.
-            </p>
             <button
               onClick={handleCTAClick}
               id="hero-cta"
@@ -258,7 +249,7 @@ function App() {
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center gap-3">
-                Yes, I Want In For $7
+                Get Instant Access
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
@@ -333,7 +324,7 @@ function App() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-              Everything You Get for $7
+              Everything You Get Inside
             </h2>
             <p className="text-slate-400 text-lg max-w-2xl mx-auto">
               Not just another course. This is a full business growth system. Here's what's inside:
@@ -347,7 +338,7 @@ function App() {
                 <TrendingUp className="w-7 h-7 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-2">AI Client Acquisition Engine</h3>
-              <p className="text-amber-400/80 text-sm font-medium mb-4">Was $399. Now included.</p>
+              <p className="text-amber-400/80 text-sm font-medium mb-4">Included at no extra cost.</p>
               <p className="text-slate-300 mb-6 leading-relaxed">
                 The main training. Step-by-step video modules that take you from zero to running profitable campaigns on Facebook, Google, and YouTube.
               </p>
@@ -398,7 +389,7 @@ function App() {
           <div className="mb-10">
             <div className="relative bg-gradient-to-br from-amber-500/10 via-slate-800/80 to-slate-900/80 border-2 border-amber-500/40 rounded-2xl p-6 sm:p-8 overflow-hidden shadow-[0_8px_40px_rgba(245,158,11,0.15)]">
               <div className="absolute top-4 right-4 bg-amber-500 text-slate-950 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-full">
-                Free Bonus · $97 Value
+                Free Bonus
               </div>
               <div className="grid md:grid-cols-[200px_1fr] gap-6 sm:gap-8 items-center">
                 <div className="mx-auto md:mx-0">
@@ -469,32 +460,22 @@ function App() {
           <div className="max-w-3xl mx-auto mb-10">
             <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-amber-500/30 rounded-2xl p-6 sm:p-8 shadow-[0_8px_40px_rgba(245,158,11,0.08)]">
               <h3 className="text-xl sm:text-2xl font-black text-white text-center mb-6">
-                Here's What You're Actually Getting
+                Here's Everything You're Getting
               </h3>
               <ul className="space-y-3 mb-6">
                 {valueStack.map((item, i) => (
-                  <li key={i} className="flex items-center justify-between gap-4 py-2 border-b border-slate-700/40 last:border-0">
-                    <span className="flex items-center gap-3 text-slate-300 text-sm sm:text-base">
-                      <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0" />
-                      {item.name}
-                    </span>
-                    <span className="text-slate-400 font-mono text-sm sm:text-base flex-shrink-0">
-                      ${item.value}
-                    </span>
+                  <li key={i} className="flex items-center gap-3 py-2 border-b border-slate-700/40 last:border-0">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                    <span className="text-slate-300 text-sm sm:text-base">{item}</span>
                   </li>
                 ))}
               </ul>
-              <div className="border-t-2 border-amber-500/40 pt-5 space-y-2">
-                <div className="flex items-center justify-between text-base sm:text-lg">
-                  <span className="text-slate-400 font-semibold">Total Real Value</span>
-                  <span className="text-slate-300 font-bold line-through">${totalValue.toLocaleString()}</span>
-                </div>
-                <div className="flex items-center justify-between text-xl sm:text-2xl">
-                  <span className="text-white font-black">Your Price Today</span>
-                  <span className="text-amber-400 font-black">$7</span>
-                </div>
-                <p className="text-emerald-400 text-center text-sm font-bold pt-2">
-                  You save ${(totalValue - 7).toLocaleString()}. That's 99.6% off.
+              <div className="border-t-2 border-amber-500/40 pt-5 text-center">
+                <p className="text-white font-black text-lg sm:text-xl mb-1">
+                  The Complete System. Nothing Held Back.
+                </p>
+                <p className="text-emerald-400 text-sm font-bold">
+                  Every module, every bonus, every live session, all of it the moment you join.
                 </p>
               </div>
             </div>
@@ -509,7 +490,7 @@ function App() {
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center gap-3">
-                Yes, I Want In For $7
+                Get Instant Access
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
@@ -559,7 +540,7 @@ function App() {
               {
                 name: "Sarah K.",
                 role: "Business Coach",
-                text: "I was scared to touch paid ads. The step-by-step approach made it so simple. I launched my first Google Ads campaign following the exact templates and got 23 qualified leads in my first week. For $7 this is an absolute steal.",
+                text: "I was scared to touch paid ads. The step-by-step approach made it so simple. I launched my first Google Ads campaign following the exact templates and got 23 qualified leads in my first week. This is an absolute steal for what you get.",
                 stars: 5
               },
               {
@@ -609,7 +590,7 @@ function App() {
             100% Money-Back Guarantee
           </h2>
           <p className="text-slate-300 text-lg leading-relaxed mb-6 max-w-xl mx-auto">
-            Try the AI Client Acquisition Engine for 30 days. Go through the training, join the live sessions, use the templates. If you don't love it, email us and we'll refund your $7. No questions asked.
+            Try the AI Client Acquisition Engine for 30 days. Go through the training, join the live sessions, use the templates. If you don't love it, email us and we'll refund you in full. No questions asked.
           </p>
           <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
             <div>
@@ -679,14 +660,13 @@ function App() {
             </span>
           </h2>
           <p className="text-xl text-slate-300 mb-10 max-w-xl mx-auto leading-relaxed">
-            For less than a coffee you get the full training, templates, live support, and a community of 1,000+ people who've been exactly where you are right now.
+            You get the full training, templates, live support, and a community of 1,000+ people who've been exactly where you are right now.
           </p>
 
           <div className="bg-slate-900/80 border border-slate-700/50 rounded-2xl p-8 mb-8 backdrop-blur-sm">
-            <div className="flex items-center justify-center gap-4 mb-4">
-              <span className="text-slate-500 text-2xl font-bold line-through">$399</span>
-              <ArrowRight className="w-5 h-5 text-slate-600" />
-              <span className="text-5xl sm:text-6xl font-black text-white">$7</span>
+            <div className="flex items-center justify-center gap-2 mb-4 text-emerald-400 font-black text-lg sm:text-xl">
+              <CheckCircle2 className="w-6 h-6 flex-shrink-0" />
+              <span>Everything Included. Nothing Held Back.</span>
             </div>
             <p className="text-slate-400 text-sm mb-8">
               One-time payment · Lifetime access · No recurring fees · No upsell required
@@ -699,7 +679,7 @@ function App() {
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center gap-3">
-                Lock In My $7 Access Now
+                Get Instant Access Now
                 <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
@@ -721,7 +701,7 @@ function App() {
           </div>
 
           <p className="text-slate-500 text-sm">
-            We reserve the right to raise this price at any time. Lock in $7 while it's available.
+            We reserve the right to close enrollment at any time.
           </p>
         </div>
       </div>
@@ -736,11 +716,8 @@ function App() {
       <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-md border-t border-amber-500/30 px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.6)]">
         <div className="flex items-center justify-between gap-3">
           <div className="flex flex-col leading-tight">
-            <span className="text-slate-400 text-[10px] uppercase tracking-wider font-bold">Lock In</span>
-            <span className="flex items-baseline gap-1.5">
-              <span className="text-slate-500 text-sm line-through font-bold">$399</span>
-              <span className="text-white text-2xl font-black">$7</span>
-            </span>
+            <span className="text-slate-400 text-[10px] uppercase tracking-wider font-bold">Limited Access</span>
+            <span className="text-white text-sm font-black">Full Training Included</span>
           </div>
           <button
             onClick={handleCTAClick}
