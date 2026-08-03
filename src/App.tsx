@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import {
   CheckCircle2, Users, Video, BookOpen, TrendingUp, DollarSign, Lock, ArrowRight, Zap, Award,
-  Star, ChevronDown, ChevronUp, Shield, Target, Sparkles, Calculator, ClipboardCheck, Phone,
+  Star, ChevronDown, ChevronUp, Shield, Target, Sparkles, ClipboardCheck, Phone,
   RefreshCw, FileText
 } from 'lucide-react';
 
@@ -78,12 +78,6 @@ const WHAT_YOU_GET = [
     value: 67,
   },
   {
-    icon: Calculator,
-    title: '$10/Day Budget Calculator',
-    desc: 'Know exactly how to allocate spend.',
-    value: 47,
-  },
-  {
     icon: ClipboardCheck,
     title: 'Landing Page Checklist',
     desc: "Make sure your pages convert before running traffic.",
@@ -128,7 +122,7 @@ const FAQS = [
   },
   {
     q: 'What happens after I buy?',
-    a: "You get instant access to the full training, templates, prompt pack, budget calculator, and community. You'll be inside the member area in under 60 seconds.",
+    a: "You get instant access to the full training, templates, prompt pack, and community. You'll be inside the member area in under 60 seconds.",
   },
   {
     q: 'Do I need a website?',
@@ -246,7 +240,7 @@ function App() {
           </h1>
 
           <p className="text-base sm:text-xl text-slate-400 mb-6 sm:mb-10 max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
-            Get the complete AI Client Acquisition Engine: templates, prompts, budget calculators, live support, and a private community, all for $9/month. Cancel anytime.
+            Get the complete AI Client Acquisition Engine: templates, prompts, ad hooks, live support, and a private community, all for $9/month. Cancel anytime.
           </p>
 
           <div className="mb-6 sm:mb-10 relative px-0 sm:px-4">
@@ -259,7 +253,7 @@ function App() {
               />
               <img
                 src="/freedom-club-bundle.jpg"
-                alt="AI Client Acquisition Engine membership: templates, prompts, budget calculators, live monthly teardowns, and private community"
+                alt="AI Client Acquisition Engine membership: templates, prompts, ad hooks, live monthly teardowns, and private community"
                 width={1024}
                 height={1024}
                 fetchPriority="high"
