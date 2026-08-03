@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   CheckCircle2, Users, Video, BookOpen, TrendingUp, DollarSign, Lock, ArrowRight, Zap, Award,
   Star, ChevronDown, ChevronUp, Shield, Target, Sparkles, Calculator, ClipboardCheck, Phone,
@@ -17,58 +17,105 @@ type TrackingWindow = Window & {
   dataLayer?: Record<string, unknown>[];
 };
 
+/**
+ * CTA button copy A/B test. Each visitor is assigned one variant on first
+ * load, persisted in localStorage so returns stay consistent, and reported
+ * to Meta Pixel + the GTM dataLayer so checkouts can be segmented by it.
+ * Variant 'A' is the control. To retire the test, keep only the winner.
+ */
+type CTAVariant = { id: string; label: string };
+
+const CTA_VARIANTS: CTAVariant[] = [
+  { id: 'A', label: 'Get Instant Access' },
+  { id: 'B', label: 'Yes! I Want In!' },
+];
+
+const CTA_STORAGE_KEY = 'kenji_cta_variant';
+
+function pickCTAVariant(): CTAVariant {
+  if (typeof window === 'undefined') return CTA_VARIANTS[0];
+  let saved = '';
+  try {
+    saved = localStorage.getItem(CTA_STORAGE_KEY) || '';
+  } catch {
+    /* localStorage blocked (private mode) — fall through to a random pick */
+  }
+  let variant = CTA_VARIANTS.find((v) => v.id === saved);
+  if (!variant) {
+    variant = CTA_VARIANTS[Math.floor(Math.random() * CTA_VARIANTS.length)];
+    try {
+      localStorage.setItem(CTA_STORAGE_KEY, variant.id);
+    } catch {
+      /* ignore persistence failure */
+    }
+  }
+  return variant;
+}
+
 const WHAT_YOU_GET = [
   {
     icon: Zap,
     title: '7-Day AI Ads Launch Map',
     desc: 'Step-by-step roadmap to launch your first campaign in a week.',
+    value: 199,
   },
   {
     icon: FileText,
     title: 'Meta / Google / YouTube Campaign Templates',
     desc: 'Plug-and-play templates for each platform.',
+    value: 297,
   },
   {
     icon: Sparkles,
     title: '30 Ad Hooks Swipe File',
     desc: 'Proven ad angles and hooks you can copy.',
+    value: 97,
   },
   {
     icon: Sparkles,
     title: 'AI Prompt Pack',
     desc: 'Prompts for ad copy, targeting, and creative generation.',
+    value: 67,
   },
   {
     icon: Calculator,
     title: '$10/Day Budget Calculator',
     desc: 'Know exactly how to allocate spend.',
+    value: 47,
   },
   {
     icon: ClipboardCheck,
     title: 'Landing Page Checklist',
     desc: "Make sure your pages convert before running traffic.",
+    value: 47,
   },
   {
     icon: Video,
     title: 'Live Monthly Ad Teardowns',
     desc: 'Real campaigns reviewed live every month.',
+    value: 297,
   },
   {
     icon: TrendingUp,
     title: 'Monthly "What\'s Working Now" Briefing',
     desc: 'Updated strategies as platforms change.',
+    value: 97,
   },
   {
     icon: Users,
     title: 'Private Community Access',
     desc: '1,000+ members helping each other win.',
+    value: 197,
   },
   {
     icon: Phone,
     title: 'Optional 1:1 Campaign Map Call',
     desc: 'A free strategy call to help you apply the system. Optional, not required.',
+    value: 297,
   },
 ];
+
+const TOTAL_VALUE = WHAT_YOU_GET.reduce((sum, item) => sum + item.value, 0);
 
 const FAQS = [
   {
@@ -123,6 +170,14 @@ const FAQS = [
 
 function App() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [cta] = useState<CTAVariant>(pickCTAVariant);
+
+  // Report the assigned CTA variant once so checkouts can be segmented by it.
+  useEffect(() => {
+    const w = window as TrackingWindow;
+    w.fbq?.('trackCustom', 'CTAVariant', { variant: cta.id });
+    w.dataLayer?.push({ event: 'cta_variant_assigned', cta_variant: cta.id });
+  }, [cta]);
 
   const PLAN_DETAILS: Record<Plan, { name: string; contentId: string; value: number; url: string }> = {
     monthly: { name: 'AI Client Acquisition Engine - Monthly Membership', contentId: 'ace-9-monthly', value: 9.0, url: CHECKOUT_URL_MONTHLY },
@@ -139,8 +194,9 @@ function App() {
       value: details.value,
       currency: 'USD',
       num_items: 1,
+      cta_variant: cta.id,
     });
-    w.dataLayer?.push({ event: 'initiate_checkout', plan });
+    w.dataLayer?.push({ event: 'initiate_checkout', plan, cta_variant: cta.id });
     window.location.href = details.url;
   };
 
@@ -221,7 +277,7 @@ function App() {
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center gap-3">
-                Get Instant Access · $9/month
+                {cta.label} · $9/month
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
@@ -302,19 +358,28 @@ function App() {
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-12">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
             {WHAT_YOU_GET.map((item, i) => (
               <div
                 key={i}
-                className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-slate-700/50 rounded-2xl p-6 hover:border-amber-500/50 hover:-translate-y-1 transition-all duration-500"
+                className="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-slate-700/50 rounded-2xl p-6 hover:border-amber-500/50 hover:-translate-y-1 transition-all duration-500"
               >
+                <span className="absolute top-4 right-4 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold px-2.5 py-1 rounded-full">
+                  ${item.value} value
+                </span>
                 <div className="bg-gradient-to-br from-amber-500 to-orange-500 w-11 h-11 rounded-xl flex items-center justify-center mb-4 shadow-lg">
                   <item.icon className="w-5 h-5 text-white" />
                 </div>
-                <h3 className="text-base font-bold text-white mb-1.5 leading-tight">{item.title}</h3>
+                <h3 className="text-base font-bold text-white mb-1.5 leading-tight pr-16">{item.title}</h3>
                 <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
               </div>
             ))}
+          </div>
+
+          <div className="max-w-md mx-auto mb-10 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 rounded-2xl p-6 text-center">
+            <p className="text-slate-400 text-sm mb-1">Total value if you bought this piece by piece:</p>
+            <p className="text-slate-500 text-2xl font-bold line-through mb-1">${TOTAL_VALUE.toLocaleString()}+</p>
+            <p className="text-white text-lg font-black">Yours for $9/month</p>
           </div>
 
           <div className="text-center">
@@ -325,7 +390,7 @@ function App() {
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center gap-3">
-                Get Instant Access · $9/month
+                {cta.label} · $9/month
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
@@ -485,7 +550,7 @@ function App() {
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center gap-3">
-                Get Instant Access · $9/month
+                {cta.label} · $9/month
                 <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
@@ -530,7 +595,7 @@ function App() {
             id="sticky-mobile-cta"
             className="flex-1 group relative overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 text-white font-black text-base px-5 py-3.5 rounded-xl shadow-[0_0_20px_rgba(245,158,11,0.4)] border border-amber-400/50 inline-flex items-center justify-center gap-2"
           >
-            <span>Get Access</span>
+            <span>{cta.label}</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
