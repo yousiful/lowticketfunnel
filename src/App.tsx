@@ -6,15 +6,11 @@ import {
 } from 'lucide-react';
 
 // Same GHL checkout used before; Yousif updated the underlying Stripe price
-// to $9/month. Annual points here too until a distinct $79/yr link exists.
+// to $9/month. No separate yearly plan exists.
 const CHECKOUT_URL_MONTHLY = 'https://freedom.kenjiai.com/7-dollar-new-funnel-704974';
-const CHECKOUT_URL_ANNUAL = 'https://freedom.kenjiai.com/7-dollar-new-funnel-704974';
-
-type Plan = 'monthly' | 'annual' | 'lifetime';
-
-// Same GHL checkout for all three plans for now (Stripe product carries the
-// price); update to distinct links per plan if/when those exist.
 const CHECKOUT_URL_LIFETIME = 'https://freedom.kenjiai.com/7-dollar-new-funnel-704974';
+
+type Plan = 'monthly' | 'lifetime';
 
 type TrackingWindow = Window & {
   fbq?: (...args: unknown[]) => void;
@@ -81,7 +77,7 @@ const FAQS = [
   },
   {
     q: 'Is there a one-time payment option?',
-    a: 'Yes. The Lifetime plan is a single $27.79 payment for permanent access, no recurring billing at all. We also offer an annual plan at $79/year if you prefer yearly over monthly (saves about 27%).',
+    a: 'Yes. Email support@kenjiai.com and ask about lifetime access for a single $27.79 payment, no recurring billing at all.',
   },
   {
     q: 'What happens after I buy?',
@@ -130,7 +126,6 @@ function App() {
 
   const PLAN_DETAILS: Record<Plan, { name: string; contentId: string; value: number; url: string }> = {
     monthly: { name: 'AI Client Acquisition Engine - Monthly Membership', contentId: 'ace-9-monthly', value: 9.0, url: CHECKOUT_URL_MONTHLY },
-    annual: { name: 'AI Client Acquisition Engine - Annual Membership', contentId: 'ace-79-annual', value: 79.0, url: CHECKOUT_URL_ANNUAL },
     lifetime: { name: 'AI Client Acquisition Engine - Lifetime Access', contentId: 'ace-27-79-lifetime', value: 27.79, url: CHECKOUT_URL_LIFETIME },
   };
 
@@ -147,10 +142,6 @@ function App() {
     });
     w.dataLayer?.push({ event: 'initiate_checkout', plan });
     window.location.href = details.url;
-  };
-
-  const scrollToPricing = () => {
-    document.getElementById('pricing-section')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -224,7 +215,7 @@ function App() {
 
           <div className="max-w-xl mx-auto mb-4">
             <button
-              onClick={scrollToPricing}
+              onClick={() => handleCTAClick('monthly')}
               id="hero-cta"
               className="w-full sm:w-auto group relative overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 text-white font-black text-lg sm:text-xl px-12 py-5 rounded-2xl shadow-[0_0_30px_rgba(245,158,11,0.3)] hover:shadow-[0_0_50px_rgba(245,158,11,0.5)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-amber-400/50"
             >
@@ -328,7 +319,7 @@ function App() {
 
           <div className="text-center">
             <button
-              onClick={scrollToPricing}
+              onClick={() => handleCTAClick('monthly')}
               id="mid-cta"
               className="group relative overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 text-white font-black text-lg sm:text-xl px-12 py-5 rounded-2xl shadow-[0_0_30px_rgba(245,158,11,0.3)] hover:shadow-[0_0_50px_rgba(245,158,11,0.5)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-amber-400/50 gap-3"
             >
@@ -341,98 +332,6 @@ function App() {
             <p className="text-slate-500 text-xs mt-3">
               You'll be inside the member area in under 60 seconds.
             </p>
-          </div>
-        </div>
-      </div>
-
-      {/* ==================== PRICING ==================== */}
-      <div id="pricing-section" className="bg-slate-900/50 border-y border-slate-800/50 py-16 sm:py-20 px-4">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-              Choose Your Plan
-            </h2>
-            <p className="text-slate-400 text-lg">
-              An agency charges $2,000+/month. You get the same system for $9/month.
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-3 gap-6">
-            {/* Monthly */}
-            <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-slate-700/50 rounded-2xl p-8">
-              <h3 className="text-xl font-bold text-white mb-1">Monthly Plan</h3>
-              <div className="flex items-baseline gap-1 mb-4">
-                <span className="text-4xl font-black text-white">$9</span>
-                <span className="text-slate-400">/month</span>
-              </div>
-              <ul className="space-y-2.5 mb-6">
-                {['Full access to everything', 'Cancel anytime', '30-day refund'].map((item, i) => (
-                  <li key={i} className="flex items-center gap-2.5 text-slate-300 text-sm">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <button
-                onClick={() => handleCTAClick('monthly')}
-                id="pricing-cta-monthly"
-                className="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-3.5 rounded-xl transition-colors"
-              >
-                Get Instant Access
-              </button>
-            </div>
-
-            {/* Annual */}
-            <div className="relative bg-gradient-to-br from-amber-500/10 via-slate-800/80 to-slate-900/80 border-2 border-amber-500/40 rounded-2xl p-8">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-500 text-slate-950 text-xs font-black uppercase tracking-wider px-4 py-1 rounded-full">
-                Best Value
-              </div>
-              <h3 className="text-xl font-bold text-white mb-1 mt-2">Annual Plan</h3>
-              <div className="flex items-baseline gap-1 mb-1">
-                <span className="text-4xl font-black text-white">$79</span>
-                <span className="text-slate-400">/year</span>
-              </div>
-              <p className="text-emerald-400 text-sm font-semibold mb-4">Save ~27%</p>
-              <ul className="space-y-2.5 mb-6">
-                {['Everything included', '30-day refund'].map((item, i) => (
-                  <li key={i} className="flex items-center gap-2.5 text-slate-300 text-sm">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <button
-                onClick={() => handleCTAClick('annual')}
-                id="pricing-cta-annual"
-                className="w-full bg-gradient-to-br from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold py-3.5 rounded-xl transition-colors"
-              >
-                Get Annual Access
-              </button>
-            </div>
-
-            {/* Lifetime */}
-            <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-slate-700/50 rounded-2xl p-8">
-              <h3 className="text-xl font-bold text-white mb-1">Lifetime Access</h3>
-              <div className="flex items-baseline gap-1 mb-1">
-                <span className="text-4xl font-black text-white">$27.79</span>
-              </div>
-              <p className="text-slate-400 text-sm font-semibold mb-4">One payment, never billed again</p>
-              <ul className="space-y-2.5 mb-6">
-                {['Everything included', 'No recurring billing', '30-day refund'].map((item, i) => (
-                  <li key={i} className="flex items-center gap-2.5 text-slate-300 text-sm">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <button
-                onClick={() => handleCTAClick('lifetime')}
-                id="pricing-cta-lifetime"
-                className="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-3.5 rounded-xl transition-colors"
-              >
-                Get Lifetime Access
-              </button>
-            </div>
           </div>
         </div>
       </div>
