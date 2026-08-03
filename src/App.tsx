@@ -1,189 +1,178 @@
-import { useState, useEffect } from 'react';
-import { CheckCircle2, Users, Video, BookOpen, TrendingUp, DollarSign, Lock, ArrowRight, Zap, Award, Star, MessageCircle, ChevronDown, ChevronUp, Play, Shield, Target, BarChart3 } from 'lucide-react';
+import { useState } from 'react';
+import {
+  CheckCircle2, Users, Video, BookOpen, TrendingUp, DollarSign, Lock, ArrowRight, Zap, Award,
+  Star, ChevronDown, ChevronUp, Shield, Target, Sparkles, Calculator, ClipboardCheck, Phone,
+  RefreshCw, FileText
+} from 'lucide-react';
 
-/**
- * Headline A/B/n test. Each visitor is assigned one headline variant on first
- * load, persisted in localStorage so returns stay consistent, and reported to
- * Meta Pixel + the GTM dataLayer so checkouts can be segmented by variant.
- * Variant 'A' is the control. To retire the test, keep only the winner here.
- */
-type HeadlineVariant = { id: string; pre: string; highlight: string; sub: string };
+// Same GHL checkout used before; Yousif updated the underlying Stripe price
+// to $9/month. Annual points here too until a distinct $79/yr link exists.
+const CHECKOUT_URL_MONTHLY = 'https://freedom.kenjiai.com/7-dollar-new-funnel-704974';
+const CHECKOUT_URL_ANNUAL = 'https://freedom.kenjiai.com/7-dollar-new-funnel-704974';
 
-const HEADLINE_VARIANTS: HeadlineVariant[] = [
-  {
-    id: 'A',
-    pre: 'Launch Your First',
-    highlight: 'Profitable Ad Campaign',
-    sub: "in 7 Days, Even If You're Starting From Zero",
-  },
-  {
-    id: 'B',
-    pre: 'Turn $10 a Day in Ad Spend Into',
-    highlight: 'Real Paying Customers',
-    sub: "Even If Every Campaign You've Tried So Far Has Flopped",
-  },
-  {
-    id: 'C',
-    pre: 'Stop Burning Money on Ads and',
-    highlight: 'Start Getting Customers',
-    sub: 'The exact system the pros use to actually get clients',
-  },
-];
+type Plan = 'monthly' | 'annual' | 'lifetime';
 
-const HEADLINE_STORAGE_KEY = 'kenji_headline_variant';
-
-function pickHeadlineVariant(): HeadlineVariant {
-  if (typeof window === 'undefined') return HEADLINE_VARIANTS[0];
-  let saved = '';
-  try {
-    saved = localStorage.getItem(HEADLINE_STORAGE_KEY) || '';
-  } catch {
-    /* localStorage blocked (private mode) — fall through to a random pick */
-  }
-  let variant = HEADLINE_VARIANTS.find((v) => v.id === saved);
-  if (!variant) {
-    variant = HEADLINE_VARIANTS[Math.floor(Math.random() * HEADLINE_VARIANTS.length)];
-    try {
-      localStorage.setItem(HEADLINE_STORAGE_KEY, variant.id);
-    } catch {
-      /* ignore persistence failure */
-    }
-  }
-  return variant;
-}
+// Same GHL checkout for all three plans for now (Stripe product carries the
+// price); update to distinct links per plan if/when those exist.
+const CHECKOUT_URL_LIFETIME = 'https://freedom.kenjiai.com/7-dollar-new-funnel-704974';
 
 type TrackingWindow = Window & {
   fbq?: (...args: unknown[]) => void;
   dataLayer?: Record<string, unknown>[];
 };
 
+const WHAT_YOU_GET = [
+  {
+    icon: Zap,
+    title: '7-Day AI Ads Launch Map',
+    desc: 'Step-by-step roadmap to launch your first campaign in a week.',
+  },
+  {
+    icon: FileText,
+    title: 'Meta / Google / YouTube Campaign Templates',
+    desc: 'Plug-and-play templates for each platform.',
+  },
+  {
+    icon: Sparkles,
+    title: '30 Ad Hooks Swipe File',
+    desc: 'Proven ad angles and hooks you can copy.',
+  },
+  {
+    icon: Sparkles,
+    title: 'AI Prompt Pack',
+    desc: 'Prompts for ad copy, targeting, and creative generation.',
+  },
+  {
+    icon: Calculator,
+    title: '$10/Day Budget Calculator',
+    desc: 'Know exactly how to allocate spend.',
+  },
+  {
+    icon: ClipboardCheck,
+    title: 'Landing Page Checklist',
+    desc: "Make sure your pages convert before running traffic.",
+  },
+  {
+    icon: Video,
+    title: 'Live Monthly Ad Teardowns',
+    desc: 'Real campaigns reviewed live every month.',
+  },
+  {
+    icon: TrendingUp,
+    title: 'Monthly "What\'s Working Now" Briefing',
+    desc: 'Updated strategies as platforms change.',
+  },
+  {
+    icon: Users,
+    title: 'Private Community Access',
+    desc: '1,000+ members helping each other win.',
+  },
+  {
+    icon: Phone,
+    title: 'Optional 1:1 Campaign Map Call',
+    desc: 'A free strategy call to help you apply the system. Optional, not required.',
+  },
+];
+
+const FAQS = [
+  {
+    q: 'Is this really $9/month?',
+    a: 'Yes. $9/month billed monthly. You can cancel anytime, no contracts, no hidden fees.',
+  },
+  {
+    q: 'Is there a one-time payment option?',
+    a: 'Yes. The Lifetime plan is a single $27.79 payment for permanent access, no recurring billing at all. We also offer an annual plan at $79/year if you prefer yearly over monthly (saves about 27%).',
+  },
+  {
+    q: 'What happens after I buy?',
+    a: "You get instant access to the full training, templates, prompt pack, budget calculator, and community. You'll be inside the member area in under 60 seconds.",
+  },
+  {
+    q: 'Do I need a website?',
+    a: 'No. The system includes a landing page checklist and templates. You can use any page builder.',
+  },
+  {
+    q: 'Do I need a big ad budget?',
+    a: 'No. The system is designed to work starting at $10/day in ad spend.',
+  },
+  {
+    q: 'Is the 1:1 call required?',
+    a: 'No. The 1:1 campaign map call is optional and free. You can use the product fully without it. If you want help applying the system, you can book a call at any time.',
+  },
+  {
+    q: 'Will you call or text me?',
+    a: 'Only if you book a 1:1 call. We will not contact you by phone unless you request it.',
+  },
+  {
+    q: 'Can I cancel anytime?',
+    a: 'Yes. Cancel with one click, no questions, no hassle. You keep access until the end of your billing period.',
+  },
+  {
+    q: 'How do refunds work?',
+    a: "Email support@kenjiai.com within 30 days of joining and we'll refund your payment in full. No questions asked.",
+  },
+  {
+    q: "What if I'm a complete beginner?",
+    a: 'The 7-day launch map starts from zero. No prior ad experience needed.',
+  },
+  {
+    q: 'What platforms does this cover?',
+    a: 'Facebook/Meta, Google, and YouTube.',
+  },
+  {
+    q: 'Do I need to use AI tools?',
+    a: 'The system includes an AI prompt pack, but AI tools are optional. The templates and strategies work with or without AI.',
+  },
+];
+
 function App() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [headline] = useState<HeadlineVariant>(pickHeadlineVariant);
 
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
+  const PLAN_DETAILS: Record<Plan, { name: string; contentId: string; value: number; url: string }> = {
+    monthly: { name: 'AI Client Acquisition Engine - Monthly Membership', contentId: 'ace-9-monthly', value: 9.0, url: CHECKOUT_URL_MONTHLY },
+    annual: { name: 'AI Client Acquisition Engine - Annual Membership', contentId: 'ace-79-annual', value: 79.0, url: CHECKOUT_URL_ANNUAL },
+    lifetime: { name: 'AI Client Acquisition Engine - Lifetime Access', contentId: 'ace-27-79-lifetime', value: 27.79, url: CHECKOUT_URL_LIFETIME },
+  };
 
-  // Report the assigned headline variant once so checkouts can be segmented by it.
-  useEffect(() => {
+  const handleCTAClick = (plan: Plan) => {
     const w = window as TrackingWindow;
-    w.fbq?.('trackCustom', 'HeadlineVariant', { variant: headline.id });
-    w.dataLayer?.push({ event: 'headline_variant_assigned', headline_variant: headline.id });
-  }, [headline]);
-
-  const handleCTAClick = () => {
-    const w = window as TrackingWindow;
+    const details = PLAN_DETAILS[plan];
     w.fbq?.('track', 'InitiateCheckout', {
-      content_name: 'AI Client Acquisition Engine',
-      content_ids: ['ace-7'],
+      content_name: details.name,
+      content_ids: [details.contentId],
       content_type: 'product',
-      value: 7.00,
+      value: details.value,
       currency: 'USD',
       num_items: 1,
-      headline_variant: headline.id
     });
-    w.dataLayer?.push({ event: 'initiate_checkout', headline_variant: headline.id });
-    window.location.href = 'https://freedom.kenjiai.com/7-dollar-new-funnel-704974';
+    w.dataLayer?.push({ event: 'initiate_checkout', plan });
+    window.location.href = details.url;
   };
 
-  const scrollToCTA = () => {
-    document.getElementById('cta-section')?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToPricing = () => {
+    document.getElementById('pricing-section')?.scrollIntoView({ behavior: 'smooth' });
   };
-
-  const faqs = [
-    {
-      q: "I'm a complete beginner. Is this for me?",
-      a: "Yes. We start from the basics and walk you through everything step by step. No experience with paid ads needed. If you can follow a video tutorial, you can do this."
-    },
-    {
-      q: "Which ad platforms does this cover?",
-      a: "We cover Facebook/Meta Ads, Google Ads, and YouTube Ads. You'll learn the principles that work across all platforms, plus strategies specific to each one."
-    },
-    {
-      q: "What's the catch?",
-      a: "No catch. We priced access low because we want as many people as possible to get in and see what we're about. Once you see the value, some students join our advanced programs, but there's zero obligation to buy anything else."
-    },
-    {
-      q: "How quickly can I expect results?",
-      a: "A lot of our students launch their first profitable campaign within 7 to 14 days. The training is built to get you running real ads fast, not just learning theory. How fast you see results depends on how fast you take action."
-    },
-    {
-      q: "What if I don't like it?",
-      a: "You're covered by our 30-day money-back guarantee. If it's not what you expected, just email us and we'll refund you in full. No questions asked."
-    },
-    {
-      q: "How is this different from free YouTube tutorials?",
-      a: "YouTube gives you random pieces. This is a full system built on 12 years of running paid ads for real businesses. You get the exact templates, strategies, and steps in the right order, plus a community and live training you won't find on YouTube."
-    },
-    {
-      q: "How much time per week does this take?",
-      a: "Most members spend 3 to 5 hours per week to start. You can move faster if you have the time, slower if you don't. The training is broken into short modules so you can fit it around a full-time job."
-    },
-    {
-      q: "Do I need a big ad budget to start?",
-      a: "No. We show you how to test campaigns with as little as $10 to $20 per day. The goal is to find what's working at a small budget, then scale only when the numbers prove out. We'd rather you start small and learn than blow $500 in the dark."
-    },
-    {
-      q: "What if I don't have a product or business yet?",
-      a: "You'll still get value, but this is built for people who have something to sell. Inside the community you'll see members in every niche from coaching to e-commerce to local services. If you're pre-product, the lessons still apply once you're ready to launch."
-    },
-    {
-      q: "Will this work outside the US?",
-      a: "Yes. The platforms and principles work globally. We have members running profitable campaigns in over 40 countries. The templates and frameworks translate to any market."
-    },
-    {
-      q: "What happens after I buy?",
-      a: "You'll get instant access to the member area, all training modules, the bonus library including the Pre-Converted ebook, and an invite to the live daily training. You can start watching the first module within 60 seconds of checkout."
-    }
-  ];
-
-  const valueStack = [
-    "AI Client Acquisition Engine",
-    "Live Daily Training (90 days)",
-    "Pre-Converted Ebook",
-    "Paid Ads Mastery",
-    "Business Funding Playbook",
-    "Sales Systems Training",
-    "Tax Strategies for Entrepreneurs"
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
-      {/* Price-anchored urgency bar */}
-      <div
-        className="w-full relative overflow-hidden z-50 shadow-md"
-        style={{
-          background: 'linear-gradient(90deg, #111827 0%, #1f2937 50%, #111827 100%)',
-          borderBottom: '1px solid rgba(245, 158, 11, 0.3)'
-        }}
-      >
-        <div className="absolute inset-0 bg-amber-500/5 animate-pulse"></div>
-        <div className="flex flex-wrap items-center justify-center gap-4 px-4 py-2.5 sm:py-3 text-sm sm:text-base text-center relative z-10">
-          <div className="flex items-center gap-2 bg-amber-500/20 px-3 py-1 rounded-full border border-amber-500/30">
-            <div className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></div>
-            <span className="text-amber-300 font-bold uppercase tracking-wider text-xs">Limited Offer</span>
-          </div>
-          <span className="flex items-center gap-1.5 font-bold text-white tracking-wide text-xs sm:text-sm">
-            FULL ACCESS TO THE TRAINING IS OPEN WHILE ENROLLMENT IS LIVE
-          </span>
-        </div>
-      </div>
-
-      {/* Clean Trust Banner */}
+      {/* Trust Banner */}
       <div className="bg-gradient-to-r from-slate-800 to-slate-800 text-white py-3 px-4 text-center sticky top-0 z-40 border-b border-slate-700/50 backdrop-blur-sm">
         <div className="flex items-center justify-center gap-3 flex-wrap">
           <span className="flex items-center gap-1.5 text-sm text-slate-300">
             <Shield className="w-4 h-4 text-emerald-400" />
             30-Day Money-Back Guarantee
           </span>
-          <span className="text-slate-600 hidden sm:inline">•</span>
+          <span className="text-slate-600 hidden sm:inline">·</span>
+          <span className="flex items-center gap-1.5 text-sm text-slate-300">
+            <RefreshCw className="w-4 h-4 text-sky-400" />
+            Cancel Anytime
+          </span>
+          <span className="text-slate-600 hidden sm:inline">·</span>
           <span className="flex items-center gap-1.5 text-sm text-slate-300">
             <Zap className="w-4 h-4 text-amber-400" />
             Instant Access
           </span>
-          <span className="text-slate-600 hidden sm:inline">•</span>
+          <span className="text-slate-600 hidden sm:inline">·</span>
           <span className="flex items-center gap-1.5 text-sm text-slate-300">
             <Users className="w-4 h-4 text-blue-400" />
             1,000+ Members
@@ -193,29 +182,26 @@ function App() {
 
       {/* ==================== HERO SECTION ==================== */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-16 pb-8 sm:pb-12">
-        <div className={`text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          
-          {/* Identity Hook */}
+        <div className="text-center">
           <div className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 text-amber-400 px-3 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-medium mb-6 sm:mb-8">
             <Target className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
             <span>For entrepreneurs & business owners who want profitable ads</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4 sm:mb-6 leading-[1.1] tracking-tight px-1 sm:px-0">
-            {headline.pre}
+            Launch Profitable Ad Campaigns
             <span className="block bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 bg-clip-text text-transparent">
-              {headline.highlight}
+              in 7 Days
             </span>
             <span className="block text-xl sm:text-4xl md:text-5xl mt-2 text-slate-300 font-bold">
-              {headline.sub}
+              Even If Every Campaign You've Tried Has Flopped
             </span>
           </h1>
 
           <p className="text-base sm:text-xl text-slate-400 mb-6 sm:mb-10 max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
-            The same paid ads training that's helped over 1,000 business owners stop burning money on ads and start running campaigns that actually bring in customers.
+            Get the complete AI Client Acquisition Engine: templates, prompts, budget calculators, live support, and a private community, all for $9/month. Cancel anytime.
           </p>
 
-          {/* Product Image */}
           <div className="mb-6 sm:mb-10 relative px-0 sm:px-4">
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent z-10 pointer-events-none rounded-xl sm:rounded-2xl"></div>
             <picture>
@@ -226,7 +212,7 @@ function App() {
               />
               <img
                 src="/freedom-club-bundle.jpg"
-                alt="AI Client Acquisition Engine - Complete Training System including Close 4 Survival, Escape 9-5, Paid Ads Certified, Self-Liquidating Meta Ads, Client Attraction Secrets, AI Tools Overview, and Paid Ads Bootcamp"
+                alt="AI Client Acquisition Engine membership: templates, prompts, budget calculators, live monthly teardowns, and private community"
                 width={1024}
                 height={1024}
                 fetchPriority="high"
@@ -236,25 +222,20 @@ function App() {
             </picture>
           </div>
 
-          {/* Quick Value + CTA */}
           <div className="max-w-xl mx-auto mb-4">
-            <div className="flex items-center justify-center gap-2 mb-6 text-emerald-400 font-bold text-sm sm:text-base">
-              <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
-              <span>Full training, live daily sessions, and every bonus included</span>
-            </div>
             <button
-              onClick={handleCTAClick}
+              onClick={scrollToPricing}
               id="hero-cta"
               className="w-full sm:w-auto group relative overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 text-white font-black text-lg sm:text-xl px-12 py-5 rounded-2xl shadow-[0_0_30px_rgba(245,158,11,0.3)] hover:shadow-[0_0_50px_rgba(245,158,11,0.5)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-amber-400/50"
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center gap-3">
-                Get Instant Access
+                Get Instant Access · $9/month
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
             <p className="text-slate-500 text-xs mt-4">
-              One-time payment · Instant access · 30-day money-back guarantee
+              $9/month · Cancel anytime · Instant access · 30-day refund
             </p>
           </div>
         </div>
@@ -265,7 +246,7 @@ function App() {
         <div className="flex gap-12 whitespace-nowrap animate-[scroll_20s_linear_infinite] items-center h-8">
           {[...Array(2)].map((_, i) => (
             <div key={i} className="flex gap-12 items-center">
-              <span className="text-slate-400 text-sm font-medium flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Mark T. just secured his spot</span>
+              <span className="text-slate-400 text-sm font-medium flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Mark T. just joined the membership</span>
               <span className="text-slate-400 text-sm font-medium flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Sarah K. launched 3 campaigns in 48 hours</span>
               <span className="text-slate-400 text-sm font-medium flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Jessica M. booked 5 sales calls from one campaign</span>
               <span className="text-slate-400 text-sm font-medium flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> David R. added 15 qualified leads using the AI templates</span>
@@ -292,12 +273,11 @@ function App() {
 
           <div className="grid sm:grid-cols-2 gap-4 mb-12">
             {[
-              "You've boosted posts on Facebook and watched the money vanish with nothing to show for it.",
-              "You know ads work for other people, but every campaign you run just bleeds cash.",
-              "Targeting, bidding, platform updates every month. It's overwhelming and you can't tell what actually matters.",
-              "You've watched a hundred YouTube tutorials but still can't turn them into a system that works.",
-              "You're leaning on organic reach and referrals, so income swings wildly month to month.",
-              "Agencies want $2,000+ a month, and you can't justify that when you're not even sure ads will work for you."
+              "You boosted posts and watched the money disappear.",
+              "You tried running campaigns, but they lost money.",
+              "You're overwhelmed by targeting, bidding, and constant platform changes.",
+              "You can't justify $2,000+/month agency fees.",
+              "Your income swings because you rely on organic reach and referrals.",
             ].map((pain, i) => (
               <div key={i} className="flex items-start gap-3 bg-slate-800/50 border border-slate-700/50 rounded-xl p-5">
                 <span className="text-red-400 text-lg mt-0.5 flex-shrink-0">✕</span>
@@ -324,173 +304,37 @@ function App() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-              Everything You Get Inside
+              Here's What You Get
             </h2>
             <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-              Not just another course. This is a full business growth system. Here's what's inside:
+              The AI Client Acquisition Engine Membership includes:
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 mb-10">
-            {/* AI Client Acquisition Engine */}
-            <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-slate-700/50 rounded-2xl p-8 hover:border-amber-500/50 hover:shadow-[0_8px_30px_rgba(245,158,11,0.15)] hover:-translate-y-2 transition-all duration-500 group">
-              <div className="bg-gradient-to-br from-amber-500 to-orange-500 w-14 h-14 rounded-xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform">
-                <TrendingUp className="w-7 h-7 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-2">AI Client Acquisition Engine</h3>
-              <p className="text-amber-400/80 text-sm font-medium mb-4">Included at no extra cost.</p>
-              <p className="text-slate-300 mb-6 leading-relaxed">
-                The main training. Step-by-step video modules that take you from zero to running profitable campaigns on Facebook, Google, and YouTube.
-              </p>
-              <ul className="space-y-3">
-                {[
-                  "Full Facebook/Meta Ads training (beginner to advanced)",
-                  "Google Ads search & display campaign setup",
-                  "YouTube Ads for reach and lead generation",
-                  "Ad templates you can customize and launch today",
-                  "How to cut wasted spend and scale the campaigns that are working"
-                ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-slate-300 text-sm">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0 mt-0.5" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Live Daily Training */}
-            <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-slate-700/50 rounded-2xl p-8 hover:border-red-500/50 hover:shadow-[0_8px_30px_rgba(239,68,68,0.15)] hover:-translate-y-2 transition-all duration-500 group">
-              <div className="bg-gradient-to-br from-red-500 to-rose-500 w-14 h-14 rounded-xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform">
-                <Video className="w-7 h-7 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-2">Live Daily Training</h3>
-              <p className="text-red-400/80 text-sm font-medium mb-4">Ongoing support, not just pre-recorded videos</p>
-              <p className="text-slate-300 mb-6 leading-relaxed">
-                Every day, our team goes live to break down what's working right now, answer your questions, and help you troubleshoot campaigns in real time.
-              </p>
-              <ul className="space-y-3">
-                {[
-                  "Daily live sessions where you can ask questions and get answers",
-                  "Full replay library so you never miss a session",
-                  "Strategy updates when platforms change their rules",
-                  "Campaign reviews where you submit your ads and get feedback",
-                  "Private community with other serious students"
-                ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-slate-300 text-sm">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0 mt-0.5" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* Featured Bonus: Pre-Converted Ebook */}
-          <div className="mb-10">
-            <div className="relative bg-gradient-to-br from-amber-500/10 via-slate-800/80 to-slate-900/80 border-2 border-amber-500/40 rounded-2xl p-6 sm:p-8 overflow-hidden shadow-[0_8px_40px_rgba(245,158,11,0.15)]">
-              <div className="absolute top-4 right-4 bg-amber-500 text-slate-950 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-full">
-                Free Bonus
-              </div>
-              <div className="grid md:grid-cols-[200px_1fr] gap-6 sm:gap-8 items-center">
-                <div className="mx-auto md:mx-0">
-                  <img
-                    src="/preconverted-cover.png"
-                    alt="Pre-Converted ebook by Yousif Alias: How to Get High-Quality Leads Who Pay You First"
-                    width={200}
-                    height={300}
-                    loading="lazy"
-                    className="w-40 sm:w-48 md:w-full rounded-lg shadow-2xl shadow-amber-500/20 border border-amber-500/20"
-                  />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-12">
+            {WHAT_YOU_GET.map((item, i) => (
+              <div
+                key={i}
+                className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-slate-700/50 rounded-2xl p-6 hover:border-amber-500/50 hover:-translate-y-1 transition-all duration-500"
+              >
+                <div className="bg-gradient-to-br from-amber-500 to-orange-500 w-11 h-11 rounded-xl flex items-center justify-center mb-4 shadow-lg">
+                  <item.icon className="w-5 h-5 text-white" />
                 </div>
-                <div>
-                  <div className="inline-flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-wider mb-2">
-                    <BookOpen className="w-3.5 h-3.5" />
-                    New Bonus Added
-                  </div>
-                  <h3 className="text-2xl sm:text-3xl font-black text-white mb-2 leading-tight">
-                    Pre-Converted
-                  </h3>
-                  <p className="text-amber-300 text-base sm:text-lg font-semibold mb-3">
-                    How to Get High-Quality Leads Who Pay You First
-                  </p>
-                  <p className="text-slate-400 italic text-sm mb-5">
-                    The system they never teach you. By Yousif Alias.
-                  </p>
-                  <ul className="space-y-2.5">
-                    {[
-                      "The exact framework for attracting leads who are ready to buy before they ever talk to you",
-                      "How to flip the script so prospects chase you, not the other way around",
-                      "Real templates and scripts you can deploy this week"
-                    ].map((item, i) => (
-                      <li key={i} className="flex items-start gap-3 text-slate-300 text-sm">
-                        <CheckCircle2 className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <h3 className="text-base font-bold text-white mb-1.5 leading-tight">{item.title}</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
               </div>
-            </div>
+            ))}
           </div>
 
-          {/* Bonus Courses */}
-          <div className="mb-10">
-            <h3 className="text-xl font-bold text-white text-center mb-6">
-              <span className="text-amber-400">Plus</span> these bonus training modules:
-            </h3>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {[
-                { icon: TrendingUp, title: "Paid Ads Mastery", desc: "Advanced scaling strategies for Facebook, Google & YouTube", color: "from-orange-500 to-red-500" },
-                { icon: DollarSign, title: "Business Funding", desc: "How to secure capital and credit lines to fund your ad spend", color: "from-blue-500 to-cyan-500" },
-                { icon: BarChart3, title: "Sales Systems", desc: "Close more deals from the leads your ads generate", color: "from-green-500 to-emerald-500" },
-                { icon: BookOpen, title: "Tax Strategies", desc: "Keep more profit with legal tax optimization for entrepreneurs", color: "from-purple-500 to-pink-500" }
-              ].map((course, i) => (
-                <div key={i} className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-5 hover:border-amber-500/40 hover:shadow-[0_4px_20px_rgba(245,158,11,0.1)] hover:-translate-y-1 transition-all duration-500">
-                  <div className={`bg-gradient-to-br ${course.color} w-10 h-10 rounded-lg flex items-center justify-center mb-3`}>
-                    <course.icon className="w-5 h-5 text-white" />
-                  </div>
-                  <h4 className="text-base font-bold text-white mb-1">{course.title}</h4>
-                  <p className="text-slate-400 text-sm leading-relaxed">{course.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Value Stack */}
-          <div className="max-w-3xl mx-auto mb-10">
-            <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-amber-500/30 rounded-2xl p-6 sm:p-8 shadow-[0_8px_40px_rgba(245,158,11,0.08)]">
-              <h3 className="text-xl sm:text-2xl font-black text-white text-center mb-6">
-                Here's Everything You're Getting
-              </h3>
-              <ul className="space-y-3 mb-6">
-                {valueStack.map((item, i) => (
-                  <li key={i} className="flex items-center gap-3 py-2 border-b border-slate-700/40 last:border-0">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0" />
-                    <span className="text-slate-300 text-sm sm:text-base">{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="border-t-2 border-amber-500/40 pt-5 text-center">
-                <p className="text-white font-black text-lg sm:text-xl mb-1">
-                  The Complete System. Nothing Held Back.
-                </p>
-                <p className="text-emerald-400 text-sm font-bold">
-                  Every module, every bonus, every live session, all of it the moment you join.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Mid-page CTA */}
           <div className="text-center">
             <button
-              onClick={handleCTAClick}
+              onClick={scrollToPricing}
               id="mid-cta"
               className="group relative overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 text-white font-black text-lg sm:text-xl px-12 py-5 rounded-2xl shadow-[0_0_30px_rgba(245,158,11,0.3)] hover:shadow-[0_0_50px_rgba(245,158,11,0.5)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-amber-400/50 gap-3"
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center gap-3">
-                Get Instant Access
+                Get Instant Access · $9/month
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
@@ -498,6 +342,113 @@ function App() {
               You'll be inside the member area in under 60 seconds.
             </p>
           </div>
+        </div>
+      </div>
+
+      {/* ==================== PRICING ==================== */}
+      <div id="pricing-section" className="bg-slate-900/50 border-y border-slate-800/50 py-16 sm:py-20 px-4">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
+              Choose Your Plan
+            </h2>
+            <p className="text-slate-400 text-lg">
+              An agency charges $2,000+/month. You get the same system for $9/month.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-3 gap-6">
+            {/* Monthly */}
+            <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-slate-700/50 rounded-2xl p-8">
+              <h3 className="text-xl font-bold text-white mb-1">Monthly Plan</h3>
+              <div className="flex items-baseline gap-1 mb-4">
+                <span className="text-4xl font-black text-white">$9</span>
+                <span className="text-slate-400">/month</span>
+              </div>
+              <ul className="space-y-2.5 mb-6">
+                {['Full access to everything', 'Cancel anytime', '30-day refund'].map((item, i) => (
+                  <li key={i} className="flex items-center gap-2.5 text-slate-300 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <button
+                onClick={() => handleCTAClick('monthly')}
+                id="pricing-cta-monthly"
+                className="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-3.5 rounded-xl transition-colors"
+              >
+                Get Instant Access
+              </button>
+            </div>
+
+            {/* Annual */}
+            <div className="relative bg-gradient-to-br from-amber-500/10 via-slate-800/80 to-slate-900/80 border-2 border-amber-500/40 rounded-2xl p-8">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-500 text-slate-950 text-xs font-black uppercase tracking-wider px-4 py-1 rounded-full">
+                Best Value
+              </div>
+              <h3 className="text-xl font-bold text-white mb-1 mt-2">Annual Plan</h3>
+              <div className="flex items-baseline gap-1 mb-1">
+                <span className="text-4xl font-black text-white">$79</span>
+                <span className="text-slate-400">/year</span>
+              </div>
+              <p className="text-emerald-400 text-sm font-semibold mb-4">Save ~27%</p>
+              <ul className="space-y-2.5 mb-6">
+                {['Everything included', '30-day refund'].map((item, i) => (
+                  <li key={i} className="flex items-center gap-2.5 text-slate-300 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <button
+                onClick={() => handleCTAClick('annual')}
+                id="pricing-cta-annual"
+                className="w-full bg-gradient-to-br from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold py-3.5 rounded-xl transition-colors"
+              >
+                Get Annual Access
+              </button>
+            </div>
+
+            {/* Lifetime */}
+            <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-slate-700/50 rounded-2xl p-8">
+              <h3 className="text-xl font-bold text-white mb-1">Lifetime Access</h3>
+              <div className="flex items-baseline gap-1 mb-1">
+                <span className="text-4xl font-black text-white">$27.79</span>
+              </div>
+              <p className="text-slate-400 text-sm font-semibold mb-4">One payment, never billed again</p>
+              <ul className="space-y-2.5 mb-6">
+                {['Everything included', 'No recurring billing', '30-day refund'].map((item, i) => (
+                  <li key={i} className="flex items-center gap-2.5 text-slate-300 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <button
+                onClick={() => handleCTAClick('lifetime')}
+                id="pricing-cta-lifetime"
+                className="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-3.5 rounded-xl transition-colors"
+              >
+                Get Lifetime Access
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ==================== GUARANTEE ==================== */}
+      <div className="py-16 sm:py-20 px-4">
+        <div className="max-w-3xl mx-auto text-center">
+          <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
+            <Shield className="w-10 h-10 text-emerald-400" />
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
+            30-Day Money-Back Guarantee
+          </h2>
+          <p className="text-slate-300 text-lg leading-relaxed mb-6 max-w-xl mx-auto">
+            Go through the 7-day launch map, use the templates, join a live session. If you don't feel clear on how to launch your first profitable campaign within 30 days, email support@kenjiai.com for a full refund. No questions asked.
+          </p>
         </div>
       </div>
 
@@ -513,12 +464,11 @@ function App() {
             </p>
           </div>
 
-          {/* Stats Row */}
           <div className="grid grid-cols-3 gap-4 mb-12 max-w-3xl mx-auto">
             {[
-              { value: "12", label: "Years in Business", icon: Award },
-              { value: "1,000+", label: "Members Trained", icon: Users },
-              { value: "Daily", label: "Live Training Sessions", icon: Video }
+              { value: '12', label: 'Years in Business', icon: Award },
+              { value: '1,000+', label: 'Members', icon: Users },
+              { value: 'Monthly', label: 'Live Ad Teardowns', icon: Video },
             ].map((stat, i) => (
               <div key={i} className="text-center bg-slate-800/50 border border-slate-700/50 rounded-xl py-5 px-3">
                 <stat.icon className="w-6 h-6 text-amber-400 mx-auto mb-2" />
@@ -528,29 +478,28 @@ function App() {
             ))}
           </div>
 
-          {/* Testimonials */}
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
-                name: "Marcus T.",
-                role: "E-commerce Owner",
-                text: "I was burning $200/day on Facebook ads with nothing to show for it. After going through the training, I rebuilt my campaigns using their framework. Within 3 weeks I was getting a 4.2x return on ad spend. The live daily sessions are worth the price alone.",
-                stars: 5
+                name: 'Marcus T.',
+                role: 'E-commerce Owner',
+                text: "I was burning $200/day on Facebook ads with nothing to show for it. After going through the training, I rebuilt my campaigns using their framework. Within 3 weeks I was getting a 4.2x return on ad spend.",
+                stars: 5,
               },
               {
-                name: "Sarah K.",
-                role: "Business Coach",
-                text: "I was scared to touch paid ads. The step-by-step approach made it so simple. I launched my first Google Ads campaign following the exact templates and got 23 qualified leads in my first week. This is an absolute steal for what you get.",
-                stars: 5
+                name: 'Sarah K.',
+                role: 'Business Coach',
+                text: 'I was scared to touch paid ads. The step-by-step approach made it so simple. I launched my first Google Ads campaign following the exact templates and got 23 qualified leads in my first week.',
+                stars: 5,
               },
               {
-                name: "David R.",
-                role: "Agency Owner",
+                name: 'David R.',
+                role: 'Agency Owner',
                 text: "I've been doing ads for years but was stuck at a plateau. The scaling strategies and the community feedback on my campaigns helped me identify blind spots. My agency added $8K/month in recurring revenue in 60 days.",
-                stars: 5
-              }
+                stars: 5,
+              },
             ].map((testimonial, i) => (
-              <div key={i} className="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-6 hover:shadow-[0_4px_20px_rgba(255,255,255,0.05)] hover:-translate-y-1 hover:border-slate-600 transition-all duration-500">
+              <div key={i} className="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-6">
                 <div className="flex gap-1 mb-4">
                   {Array.from({ length: testimonial.stars }).map((_, j) => (
                     <Star key={j} className="w-4 h-4 text-amber-400 fill-amber-400" />
@@ -571,41 +520,9 @@ function App() {
               </div>
             ))}
           </div>
-          <p className="text-slate-600 text-xs text-center mt-6">
-            * Results may vary. These testimonials reflect individual experiences.
+          <p className="text-slate-600 text-xs text-center mt-6 max-w-xl mx-auto">
+            Results may vary. These testimonials reflect individual experiences and are not a guarantee of income or ad performance.
           </p>
-        </div>
-      </div>
-
-
-
-
-      {/* ==================== GUARANTEE ==================== */}
-      <div className="bg-slate-900/50 border-y border-slate-800/50 py-16 sm:py-20 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
-            <Shield className="w-10 h-10 text-emerald-400" />
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-            100% Money-Back Guarantee
-          </h2>
-          <p className="text-slate-300 text-lg leading-relaxed mb-6 max-w-xl mx-auto">
-            Try the AI Client Acquisition Engine for 30 days. Go through the training, join the live sessions, use the templates. If you don't love it, email us and we'll refund you in full. No questions asked.
-          </p>
-          <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
-            <div>
-              <div className="text-2xl font-black text-emerald-400">30 Days</div>
-              <div className="text-slate-400 text-xs">To try it out</div>
-            </div>
-            <div>
-              <div className="text-2xl font-black text-emerald-400">100%</div>
-              <div className="text-slate-400 text-xs">Money back</div>
-            </div>
-            <div>
-              <div className="text-2xl font-black text-emerald-400">$0</div>
-              <div className="text-slate-400 text-xs">Risk to you</div>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -617,11 +534,8 @@ function App() {
           </h2>
 
           <div className="space-y-3">
-            {faqs.map((faq, i) => (
-              <div
-                key={i}
-                className="bg-slate-800/50 border border-slate-700/50 rounded-xl overflow-hidden"
-              >
+            {FAQS.map((faq, i) => (
+              <div key={i} className="bg-slate-800/50 border border-slate-700/50 rounded-xl overflow-hidden">
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   className="w-full flex items-center justify-between p-5 text-left hover:bg-slate-800/80 transition-colors"
@@ -646,7 +560,7 @@ function App() {
       </div>
 
       {/* ==================== FINAL CTA ==================== */}
-      <div id="cta-section" className="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800 border-t border-slate-700/50 py-20 px-4 relative overflow-hidden">
+      <div className="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800 border-t border-slate-700/50 py-20 px-4 relative overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl"></div>
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl"></div>
@@ -654,32 +568,25 @@ function App() {
 
         <div className="max-w-3xl mx-auto text-center relative z-10">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
-            Stop Guessing. Start Running
+            Get Instant Access to the
             <span className="block bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">
-              Ads That Actually Work.
+              AI Client Acquisition Engine
             </span>
           </h2>
-          <p className="text-xl text-slate-300 mb-10 max-w-xl mx-auto leading-relaxed">
-            You get the full training, templates, live support, and a community of 1,000+ people who've been exactly where you are right now.
-          </p>
 
-          <div className="bg-slate-900/80 border border-slate-700/50 rounded-2xl p-8 mb-8 backdrop-blur-sm">
-            <div className="flex items-center justify-center gap-2 mb-4 text-emerald-400 font-black text-lg sm:text-xl">
-              <CheckCircle2 className="w-6 h-6 flex-shrink-0" />
-              <span>Everything Included. Nothing Held Back.</span>
-            </div>
+          <div className="bg-slate-900/80 border border-slate-700/50 rounded-2xl p-8 mb-6 backdrop-blur-sm">
             <p className="text-slate-400 text-sm mb-8">
-              One-time payment · Lifetime access · No recurring fees · No upsell required
+              $9/month · Cancel anytime · 30-day refund
             </p>
 
             <button
-              onClick={handleCTAClick}
+              onClick={() => handleCTAClick('monthly')}
               id="final-cta"
               className="w-full sm:w-auto group relative overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 text-white font-black text-xl sm:text-2xl px-14 py-6 rounded-2xl shadow-[0_0_30px_rgba(245,158,11,0.3)] hover:shadow-[0_0_50px_rgba(245,158,11,0.6)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-amber-400/50 gap-3"
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center gap-3">
-                Get Instant Access Now
+                Get Instant Access · $9/month
                 <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
@@ -701,7 +608,7 @@ function App() {
           </div>
 
           <p className="text-slate-500 text-sm">
-            We reserve the right to close enrollment at any time.
+            We reserve the right to close enrollment at any time to keep the community quality high.
           </p>
         </div>
       </div>
@@ -716,15 +623,15 @@ function App() {
       <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-md border-t border-amber-500/30 px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.6)]">
         <div className="flex items-center justify-between gap-3">
           <div className="flex flex-col leading-tight">
-            <span className="text-slate-400 text-[10px] uppercase tracking-wider font-bold">Limited Access</span>
-            <span className="text-white text-sm font-black">Full Training Included</span>
+            <span className="text-slate-400 text-[10px] uppercase tracking-wider font-bold">Membership</span>
+            <span className="text-white text-sm font-black">$9/month · Cancel anytime</span>
           </div>
           <button
-            onClick={handleCTAClick}
+            onClick={() => handleCTAClick('monthly')}
             id="sticky-mobile-cta"
             className="flex-1 group relative overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 text-white font-black text-base px-5 py-3.5 rounded-xl shadow-[0_0_20px_rgba(245,158,11,0.4)] border border-amber-400/50 inline-flex items-center justify-center gap-2"
           >
-            <span>Get Instant Access</span>
+            <span>Get Access</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
