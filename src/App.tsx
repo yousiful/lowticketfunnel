@@ -113,8 +113,8 @@ const TOTAL_VALUE = WHAT_YOU_GET.reduce((sum, item) => sum + item.value, 0);
 
 const FAQS = [
   {
-    q: 'Is this really $4.75/month?',
-    a: 'Yes. $4.75/month billed monthly. You can cancel anytime, no contracts, no hidden fees.',
+    q: 'How much does this cost?',
+    a: "It's a small monthly membership, billed monthly with no contracts. You'll see the exact price before you confirm at checkout. Cancel anytime, no hidden fees.",
   },
   {
     q: 'Is there a one-time payment option?',
@@ -606,7 +606,7 @@ function App() {
 
           <div className="bg-slate-900/80 border border-slate-700/50 rounded-2xl p-8 mb-6 backdrop-blur-sm">
             <p className="text-slate-400 text-sm mb-8">
-              $4.75/month · Cancel anytime · 30-day refund
+              Billed monthly · Cancel anytime · 30-day refund
             </p>
 
             <button
