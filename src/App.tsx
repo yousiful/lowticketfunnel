@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import {
   CheckCircle2, Users, Video, BookOpen, TrendingUp, DollarSign, Lock, ArrowRight, Zap, Award,
   Star, ChevronDown, ChevronUp, Shield, Target, Sparkles, ClipboardCheck, Phone,
-  RefreshCw, FileText
+  RefreshCw, FileText, Flame
 } from 'lucide-react';
 
 // Same GHL checkout used before; Yousif updated the underlying Stripe price
-// to $9/month. No separate yearly plan exists.
+// to $4.75/month. No separate yearly plan exists.
 const CHECKOUT_URL_MONTHLY = 'https://freedom.kenjiai.com/7-dollar-new-funnel-704974';
 const CHECKOUT_URL_LIFETIME = 'https://freedom.kenjiai.com/7-dollar-new-funnel-704974';
 
@@ -113,8 +113,8 @@ const TOTAL_VALUE = WHAT_YOU_GET.reduce((sum, item) => sum + item.value, 0);
 
 const FAQS = [
   {
-    q: 'Is this really $9/month?',
-    a: 'Yes. $9/month billed monthly. You can cancel anytime, no contracts, no hidden fees.',
+    q: 'Is this really $4.75/month?',
+    a: 'Yes. $4.75/month billed monthly. You can cancel anytime, no contracts, no hidden fees.',
   },
   {
     q: 'Is there a one-time payment option?',
@@ -162,6 +162,77 @@ const FAQS = [
   },
 ];
 
+/**
+ * Evergreen urgency bar. "Back to business before Q4" energy, no
+ * trademarked events/brands. Rolling 48h countdown per visitor so urgency
+ * never expires to 00:00:00. CTA scrolls to the final CTA section.
+ */
+const URGENCY_WINDOW_MS = 48 * 60 * 60 * 1000;
+const URGENCY_STORAGE_KEY = 'kenji_ace_urgency_deadline';
+
+function UrgencyBar() {
+  const [remaining, setRemaining] = useState(URGENCY_WINDOW_MS);
+
+  useEffect(() => {
+    let deadline = 0;
+    try {
+      deadline = Number(localStorage.getItem(URGENCY_STORAGE_KEY));
+    } catch {
+      /* localStorage blocked (private mode) — countdown still runs, just resets on reload */
+    }
+    if (!deadline || Number.isNaN(deadline) || deadline < Date.now()) {
+      deadline = Date.now() + URGENCY_WINDOW_MS;
+      try {
+        localStorage.setItem(URGENCY_STORAGE_KEY, String(deadline));
+      } catch {
+        /* ignore persistence failure */
+      }
+    }
+    const tick = () => setRemaining(Math.max(0, deadline - Date.now()));
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const total = Math.floor(remaining / 1000);
+  const h = String(Math.floor(total / 3600)).padStart(2, '0');
+  const m = String(Math.floor((total % 3600) / 60)).padStart(2, '0');
+  const s = String(total % 60).padStart(2, '0');
+
+  const scrollToCTA = () =>
+    document.getElementById('final-cta')?.scrollIntoView({ behavior: 'smooth' });
+
+  return (
+    <div className="relative z-50 w-full overflow-hidden bg-gradient-to-r from-amber-600 via-orange-600 to-amber-600 text-white">
+      <div
+        className="pointer-events-none absolute inset-0 opacity-20"
+        style={{ backgroundImage: 'repeating-linear-gradient(90deg, rgba(255,255,255,0.12) 0 28px, transparent 28px 56px)' }}
+      />
+      <div className="relative mx-auto flex max-w-6xl flex-col items-center justify-center gap-2 px-4 py-2 text-center sm:flex-row sm:gap-4">
+        <p className="flex items-center gap-1.5 text-xs font-semibold sm:text-sm">
+          <Flame className="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />
+          Everyone's rebuilding their client pipeline before Q4 hits —{' '}
+          <span className="font-extrabold">don't start the season behind.</span>
+        </p>
+        <div className="flex shrink-0 items-center gap-3">
+          <div className="flex items-center gap-1.5">
+            <span className="hidden text-[10px] font-bold uppercase tracking-wider opacity-80 sm:inline">Closes in</span>
+            <div className="flex items-center gap-1 rounded-lg bg-black/25 px-2 py-1 font-mono text-sm font-bold tabular-nums">
+              <span>{h}</span><span className="opacity-60">:</span><span>{m}</span><span className="opacity-60">:</span><span>{s}</span>
+            </div>
+          </div>
+          <button
+            onClick={scrollToCTA}
+            className="rounded-full bg-white px-4 py-1.5 text-xs font-extrabold uppercase tracking-wide text-amber-700 shadow-sm transition-transform hover:-translate-y-0.5 active:scale-95"
+          >
+            Get started →
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function App() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [cta] = useState<CTAVariant>(pickCTAVariant);
@@ -174,7 +245,7 @@ function App() {
   }, [cta]);
 
   const PLAN_DETAILS: Record<Plan, { name: string; contentId: string; value: number; url: string }> = {
-    monthly: { name: 'AI Client Acquisition Engine - Monthly Membership', contentId: 'ace-9-monthly', value: 9.0, url: CHECKOUT_URL_MONTHLY },
+    monthly: { name: 'AI Client Acquisition Engine - Monthly Membership', contentId: 'ace-4-75-monthly', value: 4.75, url: CHECKOUT_URL_MONTHLY },
     lifetime: { name: 'AI Client Acquisition Engine - Lifetime Access', contentId: 'ace-27-79-lifetime', value: 27.79, url: CHECKOUT_URL_LIFETIME },
   };
 
@@ -196,6 +267,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+      <UrgencyBar />
       {/* Trust Banner */}
       <div className="bg-gradient-to-r from-slate-800 to-slate-800 text-white py-3 px-4 text-center sticky top-0 z-40 border-b border-slate-700/50 backdrop-blur-sm">
         <div className="flex items-center justify-center gap-3 flex-wrap">
@@ -240,7 +312,7 @@ function App() {
           </h1>
 
           <p className="text-base sm:text-xl text-slate-400 mb-6 sm:mb-10 max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
-            Get the complete AI Client Acquisition Engine: templates, prompts, ad hooks, live support, and a private community, all for $9/month. Cancel anytime.
+            Get the complete AI Client Acquisition Engine: templates, prompts, ad hooks, live support, and a private community. Cancel anytime.
           </p>
 
           <div className="mb-6 sm:mb-10 relative px-0 sm:px-4">
@@ -271,12 +343,12 @@ function App() {
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center gap-3">
-                {cta.label} · $9/month
+                {cta.label}
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
             <p className="text-slate-500 text-xs mt-4">
-              $9/month · Cancel anytime · Instant access · 30-day refund
+              Cancel anytime · Instant access · 30-day refund
             </p>
           </div>
         </div>
@@ -373,7 +445,7 @@ function App() {
           <div className="max-w-md mx-auto mb-10 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 rounded-2xl p-6 text-center">
             <p className="text-slate-400 text-sm mb-1">Total value if you bought this piece by piece:</p>
             <p className="text-slate-500 text-2xl font-bold line-through mb-1">${TOTAL_VALUE.toLocaleString()}+</p>
-            <p className="text-white text-lg font-black">Yours for $9/month</p>
+            <p className="text-white text-lg font-black">Yours for one low monthly payment</p>
           </div>
 
           <div className="text-center">
@@ -384,7 +456,7 @@ function App() {
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center gap-3">
-                {cta.label} · $9/month
+                {cta.label}
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
@@ -534,7 +606,7 @@ function App() {
 
           <div className="bg-slate-900/80 border border-slate-700/50 rounded-2xl p-8 mb-6 backdrop-blur-sm">
             <p className="text-slate-400 text-sm mb-8">
-              $9/month · Cancel anytime · 30-day refund
+              $4.75/month · Cancel anytime · 30-day refund
             </p>
 
             <button
@@ -544,7 +616,7 @@ function App() {
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center gap-3">
-                {cta.label} · $9/month
+                {cta.label}
                 <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
@@ -579,20 +651,14 @@ function App() {
 
       {/* Sticky Mobile Bottom CTA */}
       <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-md border-t border-amber-500/30 px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.6)]">
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex flex-col leading-tight">
-            <span className="text-slate-400 text-[10px] uppercase tracking-wider font-bold">Membership</span>
-            <span className="text-white text-sm font-black">$9/month · Cancel anytime</span>
-          </div>
-          <button
-            onClick={() => handleCTAClick('monthly')}
-            id="sticky-mobile-cta"
-            className="flex-1 group relative overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 text-white font-black text-base px-5 py-3.5 rounded-xl shadow-[0_0_20px_rgba(245,158,11,0.4)] border border-amber-400/50 inline-flex items-center justify-center gap-2"
-          >
-            <span>{cta.label}</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
+        <button
+          onClick={() => handleCTAClick('monthly')}
+          id="sticky-mobile-cta"
+          className="w-full group relative overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 text-white font-black text-base px-5 py-3.5 rounded-xl shadow-[0_0_20px_rgba(245,158,11,0.4)] border border-amber-400/50 inline-flex items-center justify-center gap-2"
+        >
+          <span>{cta.label}</span>
+          <ArrowRight className="w-4 h-4" />
+        </button>
       </div>
     </div>
   );
