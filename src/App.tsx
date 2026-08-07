@@ -98,7 +98,7 @@ const WHAT_YOU_GET = [
   {
     icon: Users,
     title: 'Private Community Access',
-    desc: '1,000+ members helping each other win.',
+    desc: '334+ members helping each other win.',
     value: 197,
   },
   {
@@ -288,7 +288,7 @@ function App() {
           <span className="text-slate-600 hidden sm:inline">·</span>
           <span className="flex items-center gap-1.5 text-sm text-slate-300">
             <Users className="w-4 h-4 text-blue-400" />
-            1,000+ Members
+            334+ Members
           </span>
         </div>
       </div>
@@ -497,7 +497,7 @@ function App() {
           <div className="grid grid-cols-3 gap-4 mb-12 max-w-3xl mx-auto">
             {[
               { value: '12', label: 'Years in Business', icon: Award },
-              { value: '1,000+', label: 'Members', icon: Users },
+              { value: '334+', label: 'Members', icon: Users },
               { value: 'Monthly', label: 'Live Ad Teardowns', icon: Video },
             ].map((stat, i) => (
               <div key={i} className="text-center bg-slate-800/50 border border-slate-700/50 rounded-xl py-5 px-3">
