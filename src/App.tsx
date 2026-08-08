@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import {
   CheckCircle2, Users, Video, BookOpen, TrendingUp, DollarSign, Lock, ArrowRight, Zap, Award,
   Star, ChevronDown, ChevronUp, Shield, Target, Sparkles, ClipboardCheck, Phone,
-  RefreshCw, FileText, Flame
+  RefreshCw, FileText, Flame, X
 } from 'lucide-react';
 
 // Same GHL checkout used before; Yousif updated the underlying Stripe price
@@ -233,9 +233,93 @@ function UrgencyBar() {
   );
 }
 
+/**
+ * Exit-intent recovery popup. Fires once per browser session, on whichever
+ * comes first: the mouse leaving toward the browser chrome (desktop) or a
+ * 45s idle timer (covers mobile, where there's no real exit signal). Never
+ * shows price — deliberately framed as a low-investment, take-it-seriously
+ * nudge instead of a discount.
+ */
+const EXIT_POPUP_SESSION_KEY = 'kenji_exit_popup_shown';
+const EXIT_POPUP_IDLE_MS = 45000;
+
+function ExitIntentPopup({ ctaLabel, onCTA, onClose }: { ctaLabel: string; onCTA: () => void; onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="exit-popup-heading"
+      onClick={onClose}
+    >
+      <style>{`
+        @keyframes exitFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes exitPopIn { from { opacity: 0; transform: scale(0.95) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+      `}</style>
+      <div
+        className="relative w-full max-w-md bg-gradient-to-br from-slate-900 to-slate-800 border border-amber-500/30 rounded-2xl p-8 shadow-2xl"
+        style={{ animation: 'exitPopIn 0.25s ease-out' }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={onClose}
+          aria-label="Close"
+          className="absolute top-4 right-4 text-slate-500 hover:text-slate-300 transition-colors"
+        >
+          <X className="w-5 h-5" />
+        </button>
+
+        <div className="text-center">
+          <div className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 text-amber-400 px-3 py-1.5 rounded-full text-xs font-bold mb-5">
+            <Shield className="w-3.5 h-3.5" />
+            Before you close this tab
+          </div>
+
+          <h3 id="exit-popup-heading" className="text-2xl sm:text-3xl font-black text-white mb-4 leading-tight">
+            Wait. Before you go.
+          </h3>
+
+          <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
+            This isn't a knockoff freebie you'll forget about. It's a very low monthly investment, low enough to say yes today, real enough that you'll actually show up and use it. 334+ members already are.
+          </p>
+
+          <button
+            onClick={onCTA}
+            className="w-full group relative overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 text-white font-black text-base sm:text-lg px-8 py-4 rounded-xl shadow-[0_0_25px_rgba(245,158,11,0.4)] hover:shadow-[0_0_40px_rgba(245,158,11,0.6)] transform hover:-translate-y-0.5 transition-all duration-300 inline-flex items-center justify-center border border-amber-400/50 gap-2 mb-4"
+          >
+            <span>{ctaLabel}</span>
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </button>
+
+          <div className="flex items-center justify-center gap-4 text-slate-500 text-xs mb-4 flex-wrap">
+            <span className="flex items-center gap-1"><Shield className="w-3 h-3" />30-day guarantee</span>
+            <span className="flex items-center gap-1"><RefreshCw className="w-3 h-3" />Cancel anytime</span>
+          </div>
+
+          <button
+            onClick={onClose}
+            className="text-slate-500 hover:text-slate-400 text-xs underline underline-offset-2 transition-colors"
+          >
+            No thanks, I'll pass
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function App() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [cta] = useState<CTAVariant>(pickCTAVariant);
+  const [showExit, setShowExit] = useState(false);
 
   // Report the assigned CTA variant once so checkouts can be segmented by it.
   useEffect(() => {
@@ -243,6 +327,41 @@ function App() {
     w.fbq?.('trackCustom', 'CTAVariant', { variant: cta.id });
     w.dataLayer?.push({ event: 'cta_variant_assigned', cta_variant: cta.id });
   }, [cta]);
+
+  // Exit-intent recovery: fires once per session on mouse-leave-to-top
+  // (desktop) or a 45s idle fallback (covers mobile, no real exit signal).
+  useEffect(() => {
+    let alreadySeen = false;
+    try {
+      alreadySeen = sessionStorage.getItem(EXIT_POPUP_SESSION_KEY) === '1';
+    } catch {
+      /* sessionStorage blocked (private mode) — allow it once per mount instead */
+    }
+    if (alreadySeen) return;
+
+    let triggered = false;
+    const trigger = () => {
+      if (triggered) return;
+      triggered = true;
+      setShowExit(true);
+      try {
+        sessionStorage.setItem(EXIT_POPUP_SESSION_KEY, '1');
+      } catch {
+        /* ignore persistence failure */
+      }
+    };
+
+    const onMouseLeave = (e: MouseEvent) => {
+      if (e.clientY <= 0) trigger();
+    };
+    document.addEventListener('mouseleave', onMouseLeave);
+    const idleTimer = setTimeout(trigger, EXIT_POPUP_IDLE_MS);
+
+    return () => {
+      document.removeEventListener('mouseleave', onMouseLeave);
+      clearTimeout(idleTimer);
+    };
+  }, []);
 
   const PLAN_DETAILS: Record<Plan, { name: string; contentId: string; value: number; url: string }> = {
     monthly: { name: 'AI Client Acquisition Engine - Monthly Membership', contentId: 'ace-4-75-monthly', value: 4.75, url: CHECKOUT_URL_MONTHLY },
@@ -263,6 +382,13 @@ function App() {
     });
     w.dataLayer?.push({ event: 'initiate_checkout', plan, cta_variant: cta.id });
     window.location.href = details.url;
+  };
+
+  const handleExitCTA = () => {
+    const w = window as TrackingWindow;
+    w.fbq?.('trackCustom', 'ExitPopupCTA');
+    w.dataLayer?.push({ event: 'exit_popup_cta_click' });
+    handleCTAClick('monthly');
   };
 
   return (
@@ -660,6 +786,10 @@ function App() {
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>
+
+      {showExit && (
+        <ExitIntentPopup ctaLabel={cta.label} onCTA={handleExitCTA} onClose={() => setShowExit(false)} />
+      )}
     </div>
   );
 }
