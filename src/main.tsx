@@ -5,7 +5,7 @@ import App from './App'
 import FoundersOffer from './FoundersOffer'
 
 // Lightweight path switch (no router dependency). The hidden /founders-199
-// slug renders the $1.99 book offer; everything else is the public $7 funnel.
+// slug renders the $1.99 book offer; everything else is the public membership funnel.
 const path = window.location.pathname.replace(/\/+$/, '')
 const Page = path === '/founders-199' ? FoundersOffer : App
 

@@ -5,7 +5,7 @@ import { CheckCircle2, Users, Video, BookOpen, TrendingUp, DollarSign, Lock, Arr
  * "Founders" variant of the low-ticket funnel — lives on a hidden, unguessable
  * path (/founders-199) so the cheaper price isn't publicly discoverable.
  *
- * Different from the $7 page on purpose (for testing):
+ * Different from the public membership page on purpose (for testing):
  *   - The Pre-Converted BOOK is the hero, not the ad-training bundle.
  *   - Price is $1.99 and the offer is "the book + the community".
  *   - The training modules are reframed as bonuses you unlock on top.
@@ -168,7 +168,7 @@ export default function FoundersOffer() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
 
-      {/* ── Private-link banner (different angle than the $7 page) ── */}
+      {/* ── Private-link banner (different angle than the membership page) ── */}
       <div className="relative z-50 w-full overflow-hidden bg-gradient-to-r from-amber-600 via-orange-500 to-amber-600 text-white">
         <div className="relative mx-auto flex max-w-6xl flex-col items-center justify-center gap-2 px-4 py-2 text-center sm:flex-row sm:gap-4">
           <p className="text-xs font-semibold sm:text-sm">
