@@ -210,15 +210,22 @@ export default function FoundersOffer() {
             <div className="mx-auto md:mx-0 order-1">
               <div className="relative">
                 <div className="absolute -inset-4 bg-amber-500/20 blur-3xl rounded-full" />
-                <img
-                  src="/preconverted-cover.png"
-                  alt="Pre-Converted by Yousif Alias: How to Get High-Quality Leads Who Pay You First"
-                  width={300}
-                  height={450}
-                  fetchPriority="high"
-                  decoding="async"
-                  className="relative w-52 sm:w-64 md:w-full rounded-xl shadow-2xl shadow-amber-500/20 border border-amber-500/20"
-                />
+                <picture>
+                  <source
+                    type="image/webp"
+                    srcSet="/preconverted-cover-600w.webp 600w, /preconverted-cover-900w.webp 900w"
+                    sizes="(max-width: 640px) 208px, (max-width: 768px) 256px, 300px"
+                  />
+                  <img
+                    src="/preconverted-cover.jpg"
+                    alt="Pre-Converted by Yousif Alias: How to Get High-Quality Leads Who Pay You First"
+                    width={300}
+                    height={450}
+                    fetchPriority="high"
+                    decoding="async"
+                    className="relative w-52 sm:w-64 md:w-full rounded-xl shadow-2xl shadow-amber-500/20 border border-amber-500/20"
+                  />
+                </picture>
               </div>
             </div>
 

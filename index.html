@@ -16,7 +16,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="preload" as="image" type="image/webp" href="/freedom-club-bundle-1200w.webp" fetchpriority="high">
+    <link
+      rel="preload"
+      as="image"
+      type="image/webp"
+      href="/freedom-club-bundle-1200w.webp"
+      imagesrcset="/freedom-club-bundle-800w.webp 800w, /freedom-club-bundle-1200w.webp 1024w"
+      imagesizes="(max-width: 640px) 90vw, (max-width: 768px) 42rem, 48rem"
+      fetchpriority="high"
+    >
 
     <!-- Meta Pixel -->
     <script>
@@ -50,12 +58,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         s.pixelClientId = i;
     })(window, "https://datatagmanager.s3.us-east-2.amazonaws.com/pixel_popup.js", "0219d3e9-3cad-42f3-9bd1-111525982334", document, "script");
     </script>
-    <script src="https://pixel.datatagmanager.com/pixel.js?pid=0219d3e9-3cad-42f3-9bd1-111525982334"></script>
+    <script src="https://pixel.datatagmanager.com/pixel.js?pid=0219d3e9-3cad-42f3-9bd1-111525982334" defer></script>
     <script id="datatagmanager-id" src="https://cdn.pixel.datatagmanager.com/pixels/0219d3e9-3cad-42f3-9bd1-111525982334/p.js" async></script>
     <!-- KenjiAI external tracking -->
     <script
       src="https://safeclick.kenjiai.com/js/external-tracking.js"
-      data-tracking-id="tk_76d68546c8534d479179b49a1784584c">
+      data-tracking-id="tk_76d68546c8534d479179b49a1784584c"
+      defer>
     </script>
   </head>
   <body>
