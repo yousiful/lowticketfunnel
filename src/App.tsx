@@ -203,7 +203,7 @@ function UrgencyBar() {
     document.getElementById('final-cta')?.scrollIntoView({ behavior: 'smooth' });
 
   return (
-    <div className="relative z-50 w-full overflow-hidden bg-gradient-to-r from-amber-600 via-orange-600 to-amber-600 text-white">
+    <div className="relative z-50 w-full overflow-hidden bg-gradient-to-r from-violet-600 via-fuchsia-600 to-violet-600 text-white">
       <div
         className="pointer-events-none absolute inset-0 opacity-20"
         style={{ backgroundImage: 'repeating-linear-gradient(90deg, rgba(255,255,255,0.12) 0 28px, transparent 28px 56px)' }}
@@ -223,7 +223,7 @@ function UrgencyBar() {
           </div>
           <button
             onClick={scrollToCTA}
-            className="rounded-full bg-white px-4 py-1.5 text-xs font-extrabold uppercase tracking-wide text-amber-700 shadow-sm transition-transform hover:-translate-y-0.5 active:scale-95"
+            className="rounded-full bg-white px-4 py-1.5 text-xs font-extrabold uppercase tracking-wide text-violet-700 shadow-sm transition-transform hover:-translate-y-0.5 active:scale-95"
           >
             Get started →
           </button>
@@ -265,7 +265,7 @@ function ExitIntentPopup({ ctaLabel, onCTA, onClose }: { ctaLabel: string; onCTA
         @keyframes exitPopIn { from { opacity: 0; transform: scale(0.95) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
       `}</style>
       <div
-        className="relative w-full max-w-md bg-gradient-to-br from-slate-900 to-slate-800 border border-amber-500/30 rounded-2xl p-8 shadow-2xl"
+        className="relative w-full max-w-md bg-gradient-to-br from-slate-900 to-slate-800 border border-violet-500/30 rounded-2xl p-8 shadow-2xl"
         style={{ animation: 'exitPopIn 0.25s ease-out' }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -278,7 +278,7 @@ function ExitIntentPopup({ ctaLabel, onCTA, onClose }: { ctaLabel: string; onCTA
         </button>
 
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 text-amber-400 px-3 py-1.5 rounded-full text-xs font-bold mb-5">
+          <div className="inline-flex items-center gap-2 bg-violet-500/10 border border-violet-500/20 text-violet-300 px-3 py-1.5 rounded-full text-xs font-bold mb-5">
             <Shield className="w-3.5 h-3.5" />
             Before you close this tab
           </div>
@@ -293,7 +293,7 @@ function ExitIntentPopup({ ctaLabel, onCTA, onClose }: { ctaLabel: string; onCTA
 
           <button
             onClick={onCTA}
-            className="w-full group relative overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 text-white font-black text-base sm:text-lg px-8 py-4 rounded-xl shadow-[0_0_25px_rgba(245,158,11,0.4)] hover:shadow-[0_0_40px_rgba(245,158,11,0.6)] transform hover:-translate-y-0.5 transition-all duration-300 inline-flex items-center justify-center border border-amber-400/50 gap-2 mb-4"
+            className="w-full group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-base sm:text-lg px-8 py-4 rounded-xl shadow-[0_0_25px_rgba(16,185,129,0.4)] hover:shadow-[0_0_40px_rgba(20,184,166,0.6)] transform hover:-translate-y-0.5 transition-all duration-300 inline-flex items-center justify-center border border-emerald-400/50 gap-2 mb-4"
           >
             <span>{ctaLabel}</span>
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -395,7 +395,7 @@ function App() {
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
       <UrgencyBar />
       {/* Trust Banner */}
-      <div className="bg-gradient-to-r from-slate-800 to-slate-800 text-white py-3 px-4 text-center sticky top-0 z-40 border-b border-slate-700/50 backdrop-blur-sm">
+      <div className="bg-gradient-to-r from-slate-800 to-slate-900 text-white py-3 px-4 text-center sticky top-0 z-40 border-b border-slate-700/50 backdrop-blur-sm">
         <div className="flex items-center justify-center gap-3 flex-wrap">
           <span className="flex items-center gap-1.5 text-sm text-slate-300">
             <Shield className="w-4 h-4 text-emerald-400" />
@@ -408,7 +408,7 @@ function App() {
           </span>
           <span className="text-slate-600 hidden sm:inline">·</span>
           <span className="flex items-center gap-1.5 text-sm text-slate-300">
-            <Zap className="w-4 h-4 text-amber-400" />
+            <Zap className="w-4 h-4 text-cyan-400" />
             Instant Access
           </span>
           <span className="text-slate-600 hidden sm:inline">·</span>
@@ -422,14 +422,14 @@ function App() {
       {/* ==================== HERO SECTION ==================== */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-16 pb-8 sm:pb-12">
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 text-amber-400 px-3 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-medium mb-6 sm:mb-8">
+          <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 px-3 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-medium mb-6 sm:mb-8">
             <Target className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
             <span>For anyone who wants to make money running ads</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4 sm:mb-6 leading-[1.1] tracking-tight px-1 sm:px-0">
             Make Money Running Ads
-            <span className="block bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-cyan-300 via-teal-300 to-emerald-400 bg-clip-text text-transparent">
               in 7 Days
             </span>
             <span className="block text-xl sm:text-4xl md:text-5xl mt-2 text-slate-300 font-bold">
@@ -456,7 +456,7 @@ function App() {
                 height={1024}
                 fetchPriority="high"
                 decoding="async"
-                className="w-full max-w-[90vw] sm:max-w-2xl md:max-w-3xl mx-auto rounded-xl sm:rounded-2xl shadow-2xl shadow-blue-500/10 object-contain"
+                className="w-full max-w-[90vw] sm:max-w-2xl md:max-w-3xl mx-auto rounded-xl sm:rounded-2xl shadow-2xl shadow-cyan-500/10 object-contain"
               />
             </picture>
           </div>
@@ -465,7 +465,7 @@ function App() {
             <button
               onClick={() => handleCTAClick('monthly')}
               id="hero-cta"
-              className="w-full sm:w-auto group relative overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 text-white font-black text-lg sm:text-xl px-12 py-5 rounded-2xl shadow-[0_0_30px_rgba(245,158,11,0.3)] hover:shadow-[0_0_50px_rgba(245,158,11,0.5)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-amber-400/50"
+              className="w-full sm:w-auto group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-lg sm:text-xl px-12 py-5 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:shadow-[0_0_50px_rgba(20,184,166,0.5)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-emerald-400/50"
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center gap-3">
@@ -554,12 +554,12 @@ function App() {
             {WHAT_YOU_GET.map((item, i) => (
               <div
                 key={i}
-                className="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-slate-700/50 rounded-2xl p-6 hover:border-amber-500/50 hover:-translate-y-1 transition-all duration-500"
+                className="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-slate-700/50 rounded-2xl p-6 hover:border-cyan-500/50 hover:-translate-y-1 transition-all duration-500"
               >
-                <span className="absolute top-4 right-4 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold px-2.5 py-1 rounded-full">
+                <span className="absolute top-4 right-4 bg-teal-500/10 border border-teal-500/30 text-teal-300 text-xs font-bold px-2.5 py-1 rounded-full">
                   ${item.value} value
                 </span>
-                <div className="bg-gradient-to-br from-amber-500 to-orange-500 w-11 h-11 rounded-xl flex items-center justify-center mb-4 shadow-lg">
+                <div className="bg-gradient-to-br from-sky-500 to-blue-600 w-11 h-11 rounded-xl flex items-center justify-center mb-4 shadow-lg">
                   <item.icon className="w-5 h-5 text-white" />
                 </div>
                 <h3 className="text-base font-bold text-white mb-1.5 leading-tight pr-16">{item.title}</h3>
@@ -568,7 +568,7 @@ function App() {
             ))}
           </div>
 
-          <div className="max-w-md mx-auto mb-10 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 rounded-2xl p-6 text-center">
+          <div className="max-w-md mx-auto mb-10 bg-gradient-to-r from-teal-500/10 to-emerald-500/10 border border-teal-500/30 rounded-2xl p-6 text-center">
             <p className="text-slate-400 text-sm mb-1">Total value if you bought this piece by piece:</p>
             <p className="text-slate-500 text-2xl font-bold line-through mb-1">${TOTAL_VALUE.toLocaleString()}+</p>
             <p className="text-white text-lg font-black">Yours for one low monthly payment</p>
@@ -578,7 +578,7 @@ function App() {
             <button
               onClick={() => handleCTAClick('monthly')}
               id="mid-cta"
-              className="group relative overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 text-white font-black text-lg sm:text-xl px-12 py-5 rounded-2xl shadow-[0_0_30px_rgba(245,158,11,0.3)] hover:shadow-[0_0_50px_rgba(245,158,11,0.5)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-amber-400/50 gap-3"
+              className="group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-lg sm:text-xl px-12 py-5 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:shadow-[0_0_50px_rgba(20,184,166,0.5)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-emerald-400/50 gap-3"
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center gap-3">
@@ -627,7 +627,7 @@ function App() {
               { value: 'Monthly', label: 'Live Ad Teardowns', icon: Video },
             ].map((stat, i) => (
               <div key={i} className="text-center bg-slate-800/50 border border-slate-700/50 rounded-xl py-5 px-3">
-                <stat.icon className="w-6 h-6 text-amber-400 mx-auto mb-2" />
+                <stat.icon className="w-6 h-6 text-sky-400 mx-auto mb-2" />
                 <div className="text-2xl sm:text-3xl font-black text-white">{stat.value}</div>
                 <div className="text-slate-400 text-xs sm:text-sm">{stat.label}</div>
               </div>
@@ -658,14 +658,14 @@ function App() {
               <div key={i} className="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-6">
                 <div className="flex gap-1 mb-4">
                   {Array.from({ length: testimonial.stars }).map((_, j) => (
-                    <Star key={j} className="w-4 h-4 text-amber-400 fill-amber-400" />
+                    <Star key={j} className="w-4 h-4 text-cyan-300 fill-cyan-300" />
                   ))}
                 </div>
                 <p className="text-slate-300 text-sm leading-relaxed mb-6 italic">
                   "{testimonial.text}"
                 </p>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white font-bold text-sm">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center text-white font-bold text-sm">
                     {testimonial.name.charAt(0)}
                   </div>
                   <div>
@@ -718,14 +718,14 @@ function App() {
       {/* ==================== FINAL CTA ==================== */}
       <div className="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800 border-t border-slate-700/50 py-20 px-4 relative overflow-hidden">
         <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl"></div>
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl"></div>
         </div>
 
         <div className="max-w-3xl mx-auto text-center relative z-10">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
             Get Instant Access to the
-            <span className="block bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">
               AI Client Acquisition Engine
             </span>
           </h2>
@@ -738,7 +738,7 @@ function App() {
             <button
               onClick={() => handleCTAClick('monthly')}
               id="final-cta"
-              className="w-full sm:w-auto group relative overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 text-white font-black text-xl sm:text-2xl px-14 py-6 rounded-2xl shadow-[0_0_30px_rgba(245,158,11,0.3)] hover:shadow-[0_0_50px_rgba(245,158,11,0.6)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-amber-400/50 gap-3"
+              className="w-full sm:w-auto group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-xl sm:text-2xl px-14 py-6 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:shadow-[0_0_50px_rgba(20,184,166,0.6)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-emerald-400/50 gap-3"
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center gap-3">
@@ -776,11 +776,11 @@ function App() {
       </div>
 
       {/* Sticky Mobile Bottom CTA */}
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-md border-t border-amber-500/30 px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.6)]">
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-md border-t border-emerald-500/30 px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.6)]">
         <button
           onClick={() => handleCTAClick('monthly')}
           id="sticky-mobile-cta"
-          className="w-full group relative overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 text-white font-black text-base px-5 py-3.5 rounded-xl shadow-[0_0_20px_rgba(245,158,11,0.4)] border border-amber-400/50 inline-flex items-center justify-center gap-2"
+          className="w-full group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-base px-5 py-3.5 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.4)] border border-emerald-400/50 inline-flex items-center justify-center gap-2"
         >
           <span>{cta.label}</span>
           <ArrowRight className="w-4 h-4" />
