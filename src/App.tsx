@@ -211,8 +211,8 @@ function UrgencyBar() {
       <div className="relative mx-auto flex max-w-6xl flex-col items-center justify-center gap-2 px-4 py-2 text-center sm:flex-row sm:gap-4">
         <p className="flex items-center gap-1.5 text-xs font-semibold sm:text-sm">
           <Flame className="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />
-          Everyone's rebuilding their client pipeline before Q4 hits —{' '}
-          <span className="font-extrabold">don't start the season behind.</span>
+          Everyone's rebuilding their client pipeline before Q4 hits.{' '}
+          <span className="font-extrabold">Don't start the season behind.</span>
         </p>
         <div className="flex shrink-0 items-center gap-3">
           <div className="flex items-center gap-1.5">
