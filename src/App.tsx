@@ -5,8 +5,12 @@ import {
   RefreshCw, FileText, X
 } from 'lucide-react';
 
-// Same GHL checkout used before; Yousif updated the underlying Stripe price
-// to $4.75/month. No separate yearly plan exists.
+// Same GHL checkout used before. The Stripe price on the GHL side has moved
+// more than once independent of this codebase ($4.75 -> $6.75 -> $7, as of
+// 2026-08-11) - there's no live API reading the real price, so PLAN_DETAILS
+// below has to be updated by hand whenever it changes on the GHL side, or
+// the pixel value silently drifts from what's actually charged. No separate
+// yearly plan exists.
 const CHECKOUT_URL_MONTHLY = 'https://freedom.kenjiai.com/7-dollar-new-funnel-704974';
 const CHECKOUT_URL_LIFETIME = 'https://freedom.kenjiai.com/7-dollar-new-funnel-704974';
 
@@ -328,7 +332,7 @@ function App() {
   }, []);
 
   const PLAN_DETAILS: Record<Plan, { name: string; contentId: string; value: number; url: string }> = {
-    monthly: { name: 'AI Client Acquisition Engine - Monthly Membership', contentId: 'ace-4-75-monthly', value: 4.75, url: CHECKOUT_URL_MONTHLY },
+    monthly: { name: 'AI Client Acquisition Engine - Monthly Membership', contentId: 'ace-monthly', value: 7.00, url: CHECKOUT_URL_MONTHLY },
     lifetime: { name: 'AI Client Acquisition Engine - Lifetime Access', contentId: 'ace-27-79-lifetime', value: 27.79, url: CHECKOUT_URL_LIFETIME },
   };
 
