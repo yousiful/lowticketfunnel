@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import {
   CheckCircle2, Users, Video, BookOpen, TrendingUp, DollarSign, Lock, ArrowRight, Zap, Award,
   Star, ChevronDown, ChevronUp, Shield, Target, Sparkles, ClipboardCheck, Phone,
-  RefreshCw, FileText, Flame, X
+  RefreshCw, FileText, X
 } from 'lucide-react';
 
 // Same GHL checkout used before; Yousif updated the underlying Stripe price
@@ -163,42 +163,14 @@ const FAQS = [
 ];
 
 /**
- * Evergreen urgency bar. "Back to business before Q4" energy, no
- * trademarked events/brands. Rolling 48h countdown per visitor so urgency
- * never expires to 00:00:00. CTA scrolls to the final CTA section.
+ * Urgency bar, honest version. No fake countdown - this codebase had one
+ * (a rolling 48h per-visitor timer that never actually expired) and it had
+ * already been added, called out as fake scarcity, and removed twice
+ * before. Ties urgency to something real instead: the Live Monthly Ad
+ * Teardowns membership feature actually recurs every month, so missing
+ * this one genuinely means waiting for the next one.
  */
-const URGENCY_WINDOW_MS = 48 * 60 * 60 * 1000;
-const URGENCY_STORAGE_KEY = 'kenji_ace_urgency_deadline';
-
 function UrgencyBar() {
-  const [remaining, setRemaining] = useState(URGENCY_WINDOW_MS);
-
-  useEffect(() => {
-    let deadline = 0;
-    try {
-      deadline = Number(localStorage.getItem(URGENCY_STORAGE_KEY));
-    } catch {
-      /* localStorage blocked (private mode) — countdown still runs, just resets on reload */
-    }
-    if (!deadline || Number.isNaN(deadline) || deadline < Date.now()) {
-      deadline = Date.now() + URGENCY_WINDOW_MS;
-      try {
-        localStorage.setItem(URGENCY_STORAGE_KEY, String(deadline));
-      } catch {
-        /* ignore persistence failure */
-      }
-    }
-    const tick = () => setRemaining(Math.max(0, deadline - Date.now()));
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, []);
-
-  const total = Math.floor(remaining / 1000);
-  const h = String(Math.floor(total / 3600)).padStart(2, '0');
-  const m = String(Math.floor((total % 3600) / 60)).padStart(2, '0');
-  const s = String(total % 60).padStart(2, '0');
-
   const scrollToCTA = () =>
     document.getElementById('final-cta')?.scrollIntoView({ behavior: 'smooth' });
 
@@ -210,24 +182,16 @@ function UrgencyBar() {
       />
       <div className="relative mx-auto flex max-w-6xl flex-col items-center justify-center gap-2 px-4 py-2 text-center sm:flex-row sm:gap-4">
         <p className="flex items-center gap-1.5 text-xs font-semibold sm:text-sm">
-          <Flame className="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />
-          Everyone's rebuilding their client pipeline before Q4 hits.{' '}
-          <span className="font-extrabold">Don't start the season behind.</span>
+          <Video className="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />
+          A new Live Ad Teardown drops every month.{' '}
+          <span className="font-extrabold">Miss this one and you're waiting for next month's.</span>
         </p>
-        <div className="flex shrink-0 items-center gap-3">
-          <div className="flex items-center gap-1.5">
-            <span className="hidden text-[10px] font-bold uppercase tracking-wider opacity-80 sm:inline">Closes in</span>
-            <div className="flex items-center gap-1 rounded-lg bg-black/25 px-2 py-1 font-mono text-sm font-bold tabular-nums">
-              <span>{h}</span><span className="opacity-60">:</span><span>{m}</span><span className="opacity-60">:</span><span>{s}</span>
-            </div>
-          </div>
-          <button
-            onClick={scrollToCTA}
-            className="rounded-full bg-white px-4 py-1.5 text-xs font-extrabold uppercase tracking-wide text-violet-700 shadow-sm transition-transform hover:-translate-y-0.5 active:scale-95"
-          >
-            Get started →
-          </button>
-        </div>
+        <button
+          onClick={scrollToCTA}
+          className="shrink-0 rounded-full bg-white px-4 py-1.5 text-xs font-extrabold uppercase tracking-wide text-violet-700 shadow-sm transition-transform hover:-translate-y-0.5 active:scale-95"
+        >
+          Get started →
+        </button>
       </div>
     </div>
   );
