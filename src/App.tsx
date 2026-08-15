@@ -348,9 +348,9 @@ function App() {
       {/* Trust Banner */}
       <div className="bg-gradient-to-r from-slate-800 to-slate-900 text-white py-3 px-4 text-center sticky top-0 z-40 border-b border-slate-700/50 backdrop-blur-sm">
         <div className="flex items-center justify-center gap-3 flex-wrap">
-          <span className="flex items-center gap-1.5 text-sm text-slate-300">
-            <RefreshCw className="w-4 h-4 text-sky-400" />
-            Cancel Anytime
+          <span className="flex items-center gap-1.5 text-sm font-semibold text-amber-300">
+            <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
+            Premium Membership
           </span>
           <span className="text-slate-600 hidden sm:inline">·</span>
           <span className="flex items-center gap-1.5 text-sm text-slate-300">
@@ -362,6 +362,11 @@ function App() {
             <Users className="w-4 h-4 text-blue-400" />
             334+ Members
           </span>
+          <span className="text-slate-600 hidden sm:inline">·</span>
+          <span className="flex items-center gap-1.5 text-sm text-slate-300">
+            <RefreshCw className="w-4 h-4 text-sky-400" />
+            Cancel Anytime
+          </span>
         </div>
       </div>
 
@@ -370,7 +375,7 @@ function App() {
         <div className="text-center">
           <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 px-3 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-medium mb-6 sm:mb-8">
             <Target className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
-            <span>For anyone who wants to make money running ads</span>
+            <span>The premium system for operators serious about running ads</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4 sm:mb-6 leading-[1.1] tracking-tight px-1 sm:px-0">
@@ -489,10 +494,10 @@ function App() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-              Here's What You Get
+              Everything Inside Your Membership
             </h2>
             <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-              The AI Client Acquisition Engine Membership includes:
+              The full AI Client Acquisition Engine, built to a standard most agencies don't bother with.
             </p>
           </div>
 
