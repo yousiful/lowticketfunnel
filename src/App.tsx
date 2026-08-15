@@ -60,7 +60,7 @@ const WHAT_YOU_GET = [
   {
     icon: Zap,
     title: '7-Day AI Ads Launch Map',
-    desc: 'Step-by-step roadmap to launch your first campaign in a week.',
+    desc: 'Step-by-step roadmap to launch your first campaign fast, no guesswork.',
   },
   {
     icon: FileText,
