@@ -30,8 +30,8 @@ type TrackingWindow = Window & {
 type CTAVariant = { id: string; label: string };
 
 const CTA_VARIANTS: CTAVariant[] = [
-  { id: 'A', label: 'Get Instant Access' },
-  { id: 'B', label: 'Yes! I Want In!' },
+  { id: 'A', label: 'Sign Up & Get Started' },
+  { id: 'B', label: 'Yes, Get Me Started!' },
 ];
 
 const CTA_STORAGE_KEY = 'kenji_cta_variant';
@@ -61,59 +61,48 @@ const WHAT_YOU_GET = [
     icon: Zap,
     title: '7-Day AI Ads Launch Map',
     desc: 'Step-by-step roadmap to launch your first campaign in a week.',
-    value: 199,
   },
   {
     icon: FileText,
     title: 'Meta / Google / YouTube Campaign Templates',
     desc: 'Plug-and-play templates for each platform.',
-    value: 297,
   },
   {
     icon: Sparkles,
     title: '30 Ad Hooks Swipe File',
     desc: 'Proven ad angles and hooks you can copy.',
-    value: 97,
   },
   {
     icon: Sparkles,
     title: 'AI Prompt Pack',
     desc: 'Prompts for ad copy, targeting, and creative generation.',
-    value: 67,
   },
   {
     icon: ClipboardCheck,
     title: 'Landing Page Checklist',
     desc: "Make sure your pages convert before running traffic.",
-    value: 47,
   },
   {
     icon: Video,
     title: 'Live Monthly Ad Teardowns',
     desc: 'Real campaigns reviewed live every month.',
-    value: 297,
   },
   {
     icon: TrendingUp,
     title: 'Monthly "What\'s Working Now" Briefing',
     desc: 'Updated strategies as platforms change.',
-    value: 97,
   },
   {
     icon: Users,
     title: 'Private Community Access',
     desc: '334+ members helping each other win.',
-    value: 197,
   },
   {
     icon: Phone,
     title: 'Optional 1:1 Campaign Map Call',
     desc: 'A free strategy call to help you apply the system. Optional, not required.',
-    value: 297,
   },
 ];
-
-const TOTAL_VALUE = WHAT_YOU_GET.reduce((sum, item) => sum + item.value, 0);
 
 const FAQS = [
   {
@@ -187,14 +176,13 @@ function UrgencyBar() {
       <div className="relative mx-auto flex max-w-6xl flex-col items-center justify-center gap-2 px-4 py-2 text-center sm:flex-row sm:gap-4">
         <p className="flex items-center gap-1.5 text-xs font-semibold sm:text-sm">
           <Video className="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />
-          A new Live Ad Teardown drops every month.{' '}
-          <span className="font-extrabold">Miss this one and you're waiting for next month's.</span>
+          Sign up now, before we take this page down.
         </p>
         <button
           onClick={scrollToCTA}
           className="shrink-0 rounded-full bg-white px-4 py-1.5 text-xs font-extrabold uppercase tracking-wide text-violet-700 shadow-sm transition-transform hover:-translate-y-0.5 active:scale-95"
         >
-          Get started →
+          Sign up →
         </button>
       </div>
     </div>
@@ -524,22 +512,13 @@ function App() {
                 key={i}
                 className="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-slate-700/50 rounded-2xl p-6 hover:border-cyan-500/50 hover:-translate-y-1 transition-all duration-500"
               >
-                <span className="absolute top-4 right-4 bg-teal-500/10 border border-teal-500/30 text-teal-300 text-xs font-bold px-2.5 py-1 rounded-full">
-                  ${item.value} value
-                </span>
                 <div className="bg-gradient-to-br from-sky-500 to-blue-600 w-11 h-11 rounded-xl flex items-center justify-center mb-4 shadow-lg">
                   <item.icon className="w-5 h-5 text-white" />
                 </div>
-                <h3 className="text-base font-bold text-white mb-1.5 leading-tight pr-16">{item.title}</h3>
+                <h3 className="text-base font-bold text-white mb-1.5 leading-tight">{item.title}</h3>
                 <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
               </div>
             ))}
-          </div>
-
-          <div className="max-w-md mx-auto mb-10 bg-gradient-to-r from-teal-500/10 to-emerald-500/10 border border-teal-500/30 rounded-2xl p-6 text-center">
-            <p className="text-slate-400 text-sm mb-1">Total value if you bought this piece by piece:</p>
-            <p className="text-slate-500 text-2xl font-bold line-through mb-1">${TOTAL_VALUE.toLocaleString()}+</p>
-            <p className="text-white text-lg font-black">Yours for one low monthly payment</p>
           </div>
 
           <div className="text-center">
