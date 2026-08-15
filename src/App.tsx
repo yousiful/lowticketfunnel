@@ -374,9 +374,9 @@ function App() {
           </div>
 
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4 sm:mb-6 leading-[1.1] tracking-tight px-1 sm:px-0">
-            Make Money Running Ads
+            You'll Pick This Up Fast
             <span className="block bg-gradient-to-r from-cyan-300 via-teal-300 to-emerald-400 bg-clip-text text-transparent">
-              in 7 Days
+              And Start Making Money in 7 Days
             </span>
             <span className="block text-xl sm:text-4xl md:text-5xl mt-2 text-slate-300 font-bold">
               Even If Every Campaign You've Tried Has Flopped
