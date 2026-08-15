@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { CheckCircle2, Users, Video, BookOpen, TrendingUp, DollarSign, Lock, ArrowRight, Zap, Star, ChevronDown, ChevronUp, Shield, BarChart3, Sparkles } from 'lucide-react';
+import { CheckCircle2, Users, Video, BookOpen, TrendingUp, DollarSign, Lock, ArrowRight, Zap, Star, ChevronDown, ChevronUp, BarChart3, Sparkles } from 'lucide-react';
 
 /**
  * "Founders" variant of the low-ticket funnel — lives on a hidden, unguessable
@@ -156,10 +156,6 @@ export default function FoundersOffer() {
       a: 'No. The book stands on its own and works whether you are pre-launch or already selling. When you are ready to scale, the bonus ad training is right there waiting for you.',
     },
     {
-      q: 'What if it is not for me?',
-      a: 'You are covered by a 30-day money-back guarantee. If it is not what you expected, email us and we will refund your $1.99. No questions asked.',
-    },
-    {
       q: 'How fast do I get access?',
       a: 'Instantly. The moment you check out you get the book and your community invite, so you can be reading inside 60 seconds.',
     },
@@ -187,10 +183,6 @@ export default function FoundersOffer() {
       {/* Trust strip */}
       <div className="bg-gradient-to-r from-slate-800 to-slate-800 text-white py-3 px-4 text-center sticky top-0 z-40 border-b border-slate-700/50 backdrop-blur-sm">
         <div className="flex items-center justify-center gap-3 flex-wrap">
-          <span className="flex items-center gap-1.5 text-sm text-slate-300">
-            <Shield className="w-4 h-4 text-emerald-400" /> 30-Day Money-Back Guarantee
-          </span>
-          <span className="text-slate-600 hidden sm:inline">•</span>
           <span className="flex items-center gap-1.5 text-sm text-slate-300">
             <Zap className="w-4 h-4 text-amber-400" /> Instant Access
           </span>
@@ -267,7 +259,7 @@ export default function FoundersOffer() {
                 </span>
               </button>
               <p className="text-slate-500 text-xs mt-4">
-                One-time payment · Instant access · 30-day money-back guarantee
+                One-time payment · Instant access
               </p>
             </div>
           </div>
@@ -378,20 +370,6 @@ export default function FoundersOffer() {
       {/* ==================== REVIEWS (from kenjiai.com/pricing) ==================== */}
       <KenjiReviews />
 
-      {/* ==================== GUARANTEE ==================== */}
-      <div className="py-16 sm:py-20 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
-            <Shield className="w-10 h-10 text-emerald-400" />
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">100% Money-Back Guarantee</h2>
-          <p className="text-slate-300 text-lg leading-relaxed mb-6 max-w-xl mx-auto">
-            Read the book, join the community, use the bonuses for 30 days. If you don&apos;t love it, email us and we&apos;ll
-            refund your $1.99. No questions asked.
-          </p>
-        </div>
-      </div>
-
       {/* ==================== FAQ ==================== */}
       <div className="bg-slate-900/50 border-y border-slate-800/50 py-16 sm:py-20 px-4">
         <div className="max-w-3xl mx-auto">
@@ -462,7 +440,6 @@ export default function FoundersOffer() {
             <div className="flex items-center justify-center gap-6 mt-6 text-slate-400 text-xs flex-wrap">
               <span className="flex items-center gap-1.5"><Lock className="w-3.5 h-3.5" /> Secure Checkout</span>
               <span className="flex items-center gap-1.5"><Zap className="w-3.5 h-3.5" /> Instant Access</span>
-              <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5" /> 30-Day Guarantee</span>
             </div>
           </div>
         </div>

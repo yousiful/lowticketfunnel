@@ -138,10 +138,6 @@ const FAQS = [
     a: 'Yes. Cancel with one click, no questions, no hassle. You keep access until the end of your billing period.',
   },
   {
-    q: 'How do refunds work?',
-    a: "Email support@kenjiai.com within 30 days of joining and we'll refund your payment in full. No questions asked.",
-  },
-  {
     q: "What if I'm a complete beginner?",
     a: 'The 7-day launch map starts from zero. No prior ad experience needed.',
   },
@@ -256,7 +252,6 @@ function ExitIntentPopup({ ctaLabel, onCTA, onClose }: { ctaLabel: string; onCTA
           </button>
 
           <div className="flex items-center justify-center gap-4 text-slate-500 text-xs mb-4 flex-wrap">
-            <span className="flex items-center gap-1"><Shield className="w-3 h-3" />30-day guarantee</span>
             <span className="flex items-center gap-1"><RefreshCw className="w-3 h-3" />Cancel anytime</span>
           </div>
 
@@ -354,11 +349,6 @@ function App() {
       <div className="bg-gradient-to-r from-slate-800 to-slate-900 text-white py-3 px-4 text-center sticky top-0 z-40 border-b border-slate-700/50 backdrop-blur-sm">
         <div className="flex items-center justify-center gap-3 flex-wrap">
           <span className="flex items-center gap-1.5 text-sm text-slate-300">
-            <Shield className="w-4 h-4 text-emerald-400" />
-            30-Day Money-Back Guarantee
-          </span>
-          <span className="text-slate-600 hidden sm:inline">·</span>
-          <span className="flex items-center gap-1.5 text-sm text-slate-300">
             <RefreshCw className="w-4 h-4 text-sky-400" />
             Cancel Anytime
           </span>
@@ -430,7 +420,7 @@ function App() {
               </span>
             </button>
             <p className="text-slate-500 text-xs mt-4">
-              Cancel anytime · Instant access · 30-day refund
+              Cancel anytime · Instant access
             </p>
           </div>
         </div>
@@ -537,21 +527,6 @@ function App() {
               You'll be inside the member area in under 60 seconds.
             </p>
           </div>
-        </div>
-      </div>
-
-      {/* ==================== GUARANTEE ==================== */}
-      <div className="py-16 sm:py-20 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
-            <Shield className="w-10 h-10 text-emerald-400" />
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-            30-Day Money-Back Guarantee
-          </h2>
-          <p className="text-slate-300 text-lg leading-relaxed mb-6 max-w-xl mx-auto">
-            Go through the 7-day launch map, use the templates, join a live session. If you don't feel clear on how to launch your first profitable campaign within 30 days, email support@kenjiai.com for a full refund. No questions asked.
-          </p>
         </div>
       </div>
 
@@ -679,7 +654,7 @@ function App() {
 
           <div className="bg-slate-900/80 border border-slate-700/50 rounded-2xl p-8 mb-6 backdrop-blur-sm">
             <p className="text-slate-400 text-sm mb-8">
-              Billed monthly · Cancel anytime · 30-day refund
+              Billed monthly · Cancel anytime
             </p>
 
             <button
@@ -702,10 +677,6 @@ function App() {
               <span className="flex items-center gap-1.5">
                 <Zap className="w-3.5 h-3.5" />
                 Instant Access
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Shield className="w-3.5 h-3.5" />
-                30-Day Guarantee
               </span>
             </div>
           </div>
