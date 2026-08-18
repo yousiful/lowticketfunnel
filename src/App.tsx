@@ -315,8 +315,8 @@ function App() {
   }, []);
 
   const PLAN_DETAILS: Record<Plan, { name: string; contentId: string; value: number; url: string }> = {
-    monthly: { name: 'AI Client Acquisition Engine - Monthly Membership', contentId: 'ace-monthly', value: 7.00, url: CHECKOUT_URL_MONTHLY },
-    lifetime: { name: 'AI Client Acquisition Engine - Lifetime Access', contentId: 'ace-27-79-lifetime', value: 27.79, url: CHECKOUT_URL_LIFETIME },
+    monthly: { name: 'Freedom Club - Monthly Membership', contentId: 'ace-monthly', value: 7.00, url: CHECKOUT_URL_MONTHLY },
+    lifetime: { name: 'Freedom Club - Lifetime Access', contentId: 'ace-27-79-lifetime', value: 27.79, url: CHECKOUT_URL_LIFETIME },
   };
 
   const handleCTAClick = (plan: Plan) => {
@@ -375,21 +375,21 @@ function App() {
         <div className="text-center">
           <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 px-3 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-medium mb-6 sm:mb-8">
             <Target className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
-            <span>The premium system for operators serious about running ads</span>
+            <span>Freedom Club · not for beginners</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4 sm:mb-6 leading-[1.1] tracking-tight px-1 sm:px-0">
-            You'll Pick This Up Fast
+            Freedom Club Isn't
             <span className="block bg-gradient-to-r from-cyan-300 via-teal-300 to-emerald-400 bg-clip-text text-transparent">
-              And Start Making Money in 7 Days
+              For Beginners
             </span>
             <span className="block text-xl sm:text-4xl md:text-5xl mt-2 text-slate-300 font-bold">
-              Even If Every Campaign You've Tried Has Flopped
+              It's For Operators Who Understand Traffic, Data, and Scaling
             </span>
           </h1>
 
           <p className="text-base sm:text-xl text-slate-400 mb-6 sm:mb-10 max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
-            Get the complete AI Client Acquisition Engine: templates, prompts, ad hooks, live support, and a private community. Cancel anytime.
+            You want more leverage, more structure, and more profit. Templates, prompts, ad hooks, live support, and a private community. Cancel anytime.
           </p>
 
           <div className="mb-6 sm:mb-10 relative px-0 sm:px-4">
@@ -402,7 +402,7 @@ function App() {
               />
               <img
                 src="/freedom-club-bundle.jpg"
-                alt="AI Client Acquisition Engine membership: templates, prompts, ad hooks, live monthly teardowns, and private community"
+                alt="Freedom Club membership: templates, prompts, ad hooks, live monthly teardowns, and private community"
                 width={1024}
                 height={1024}
                 fetchPriority="high"
@@ -482,7 +482,7 @@ function App() {
                 It's not your fault. Nobody taught you the system.
               </p>
               <p className="text-slate-300 leading-relaxed">
-                The difference between people who waste money on ads and people who make money with them? It's not talent. It's having the right system. That's what the AI Client Acquisition Engine gives you.
+                The difference between people who waste money on ads and people who make money with them? It's not talent. It's having the right system. That's what Freedom Club gives you.
               </p>
             </div>
           </div>
@@ -497,7 +497,7 @@ function App() {
               Everything Inside Your Membership
             </h2>
             <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-              The full AI Client Acquisition Engine, built to a standard most agencies don't bother with.
+              The full Freedom Club system, built to a standard most agencies don't bother with.
             </p>
           </div>
 
@@ -651,9 +651,9 @@ function App() {
 
         <div className="max-w-3xl mx-auto text-center relative z-10">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
-            Get Instant Access to the
+            Get Instant Access to
             <span className="block bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">
-              AI Client Acquisition Engine
+              Freedom Club
             </span>
           </h2>
 
@@ -694,7 +694,7 @@ function App() {
 
       {/* Footer */}
       <div className="bg-slate-950 py-8 px-4 pb-28 sm:pb-8 text-center text-slate-600 text-sm border-t border-slate-800/50">
-        <p>&copy; 2026 AI Client Acquisition Engine. All rights reserved.</p>
+        <p>&copy; 2026 Freedom Club. All rights reserved.</p>
         <p className="mt-2 text-slate-700">Results vary. This is an educational product, not a guarantee of income.</p>
       </div>
 
