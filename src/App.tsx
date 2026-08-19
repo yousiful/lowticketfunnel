@@ -11,8 +11,8 @@ import {
 // below has to be updated by hand whenever it changes on the GHL side, or
 // the pixel value silently drifts from what's actually charged. No separate
 // yearly plan exists.
-const CHECKOUT_URL_MONTHLY = 'https://freedom.kenjiai.com/7-dollar-new-funnel-704974';
-const CHECKOUT_URL_LIFETIME = 'https://freedom.kenjiai.com/7-dollar-new-funnel-704974';
+const CHECKOUT_URL_MONTHLY = 'https://freedom.kenjiai.com/startnow';
+const CHECKOUT_URL_LIFETIME = 'https://freedom.kenjiai.com/startnow';
 
 type Plan = 'monthly' | 'lifetime';
 
