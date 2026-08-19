@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import {
-  CheckCircle2, Users, Video, BookOpen, TrendingUp, DollarSign, Lock, ArrowRight, Zap, Award,
-  Star, ChevronDown, ChevronUp, Shield, Target, Sparkles, ClipboardCheck, Phone,
-  RefreshCw, FileText, X
+  CheckCircle2, Users, BookOpen, DollarSign, Lock, ArrowRight, Zap, Award,
+  Star, ChevronDown, ChevronUp, Shield, Target, Sparkles, Phone,
+  RefreshCw, FileText, Clock, X
 } from 'lucide-react';
 
 // Same GHL checkout used before. The Stripe price on the GHL side has moved
@@ -58,14 +58,9 @@ function pickCTAVariant(): CTAVariant {
 
 const WHAT_YOU_GET = [
   {
-    icon: Zap,
-    title: '7-Day AI Ads Launch Map',
-    desc: 'Step-by-step roadmap to launch your first campaign fast, no guesswork.',
-  },
-  {
     icon: FileText,
-    title: 'Meta / Google / YouTube Campaign Templates',
-    desc: 'Plug-and-play templates for each platform.',
+    title: 'Meta Campaign Templates',
+    desc: 'Plug-and-play ad templates you can copy and use right away.',
   },
   {
     icon: Sparkles,
@@ -78,24 +73,9 @@ const WHAT_YOU_GET = [
     desc: 'Prompts for ad copy, targeting, and creative generation.',
   },
   {
-    icon: ClipboardCheck,
-    title: 'Landing Page Checklist',
-    desc: "Make sure your pages convert before running traffic.",
-  },
-  {
-    icon: Video,
-    title: 'Live Monthly Ad Teardowns',
-    desc: 'Real campaigns reviewed live every month.',
-  },
-  {
-    icon: TrendingUp,
-    title: 'Monthly "What\'s Working Now" Briefing',
-    desc: 'Updated strategies as platforms change.',
-  },
-  {
     icon: Users,
     title: 'Private Community Access',
-    desc: '334+ members helping each other win.',
+    desc: 'Hundreds of entrepreneurs just like you, helping each other win.',
   },
   {
     icon: Phone,
@@ -119,7 +99,7 @@ const FAQS = [
   },
   {
     q: 'Do I need a website?',
-    a: 'No. The system includes a landing page checklist and templates. You can use any page builder.',
+    a: 'No. You can use any page builder you like, or send people straight to a booking link or your DMs.',
   },
   {
     q: 'Do I need a big ad budget?',
@@ -139,11 +119,11 @@ const FAQS = [
   },
   {
     q: "What if I'm a complete beginner?",
-    a: 'The 7-day launch map starts from zero. No prior ad experience needed.',
+    a: 'The training starts from zero. No prior ad experience needed.',
   },
   {
     q: 'What platforms does this cover?',
-    a: 'Facebook/Meta, Google, and YouTube.',
+    a: 'Facebook and Instagram, through Meta Ads.',
   },
   {
     q: 'Do I need to use AI tools?',
@@ -155,9 +135,10 @@ const FAQS = [
  * Urgency bar, honest version. No fake countdown - this codebase had one
  * (a rolling 48h per-visitor timer that never actually expired) and it had
  * already been added, called out as fake scarcity, and removed twice
- * before. Ties urgency to something real instead: the Live Monthly Ad
- * Teardowns membership feature actually recurs every month, so missing
- * this one genuinely means waiting for the next one.
+ * before. Do not reintroduce one. The urgency here is a plain statement of
+ * a real operational fact instead: enrollment is a limited-time window and
+ * this page comes down when it closes. Nothing counts down and nothing
+ * claims a specific deadline the offer cannot keep.
  */
 function UrgencyBar() {
   const scrollToCTA = () =>
@@ -171,8 +152,8 @@ function UrgencyBar() {
       />
       <div className="relative mx-auto flex max-w-6xl flex-col items-center justify-center gap-2 px-4 py-2 text-center sm:flex-row sm:gap-4">
         <p className="flex items-center gap-1.5 text-xs font-semibold sm:text-sm">
-          <Video className="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />
-          Sign up now, before we take this page down.
+          <Clock className="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />
+          Access is open for a limited time. When it closes, this page comes down.
         </p>
         <button
           onClick={scrollToCTA}
@@ -240,7 +221,7 @@ function ExitIntentPopup({ ctaLabel, onCTA, onClose }: { ctaLabel: string; onCTA
           </h3>
 
           <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
-            This isn't a knockoff freebie you'll forget about. It's a very low monthly investment, low enough to say yes today, real enough that you'll actually show up and use it. 334+ members already are.
+            This isn't a knockoff freebie you'll forget about. It's a very low monthly investment, low enough to say yes today, real enough that you'll actually show up and use it. Hundreds of entrepreneurs just like you already are.
           </p>
 
           <button
@@ -360,7 +341,7 @@ function App() {
           <span className="text-slate-600 hidden sm:inline">·</span>
           <span className="flex items-center gap-1.5 text-sm text-slate-300">
             <Users className="w-4 h-4 text-blue-400" />
-            334+ Members
+            Hundreds of Entrepreneurs
           </span>
           <span className="text-slate-600 hidden sm:inline">·</span>
           <span className="flex items-center gap-1.5 text-sm text-slate-300">
@@ -402,7 +383,7 @@ function App() {
               />
               <img
                 src="/freedom-club-bundle.jpg"
-                alt="Freedom Club membership: templates, prompts, ad hooks, live monthly teardowns, and private community"
+                alt="Freedom Club membership: ad templates, prompts, ad hooks, and private community"
                 width={1024}
                 height={1024}
                 fetchPriority="high"
@@ -547,18 +528,15 @@ function App() {
             </p>
           </div>
 
-          <div className="grid grid-cols-3 gap-4 mb-12 max-w-3xl mx-auto">
-            {[
-              { value: '12', label: 'Years in Business', icon: Award },
-              { value: '334+', label: 'Members', icon: Users },
-              { value: 'Monthly', label: 'Live Ad Teardowns', icon: Video },
-            ].map((stat, i) => (
-              <div key={i} className="text-center bg-slate-800/50 border border-slate-700/50 rounded-xl py-5 px-3">
-                <stat.icon className="w-6 h-6 text-sky-400 mx-auto mb-2" />
-                <div className="text-2xl sm:text-3xl font-black text-white">{stat.value}</div>
-                <div className="text-slate-400 text-xs sm:text-sm">{stat.label}</div>
-              </div>
-            ))}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-12 max-w-3xl mx-auto">
+            <div className="flex items-center gap-2 bg-slate-800/50 border border-slate-700/50 rounded-xl py-4 px-6">
+              <Users className="w-5 h-5 text-sky-400 flex-shrink-0" />
+              <span className="text-white font-bold text-sm sm:text-base">Join hundreds of entrepreneurs just like you</span>
+            </div>
+            <div className="flex items-center gap-2 bg-slate-800/50 border border-slate-700/50 rounded-xl py-4 px-6">
+              <Award className="w-5 h-5 text-sky-400 flex-shrink-0" />
+              <span className="text-white font-bold text-sm sm:text-base">12 years in business</span>
+            </div>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
@@ -572,7 +550,7 @@ function App() {
               {
                 name: 'Sarah K.',
                 role: 'Business Coach',
-                text: 'I was scared to touch paid ads. The step-by-step approach made it so simple. I launched my first Google Ads campaign following the exact templates and got 23 qualified leads in my first week.',
+                text: 'I was scared to touch paid ads. The step-by-step approach made it so simple. I launched my first Meta ads campaign following the exact templates and got 23 qualified leads in my first week.',
                 stars: 5,
               },
               {
@@ -658,6 +636,9 @@ function App() {
           </h2>
 
           <div className="bg-slate-900/80 border border-slate-700/50 rounded-2xl p-8 mb-6 backdrop-blur-sm">
+            <p className="text-amber-300 text-sm font-semibold mb-2">
+              Access is only open for a limited time.
+            </p>
             <p className="text-slate-400 text-sm mb-8">
               Billed monthly · Cancel anytime
             </p>
@@ -687,7 +668,7 @@ function App() {
           </div>
 
           <p className="text-slate-500 text-sm">
-            We reserve the right to close enrollment at any time to keep the community quality high.
+            Once we close enrollment, this page comes down and you'll have to wait until we open it again.
           </p>
         </div>
       </div>
