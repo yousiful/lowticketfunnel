@@ -375,21 +375,21 @@ function App() {
         <div className="text-center">
           <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 px-3 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-medium mb-6 sm:mb-8">
             <Target className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
-            <span>Freedom Club · not for beginners</span>
+            <span>Freedom Club · beginners welcome</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4 sm:mb-6 leading-[1.1] tracking-tight px-1 sm:px-0">
-            Freedom Club Isn't
+            Learn How to Run Ads
             <span className="block bg-gradient-to-r from-cyan-300 via-teal-300 to-emerald-400 bg-clip-text text-transparent">
-              For Beginners
+              That Actually Make Money
             </span>
             <span className="block text-xl sm:text-4xl md:text-5xl mt-2 text-slate-300 font-bold">
-              It's For Operators Who Understand Traffic, Data, and Scaling
+              Even If You've Never Run a Single Ad Before
             </span>
           </h1>
 
           <p className="text-base sm:text-xl text-slate-400 mb-6 sm:mb-10 max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
-            You want more leverage, more structure, and more profit. Templates, prompts, ad hooks, live support, and a private community. Cancel anytime.
+            If you want to make money online, this is where you start. Templates, prompts, ad hooks, live support, and a private community. Cancel anytime.
           </p>
 
           <div className="mb-6 sm:mb-10 relative px-0 sm:px-4">
