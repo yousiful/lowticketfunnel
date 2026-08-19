@@ -17,3 +17,34 @@ body {
 html {
   scroll-behavior: smooth;
 }
+
+/*
+ * Pulsing glow on the primary CTAs so they pull the eye on a long page.
+ * The Tailwind shadow utilities stay on the buttons as the static fallback:
+ * this animation overrides them while it runs, and reduced-motion users fall
+ * back to the plain shadow instead of a pulsing element.
+ */
+@keyframes ctaPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 22px rgba(16, 185, 129, 0.4), 0 0 0 0 rgba(16, 185, 129, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 52px rgba(20, 184, 166, 0.8), 0 0 0 12px rgba(16, 185, 129, 0);
+  }
+}
+
+.cta-glow {
+  animation: ctaPulse 2.4s ease-in-out infinite;
+}
+
+.cta-glow:hover {
+  animation: none;
+  box-shadow: 0 0 64px rgba(20, 184, 166, 0.9);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-glow {
+    animation: none;
+  }
+}

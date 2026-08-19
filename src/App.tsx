@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import {
   CheckCircle2, Users, BookOpen, DollarSign, Lock, ArrowRight, Zap, Award,
   Star, ChevronDown, ChevronUp, Shield, Target, Sparkles, Phone,
-  RefreshCw, FileText, Clock, X
+  FileText, Clock, X
 } from 'lucide-react';
 
 // Same GHL checkout used before. The Stripe price on the GHL side has moved
@@ -30,8 +30,8 @@ type TrackingWindow = Window & {
 type CTAVariant = { id: string; label: string };
 
 const CTA_VARIANTS: CTAVariant[] = [
-  { id: 'A', label: 'Sign Up & Get Started' },
-  { id: 'B', label: 'Yes, Get Me Started!' },
+  { id: 'A', label: 'YES! I Want to Profit' },
+  { id: 'B', label: 'I Want In' },
 ];
 
 const CTA_STORAGE_KEY = 'kenji_cta_variant';
@@ -226,15 +226,11 @@ function ExitIntentPopup({ ctaLabel, onCTA, onClose }: { ctaLabel: string; onCTA
 
           <button
             onClick={onCTA}
-            className="w-full group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-base sm:text-lg px-8 py-4 rounded-xl shadow-[0_0_25px_rgba(16,185,129,0.4)] hover:shadow-[0_0_40px_rgba(20,184,166,0.6)] transform hover:-translate-y-0.5 transition-all duration-300 inline-flex items-center justify-center border border-emerald-400/50 gap-2 mb-4"
+            className="cta-glow w-full group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-base sm:text-lg px-8 py-4 rounded-xl shadow-[0_0_25px_rgba(16,185,129,0.4)] hover:shadow-[0_0_40px_rgba(20,184,166,0.6)] transform hover:-translate-y-0.5 transition-all duration-300 inline-flex items-center justify-center border border-emerald-400/50 gap-2 mb-4"
           >
             <span>{ctaLabel}</span>
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </button>
-
-          <div className="flex items-center justify-center gap-4 text-slate-500 text-xs mb-4 flex-wrap">
-            <span className="flex items-center gap-1"><RefreshCw className="w-3 h-3" />Cancel anytime</span>
-          </div>
 
           <button
             onClick={onClose}
@@ -343,11 +339,6 @@ function App() {
             <Users className="w-4 h-4 text-blue-400" />
             Hundreds of Entrepreneurs
           </span>
-          <span className="text-slate-600 hidden sm:inline">·</span>
-          <span className="flex items-center gap-1.5 text-sm text-slate-300">
-            <RefreshCw className="w-4 h-4 text-sky-400" />
-            Cancel Anytime
-          </span>
         </div>
       </div>
 
@@ -370,7 +361,7 @@ function App() {
           </h1>
 
           <p className="text-base sm:text-xl text-slate-400 mb-6 sm:mb-10 max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
-            If you want to make money online, this is where you start. Templates, prompts, ad hooks, live support, and a private community. Cancel anytime.
+            If you want to make money online, this is where you start. Templates, prompts, ad hooks, live support, and a private community.
           </p>
 
           <div className="mb-6 sm:mb-10 relative px-0 sm:px-4">
@@ -397,7 +388,7 @@ function App() {
             <button
               onClick={() => handleCTAClick('monthly')}
               id="hero-cta"
-              className="w-full sm:w-auto group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-lg sm:text-xl px-12 py-5 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:shadow-[0_0_50px_rgba(20,184,166,0.5)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-emerald-400/50"
+              className="cta-glow w-full sm:w-auto group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-lg sm:text-xl px-12 py-5 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:shadow-[0_0_50px_rgba(20,184,166,0.5)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-emerald-400/50"
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center gap-3">
@@ -406,7 +397,7 @@ function App() {
               </span>
             </button>
             <p className="text-slate-500 text-xs mt-4">
-              Cancel anytime · Instant access
+              Instant access
             </p>
           </div>
         </div>
@@ -501,7 +492,7 @@ function App() {
             <button
               onClick={() => handleCTAClick('monthly')}
               id="mid-cta"
-              className="group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-lg sm:text-xl px-12 py-5 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:shadow-[0_0_50px_rgba(20,184,166,0.5)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-emerald-400/50 gap-3"
+              className="cta-glow group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-lg sm:text-xl px-12 py-5 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:shadow-[0_0_50px_rgba(20,184,166,0.5)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-emerald-400/50 gap-3"
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center gap-3">
@@ -512,6 +503,100 @@ function App() {
             <p className="text-slate-500 text-xs mt-3">
               You'll be inside the member area in under 60 seconds.
             </p>
+          </div>
+        </div>
+      </div>
+
+      {/* ==================== INSIDE THE MEMBER AREA ==================== */}
+      {/*
+        Real screenshots of the live member area, not mockups. The community
+        shot is cropped to the feed column and has a member's surname blurred
+        so nothing identifying a private-group member ships on a public page.
+      */}
+      <div className="bg-slate-900/50 border-y border-slate-800/50 py-16 sm:py-20 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold mb-5">
+              <Lock className="w-3.5 h-3.5" />
+              Your login works the second you join
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
+              Here's What You See When You Log In
+            </h2>
+            <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+              No mystery and no waiting around. This is the real member area, and every training in it is open to you from day one.
+            </p>
+          </div>
+
+          <figure className="relative mb-10">
+            <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500/10 via-emerald-500/10 to-cyan-500/10 blur-2xl rounded-3xl pointer-events-none" />
+            <picture>
+              <source type="image/webp" srcSet="/dashboard-library.webp" />
+              <img
+                src="/dashboard-library.jpg"
+                alt="The Freedom Club member area training library, showing courses on chargebacks, AI tools, business funding, closing deals, client attraction, and paid ads certification"
+                width={1400}
+                height={756}
+                loading="lazy"
+                decoding="async"
+                className="relative w-full rounded-xl sm:rounded-2xl border border-slate-700/60 shadow-2xl shadow-cyan-500/10"
+              />
+            </picture>
+            <figcaption className="relative text-slate-400 text-sm mt-4 text-center">
+              The training library, ready to watch the minute you log in.
+            </figcaption>
+          </figure>
+
+          <div className="grid sm:grid-cols-2 gap-6 sm:gap-8 mb-10">
+            <figure>
+              <picture>
+                <source type="image/webp" srcSet="/dashboard-community.webp" />
+                <img
+                  src="/dashboard-community.jpg"
+                  alt="The Freedom Club community feed, where members post questions and share what is working"
+                  width={900}
+                  height={1012}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full rounded-xl border border-slate-700/60 shadow-xl shadow-cyan-500/5"
+                />
+              </picture>
+              <figcaption className="text-slate-400 text-sm mt-3 text-center">
+                The community feed, where members ask questions and get answers.
+              </figcaption>
+            </figure>
+
+            <figure>
+              <picture>
+                <source type="image/webp" srcSet="/dashboard-courses.webp" />
+                <img
+                  src="/dashboard-courses.jpg"
+                  alt="Freedom Club courses including Pre-Launch Pre-Converted and a guide to self-liquidating Meta ad campaigns"
+                  width={900}
+                  height={669}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full rounded-xl border border-slate-700/60 shadow-xl shadow-cyan-500/5"
+                />
+              </picture>
+              <figcaption className="text-slate-400 text-sm mt-3 text-center">
+                Open any course and start on day one.
+              </figcaption>
+            </figure>
+          </div>
+
+          <div className="text-center">
+            <button
+              onClick={() => handleCTAClick('monthly')}
+              id="dashboard-cta"
+              className="cta-glow group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-lg sm:text-xl px-12 py-5 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:shadow-[0_0_50px_rgba(20,184,166,0.5)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-emerald-400/50 gap-3"
+            >
+              <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <span className="relative flex items-center gap-3">
+                {cta.label}
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </span>
+            </button>
           </div>
         </div>
       </div>
@@ -646,7 +731,7 @@ function App() {
             <button
               onClick={() => handleCTAClick('monthly')}
               id="final-cta"
-              className="w-full sm:w-auto group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-xl sm:text-2xl px-14 py-6 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:shadow-[0_0_50px_rgba(20,184,166,0.6)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-emerald-400/50 gap-3"
+              className="cta-glow w-full sm:w-auto group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-xl sm:text-2xl px-14 py-6 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:shadow-[0_0_50px_rgba(20,184,166,0.6)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-emerald-400/50 gap-3"
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center gap-3">
@@ -684,7 +769,7 @@ function App() {
         <button
           onClick={() => handleCTAClick('monthly')}
           id="sticky-mobile-cta"
-          className="w-full group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-base px-5 py-3.5 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.4)] border border-emerald-400/50 inline-flex items-center justify-center gap-2"
+          className="cta-glow w-full group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-base px-5 py-3.5 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.4)] border border-emerald-400/50 inline-flex items-center justify-center gap-2"
         >
           <span>{cta.label}</span>
           <ArrowRight className="w-4 h-4" />
