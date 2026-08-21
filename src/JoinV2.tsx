@@ -898,8 +898,9 @@ function JoinV2() {
         <p className="mt-2 text-slate-700">Results vary. This is an educational product, not a guarantee of income.</p>
       </div>
 
-      {/* Sticky mobile CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-emerald-500/30 bg-slate-950/95 px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.6)] backdrop-blur-md sm:hidden">
+      {/* Sticky mobile CTA. Hidden once the form is past step 1, where it would
+          be telling someone to start something they are already halfway through. */}
+      <div className={`fixed bottom-0 left-0 right-0 z-50 border-t border-emerald-500/30 bg-slate-950/95 px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.6)] backdrop-blur-md ${step === 1 ? 'sm:hidden' : 'hidden'}`}>
         <button
           onClick={scrollToForm}
           id="sticky-mobile-cta"
