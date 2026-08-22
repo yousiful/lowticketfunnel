@@ -1,31 +1,51 @@
 import { useState, useEffect } from 'react';
 import {
   Users, BookOpen, ArrowRight, Zap, Award, Star, ChevronDown, ChevronUp,
-  Shield, Target, Sparkles, Phone, FileText, Clock, Lock, Check
+  Shield, Target, Sparkles, Phone, FileText, Clock, Lock, Check, DollarSign
 } from 'lucide-react';
 
 /**
  * A/B variant of the live Freedom Club page (src/App.tsx), served at /join-v2.
  *
- * The one structural difference is the order flow. The live page sends every
- * click straight to the GHL checkout. This variant runs the same explicit
- * two-step order form the live GHL funnel pages already use
- * (freedom.kenjiai.com/startnow): "Step #1" collects name, email and phone
- * with no payment fields anywhere on screen, and "Step #2 Access" is the
- * payment step. Getting the signup commitment first is the whole point of
- * the test, so do not collapse it back into one step.
+ * ORDER FLOW, and why it is one step.
  *
- * Offer copy and branding are a snapshot of App.tsx on purpose. App.tsx is
- * the control and stays untouched. If the offer copy changes there, mirror it
- * here by hand so the only variable under test is the order flow.
+ * This page used to run its own "Step #1 / Step #2 Access" order form, cloned
+ * from the GHL order form it hands off to. That was a mistake, and testing it
+ * end to end is what surfaced it: the checkout at freedom.kenjiai.com/startnow
+ * is a GHL two-step order form element (class `container-order-form-two-step`),
+ * so a buyer went through two steps here, then landed on a page showing the
+ * exact same two step labels and the same three fields. Even with the fields
+ * prefilled it read as starting over rather than continuing.
+ *
+ * Verified against the live checkout on 2026-08-22:
+ *   - The prefill works. full_name, email and phone populate GHL's inputs.
+ *   - /startnow redirects to /7-dollar-new-funnel-704974, params carry across.
+ *   - GHL's step state is internal to its Vue widget and only advances when
+ *     its own step 1 is submitted. No query param lands a buyer on step 2, so
+ *     the second step tab cannot be skipped from this side.
+ *
+ * So this page collects everything once, in a single form with no step chrome
+ * of its own, and hands off exactly once. Do not add step tabs back, and do
+ * not split this into two screens. The duplicated step widget was the problem.
+ *
+ * The one remaining piece of duplication lives in GHL, not here: switching that
+ * funnel's order form element from its two-step layout to the one-step layout
+ * would remove the last "Step #1" a buyer sees. That is a change in the GHL
+ * page builder, not in this repo.
+ *
+ * Offer copy is a snapshot of App.tsx on purpose. App.tsx is the control and
+ * stays untouched. If the offer copy changes there, mirror it here by hand.
+ * Visual treatment intentionally diverges from the control: this variant
+ * carries the closers.kenjiai.com styling (stat blocks, heavier type, warmer
+ * high-contrast palette), so it is testing flow and styling together.
  */
 
 const CHECKOUT_URL = 'https://freedom.kenjiai.com/startnow';
 
 /**
- * The GHL order form on freedom.kenjiai.com/startnow prefills its own name,
- * email and phone inputs from these query params (verified live on
- * 2026-08-20), so nobody has to type their details twice after step 1.
+ * The GHL order form prefills its name, email and phone inputs from these
+ * query params (re-verified live on 2026-08-22), so nothing is retyped after
+ * the hand-off.
  */
 const PREFILL_PARAMS = { name: 'full_name', email: 'email', phone: 'phone' };
 
@@ -37,7 +57,7 @@ const MEMBERSHIP = {
 };
 
 /**
- * Upsell offered after the signup and payment steps.
+ * Upsell offered alongside the membership, and again after payment.
  *
  * Name and price are copied verbatim from the live product record, not typed
  * from memory. Verified 2026-08-20 in two places that agree:
@@ -78,6 +98,45 @@ type TrackingWindow = Window & {
   dataLayer?: Record<string, unknown>[];
 };
 
+/**
+ * Hero stat blocks, in the closers.kenjiai.com treatment.
+ *
+ * Every figure here is already stated elsewhere on this page, so the styling
+ * pass did not introduce a single new claim. closers.kenjiai.com has invented
+ * numbers on it (spots remaining, provider counts, live participant counts).
+ * None of those came across and none should.
+ */
+const STATS = [
+  {
+    icon: DollarSign,
+    value: '$7',
+    label: 'Per month, cancel anytime',
+    tint: 'from-amber-500/15 to-orange-500/10 border-amber-500/30 hover:border-amber-500/60 hover:shadow-amber-500/20',
+    iconColor: 'text-amber-400',
+  },
+  {
+    icon: Award,
+    value: '12 yrs',
+    label: 'In business',
+    tint: 'from-emerald-500/15 to-teal-500/10 border-emerald-500/30 hover:border-emerald-500/60 hover:shadow-emerald-500/20',
+    iconColor: 'text-emerald-400',
+  },
+  {
+    icon: Zap,
+    value: '60 sec',
+    label: 'From payment to member area',
+    tint: 'from-teal-500/15 to-cyan-500/10 border-teal-500/30 hover:border-teal-500/60 hover:shadow-teal-500/20',
+    iconColor: 'text-teal-400',
+  },
+];
+
+const HERO_CHIPS = [
+  'Meta campaign templates',
+  '30 ad hooks swipe file',
+  'AI prompt pack',
+  'Private community',
+];
+
 const WHAT_YOU_GET = [
   {
     icon: FileText,
@@ -112,8 +171,8 @@ const FAQS = [
     a: "It's a small monthly membership, billed monthly with no contracts. You'll see the exact price before you confirm at checkout. Cancel anytime, no hidden fees.",
   },
   {
-    q: 'Why do you ask for my details before payment?',
-    a: 'So your account and your community login are ready the second your payment goes through. Step 1 does not charge you anything.',
+    q: 'Will I have to type my details twice?',
+    a: "No. What you enter here carries over to the checkout page already filled in. All you add there is your card.",
   },
   {
     q: 'What happens after I buy?',
@@ -154,19 +213,19 @@ function UrgencyBar() {
     document.getElementById('order-form')?.scrollIntoView({ behavior: 'smooth' });
 
   return (
-    <div className="relative z-50 w-full overflow-hidden bg-gradient-to-r from-violet-600 via-fuchsia-600 to-violet-600 text-white">
+    <div className="relative z-50 w-full overflow-hidden bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500 text-slate-950">
       <div
         className="pointer-events-none absolute inset-0 opacity-20"
-        style={{ backgroundImage: 'repeating-linear-gradient(90deg, rgba(255,255,255,0.12) 0 28px, transparent 28px 56px)' }}
+        style={{ backgroundImage: 'repeating-linear-gradient(90deg, rgba(0,0,0,0.12) 0 28px, transparent 28px 56px)' }}
       />
       <div className="relative mx-auto flex max-w-6xl flex-col items-center justify-center gap-2 px-4 py-2 text-center sm:flex-row sm:gap-4">
-        <p className="flex items-center gap-1.5 text-xs font-semibold sm:text-sm">
+        <p className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wide sm:text-sm">
           <Clock className="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />
           Access is open for a limited time. When it closes, this page comes down.
         </p>
         <button
           onClick={scrollToForm}
-          className="shrink-0 rounded-full bg-white px-4 py-1.5 text-xs font-extrabold uppercase tracking-wide text-violet-700 shadow-sm transition-transform hover:-translate-y-0.5 active:scale-95"
+          className="shrink-0 rounded-full bg-slate-950 px-4 py-1.5 text-xs font-extrabold uppercase tracking-wide text-amber-300 shadow-sm transition-transform hover:-translate-y-0.5 active:scale-95"
         >
           Sign up →
         </button>
@@ -174,8 +233,6 @@ function UrgencyBar() {
     </div>
   );
 }
-
-type Step = 1 | 2 | 3;
 
 type Details = { name: string; email: string; phone: string };
 
@@ -187,34 +244,36 @@ function isValidPhone(value: string) {
   return value.replace(/\D/g, '').length >= 10;
 }
 
+function totalDue(addOn: boolean) {
+  return MEMBERSHIP.price + (addOn ? PLACEMENT_OFFER.price : 0);
+}
+
 /**
- * Two-step order form, modelled on the live GHL order form at
- * freedom.kenjiai.com/startnow: the same "Step #1" and "Step #2 Access" tab
- * header, the same three fields in the same order, and the same button copy.
+ * Single-step order form. Details, add-on and total all live on one screen,
+ * and submitting hands straight off to the encrypted GHL checkout for the card.
  *
- * Card details are never collected here. Step 2 hands off to the encrypted
- * GHL checkout with the step 1 details prefilled, which is where the card is
- * entered and the $7 subscription is actually charged.
+ * There is deliberately no step header here. The old one mirrored the step
+ * labels on the checkout page, which is precisely what made the hand-off feel
+ * like starting over.
  */
 function OrderForm({
-  step,
-  setStep,
   details,
   setDetails,
   addOn,
   setAddOn,
 }: {
-  step: Step;
-  setStep: (s: Step) => void;
   details: Details;
   setDetails: (d: Details) => void;
   addOn: boolean;
   setAddOn: (v: boolean) => void;
 }) {
   const [errors, setErrors] = useState<Partial<Details>>({});
+  const [handingOff, setHandingOff] = useState(false);
 
-  const submitStepOne = (e: React.FormEvent) => {
+  const submit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (handingOff) return;
+
     const next: Partial<Details> = {};
     if (!details.name.trim()) next.name = 'Please add your name';
     if (!isValidEmail(details.email)) next.email = 'Please add a valid email address';
@@ -222,15 +281,11 @@ function OrderForm({
     setErrors(next);
     if (Object.keys(next).length > 0) return;
 
+    const total = totalDue(addOn);
     const w = window as TrackingWindow;
+    // One action now covers what used to be two screens, so both the lead and
+    // the checkout intent fire here.
     w.fbq?.('track', 'Lead', { content_name: MEMBERSHIP.name, variant: 'v2' });
-    w.dataLayer?.push({ event: 'signup_step_complete', variant: 'v2' });
-    setStep(2);
-  };
-
-  const goToPayment = () => {
-    const total = MEMBERSHIP.price + (addOn ? PLACEMENT_OFFER.price : 0);
-    const w = window as TrackingWindow;
     w.fbq?.('track', 'InitiateCheckout', {
       content_name: MEMBERSHIP.name,
       content_ids: [MEMBERSHIP.contentId],
@@ -240,6 +295,7 @@ function OrderForm({
       num_items: addOn ? 2 : 1,
       variant: 'v2',
     });
+    w.dataLayer?.push({ event: 'signup_step_complete', variant: 'v2' });
     w.dataLayer?.push({ event: 'initiate_checkout', variant: 'v2', add_on: addOn });
 
     const url = new URL(CHECKOUT_URL);
@@ -248,6 +304,10 @@ function OrderForm({
     url.searchParams.set(PREFILL_PARAMS.phone, details.phone.trim());
     url.searchParams.set('variant', 'v2');
     if (addOn) url.searchParams.set('add_on', PLACEMENT_OFFER.addOnParam);
+
+    // The checkout takes a few seconds to paint. Holding this state until the
+    // browser leaves keeps the hand-off reading as one continuous action.
+    setHandingOff(true);
     window.location.href = url.toString();
   };
 
@@ -255,160 +315,127 @@ function OrderForm({
     'w-full rounded-lg border border-slate-300 bg-white px-4 py-3.5 text-slate-900 placeholder-slate-400 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30';
 
   return (
-    <div id="order-form" className="mx-auto w-full max-w-xl overflow-hidden rounded-2xl border border-slate-300 bg-white shadow-2xl">
-      {/* Step tabs, same two labels the live GHL order form uses */}
-      <div className="grid grid-cols-2 border-b-4 border-sky-700 bg-white">
-        {([1, 2] as const).map((n) => {
-          const active = step === n || (step === 3 && n === 2);
-          return (
-            <div
-              key={n}
-              className={`relative py-3 text-center text-sm font-bold ${active ? 'text-sky-700' : 'text-slate-400'}`}
-            >
-              {n === 1 ? 'Step #1' : 'Step #2 Access'}
-              {active && (
-                <span className="absolute -bottom-1 left-1/2 h-0 w-0 -translate-x-1/2 border-x-8 border-b-8 border-x-transparent border-b-sky-700" />
-              )}
-            </div>
-          );
-        })}
+    <div
+      id="order-form"
+      className="mx-auto w-full max-w-xl overflow-hidden rounded-2xl border border-emerald-500/30 bg-white shadow-[0_0_60px_rgba(16,185,129,0.15)]"
+    >
+      <div className="bg-gradient-to-r from-slate-900 to-slate-800 px-5 py-4 text-center sm:px-6">
+        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-emerald-400">
+          Join Freedom Club
+        </p>
+        <p className="mt-1 text-2xl font-black text-white">
+          ${MEMBERSHIP.price}
+          <span className="ml-1.5 text-sm font-semibold text-slate-400">{MEMBERSHIP.billing}</span>
+        </p>
       </div>
 
-      {step === 1 && (
-        <form onSubmit={submitStepOne} className="space-y-3 p-5 sm:p-6" noValidate>
-          <div>
-            <input
-              type="text"
-              name="name"
-              autoComplete="name"
-              placeholder="Full Name..."
-              aria-label="Full Name"
-              className={inputClass}
-              value={details.name}
-              onChange={(e) => setDetails({ ...details, name: e.target.value })}
-            />
-            {errors.name && <p className="mt-1 text-xs text-red-600">{errors.name}</p>}
-          </div>
-          <div>
-            <input
-              type="email"
-              name="email"
-              autoComplete="email"
-              placeholder="Email Address..."
-              aria-label="Email Address"
-              className={inputClass}
-              value={details.email}
-              onChange={(e) => setDetails({ ...details, email: e.target.value })}
-            />
-            {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
-          </div>
-          <div>
-            <input
-              type="tel"
-              name="phone"
-              autoComplete="tel"
-              placeholder="Phone Number..."
-              aria-label="Phone Number"
-              className={inputClass}
-              value={details.phone}
-              onChange={(e) => setDetails({ ...details, phone: e.target.value })}
-            />
-            {errors.phone && <p className="mt-1 text-xs text-red-600">{errors.phone}</p>}
-          </div>
-
-          <button
-            type="submit"
-            id="step-1-submit"
-            className="w-full rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 px-6 py-4 text-lg font-black text-white shadow-lg transition-transform hover:-translate-y-0.5 active:scale-[0.99]"
-          >
-            YES! Give ME Private Access Now
-          </button>
-          <p className="text-center text-[11px] text-slate-400">
-            We Respect Your Privacy &amp; Information.
-          </p>
-          <p className="text-center text-xs font-semibold text-slate-500">
-            No card needed on this step.
-          </p>
-        </form>
-      )}
-
-      {step === 2 && (
-        <div className="space-y-4 p-5 sm:p-6">
-          <div className="rounded-lg bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
-            <span className="font-bold">You're signed up, {details.name.trim().split(' ')[0]}.</span>{' '}
-            Last step is payment.
-          </div>
-
-          <div className="rounded-lg border border-slate-200">
-            <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
-              <span className="text-sm font-semibold text-slate-700">{MEMBERSHIP.name}</span>
-              <span className="text-sm font-bold text-slate-900">
-                ${MEMBERSHIP.price}.00 {MEMBERSHIP.billing}
-              </span>
-            </div>
-
-            {/* Order bump. Real product, real price, both verified in Stripe and GHL. */}
-            <label className="flex cursor-pointer items-start gap-3 border-b border-dashed border-amber-400 bg-amber-50 px-4 py-3">
-              <input
-                type="checkbox"
-                id="order-bump"
-                className="mt-1 h-4 w-4 accent-emerald-600"
-                checked={addOn}
-                onChange={(e) => setAddOn(e.target.checked)}
-              />
-              <span className="text-xs leading-relaxed text-slate-700">
-                <span className="font-bold text-slate-900">
-                  Add {PLACEMENT_OFFER.name} for ${PLACEMENT_OFFER.price} {PLACEMENT_OFFER.billing}.
-                </span>{' '}
-                Daily live sales training, or placement with a sales team instead of hiring one yourself.
-              </span>
-            </label>
-
-            <div className="flex items-center justify-between px-4 py-3">
-              <span className="text-sm font-bold text-slate-900">Due today</span>
-              <span className="text-lg font-black text-slate-900">
-                ${MEMBERSHIP.price + (addOn ? PLACEMENT_OFFER.price : 0)}.00
-              </span>
-            </div>
-          </div>
-
-          <button
-            onClick={goToPayment}
-            id="step-2-pay"
-            className="w-full rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 px-6 py-4 text-lg font-black text-white shadow-lg transition-transform hover:-translate-y-0.5 active:scale-[0.99]"
-          >
-            Pay ${MEMBERSHIP.price + (addOn ? PLACEMENT_OFFER.price : 0)} and Get Instant Access
-          </button>
-
-          <p className="flex items-center justify-center gap-1.5 text-center text-xs text-slate-500">
-            <Lock className="h-3.5 w-3.5" />
-            Card details are entered on our encrypted checkout. Billed monthly, cancel anytime.
-          </p>
-
-          <button
-            onClick={() => setStep(1)}
-            className="w-full text-center text-xs text-slate-400 underline underline-offset-2 hover:text-slate-600"
-          >
-            Back to step 1
-          </button>
+      <form onSubmit={submit} className="space-y-3 p-5 sm:p-6" noValidate>
+        <div>
+          <input
+            type="text"
+            name="name"
+            autoComplete="name"
+            placeholder="Full Name..."
+            aria-label="Full Name"
+            className={inputClass}
+            value={details.name}
+            onChange={(e) => setDetails({ ...details, name: e.target.value })}
+          />
+          {errors.name && <p className="mt-1 text-xs text-red-600">{errors.name}</p>}
         </div>
-      )}
-
-      {step === 3 && (
-        <div className="space-y-4 p-5 sm:p-6">
-          <p className="text-center text-sm font-bold text-emerald-700">
-            Your membership is active. One thing before you go in.
-          </p>
-          <UpsellCard offer={PLACEMENT_OFFER} details={details} />
-          {SECOND_OFFER && <UpsellCard offer={SECOND_OFFER} details={details} />}
-          <a
-            href="https://learn.kenjiai.com/"
-            className="block text-center text-xs text-slate-400 underline underline-offset-2 hover:text-slate-600"
-          >
-            No thanks, take me to the member area
-          </a>
+        <div>
+          <input
+            type="email"
+            name="email"
+            autoComplete="email"
+            placeholder="Email Address..."
+            aria-label="Email Address"
+            className={inputClass}
+            value={details.email}
+            onChange={(e) => setDetails({ ...details, email: e.target.value })}
+          />
+          {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
         </div>
-      )}
+        <div>
+          <input
+            type="tel"
+            name="phone"
+            autoComplete="tel"
+            placeholder="Phone Number..."
+            aria-label="Phone Number"
+            className={inputClass}
+            value={details.phone}
+            onChange={(e) => setDetails({ ...details, phone: e.target.value })}
+          />
+          {errors.phone && <p className="mt-1 text-xs text-red-600">{errors.phone}</p>}
+        </div>
+
+        {/* Order bump. Real product, real price, both verified in Stripe and GHL. */}
+        <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-dashed border-amber-400 bg-amber-50 px-4 py-3">
+          <input
+            type="checkbox"
+            id="order-bump"
+            className="mt-1 h-4 w-4 flex-shrink-0 accent-emerald-600"
+            checked={addOn}
+            onChange={(e) => setAddOn(e.target.checked)}
+          />
+          <span className="text-xs leading-relaxed text-slate-700">
+            <span className="font-bold text-slate-900">
+              Add {PLACEMENT_OFFER.name} for ${PLACEMENT_OFFER.price} {PLACEMENT_OFFER.billing}.
+            </span>{' '}
+            Daily live sales training, or placement with a sales team instead of hiring one yourself.
+          </span>
+        </label>
+
+        <div className="flex items-center justify-between rounded-lg bg-slate-100 px-4 py-3">
+          <span className="text-sm font-bold text-slate-900">Due today</span>
+          <span className="text-xl font-black text-slate-900">${totalDue(addOn)}.00</span>
+        </div>
+
+        <button
+          type="submit"
+          id="order-submit"
+          disabled={handingOff}
+          className="w-full rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 px-6 py-4 text-lg font-black text-white shadow-lg transition-transform hover:-translate-y-0.5 active:scale-[0.99] disabled:translate-y-0 disabled:opacity-80"
+        >
+          {handingOff ? 'Opening secure checkout...' : `Pay $${totalDue(addOn)} and Get Instant Access`}
+        </button>
+
+        <p className="flex items-center justify-center gap-1.5 text-center text-xs text-slate-500">
+          <Lock className="h-3.5 w-3.5 flex-shrink-0" />
+          Card details are entered on our encrypted checkout. Billed monthly, cancel anytime.
+        </p>
+        <p className="text-center text-[11px] text-slate-400">
+          Your details carry over, so the only thing left to add is your card.
+        </p>
+      </form>
+    </div>
+  );
+}
+
+/**
+ * Post-purchase upsell, shown when the GHL thank-you page sends buyers back to
+ * /join-v2?step=3. The membership is charged on the GHL checkout, on another
+ * domain, so being sent back here is the only honest way to show this to
+ * someone who has actually paid.
+ */
+function PostPurchaseUpsell({ details }: { details: Details }) {
+  return (
+    <div
+      id="order-form"
+      className="mx-auto w-full max-w-xl space-y-4 overflow-hidden rounded-2xl border border-emerald-500/30 bg-white p-5 shadow-[0_0_60px_rgba(16,185,129,0.15)] sm:p-6"
+    >
+      <p className="text-center text-sm font-bold text-emerald-700">
+        Your membership is active. One thing before you go in.
+      </p>
+      <UpsellCard offer={PLACEMENT_OFFER} details={details} />
+      {SECOND_OFFER && <UpsellCard offer={SECOND_OFFER} details={details} />}
+      <a
+        href="https://learn.kenjiai.com/"
+        className="block text-center text-xs text-slate-400 underline underline-offset-2 hover:text-slate-600"
+      >
+        No thanks, take me to the member area
+      </a>
     </div>
   );
 }
@@ -469,32 +496,46 @@ function UpsellCard({ offer, details }: { offer: typeof PLACEMENT_OFFER; details
 }
 
 function JoinV2() {
-  const [step, setStep] = useState<Step>(1);
+  const [showUpsell, setShowUpsell] = useState(false);
   const [details, setDetails] = useState<Details>({ name: '', email: '', phone: '' });
   const [addOn, setAddOn] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [formInView, setFormInView] = useState(false);
 
-  /**
-   * The membership is charged on the GHL checkout, on another domain, so the
-   * only honest way to show a post-purchase upsell is to be sent back here
-   * after payment. Point the GHL thank-you redirect at /join-v2?step=3 and
-   * step 3 becomes the upsell page for people who already paid.
-   */
+  // The GHL thank-you redirect points at /join-v2?step=3. That contract predates
+  // the single-step rewrite, so the param is still honoured.
   useEffect(() => {
     const requested = new URLSearchParams(window.location.search).get('step');
-    if (requested === '3') setStep(3);
+    if (requested === '3') setShowUpsell(true);
     const w = window as TrackingWindow;
     w.dataLayer?.push({ event: 'page_variant', variant: 'v2' });
   }, []);
+
+  /**
+   * The sticky mobile bar and the order form both carry a primary CTA, so on a
+   * phone they used to sit on screen together with the bar covering the form's
+   * own button. One action at a time is the whole point of this rewrite, so the
+   * bar stands down whenever the form itself is on screen.
+   */
+  useEffect(() => {
+    const el = document.getElementById('order-form');
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setFormInView(entry.isIntersecting),
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [showUpsell]);
 
   const scrollToForm = () =>
     document.getElementById('order-form')?.scrollIntoView({ behavior: 'smooth' });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+    <div className="min-h-screen bg-[#0B1120]">
       <UrgencyBar />
 
-      <div className="sticky top-0 z-40 border-b border-slate-700/50 bg-gradient-to-r from-slate-800 to-slate-900 px-4 py-3 text-center text-white backdrop-blur-sm">
+      <div className="sticky top-0 z-40 border-b border-slate-700/50 bg-gradient-to-r from-slate-900 to-slate-950 px-4 py-3 text-center text-white backdrop-blur-sm">
         <div className="flex flex-wrap items-center justify-center gap-3">
           <span className="flex items-center gap-1.5 text-sm font-semibold text-amber-300">
             <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
@@ -502,73 +543,113 @@ function JoinV2() {
           </span>
           <span className="hidden text-slate-600 sm:inline">·</span>
           <span className="flex items-center gap-1.5 text-sm text-slate-300">
-            <Zap className="h-4 w-4 text-cyan-400" />
+            <Zap className="h-4 w-4 text-emerald-400" />
             Instant Access
           </span>
           <span className="hidden text-slate-600 sm:inline">·</span>
           <span className="flex items-center gap-1.5 text-sm text-slate-300">
-            <Users className="h-4 w-4 text-blue-400" />
+            <Users className="h-4 w-4 text-teal-400" />
             Hundreds of Entrepreneurs
           </span>
         </div>
       </div>
 
       {/* ==================== HERO + ORDER FORM ==================== */}
-      <div className="mx-auto max-w-5xl px-4 pb-10 pt-8 sm:px-6 sm:pt-14 lg:px-8">
-        <div className="text-center">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-3 py-2 text-xs font-medium text-cyan-300 sm:mb-8 sm:px-5 sm:text-sm">
-            <Target className="h-3.5 w-3.5 flex-shrink-0 sm:h-4 sm:w-4" />
-            <span>Freedom Club · beginners welcome</span>
-          </div>
-
-          <h1 className="mb-4 px-1 text-3xl font-black leading-[1.1] tracking-tight text-white sm:mb-6 sm:px-0 sm:text-5xl md:text-6xl">
-            Learn How to Run Ads
-            <span className="block bg-gradient-to-r from-cyan-300 via-teal-300 to-emerald-400 bg-clip-text text-transparent">
-              That Actually Make Money
-            </span>
-            <span className="mt-2 block text-xl font-bold text-slate-300 sm:text-4xl md:text-5xl">
-              Even If You've Never Run a Single Ad Before
-            </span>
-          </h1>
-
-          <p className="mx-auto mb-8 max-w-2xl px-2 text-base leading-relaxed text-slate-400 sm:mb-10 sm:px-0 sm:text-xl">
-            If you want to make money online, this is where you start. Templates, prompts, ad hooks, live support, and a private community.
-          </p>
+      <div className="relative overflow-hidden">
+        {/* Ambient colour wash, borrowed from the closers hero treatment. */}
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute left-4 top-16 h-72 w-72 rounded-full bg-amber-500/10 blur-3xl sm:left-10 sm:h-80 sm:w-80" />
+          <div className="absolute right-6 top-40 h-64 w-64 rounded-full bg-emerald-500/10 blur-3xl sm:right-16" />
+          <div className="absolute bottom-10 right-10 h-80 w-80 rounded-full bg-teal-500/[0.08] blur-3xl sm:h-96 sm:w-96" />
         </div>
 
-        <div className="grid items-start gap-8 lg:grid-cols-2">
-          <div className="relative order-2 lg:order-1">
-            <div className="pointer-events-none absolute inset-0 z-10 rounded-xl bg-gradient-to-t from-slate-950 via-transparent to-transparent sm:rounded-2xl" />
-            <picture>
-              <source
-                type="image/webp"
-                srcSet="/freedom-club-bundle-800w.webp 800w, /freedom-club-bundle-1200w.webp 1024w"
-                sizes="(max-width: 1024px) 90vw, 32rem"
-              />
-              <img
-                src="/freedom-club-bundle.jpg"
-                alt="Freedom Club membership: ad templates, prompts, ad hooks, and private community"
-                width={1024}
-                height={1024}
-                fetchPriority="high"
-                decoding="async"
-                className="mx-auto w-full max-w-[90vw] rounded-xl object-contain shadow-2xl shadow-cyan-500/10 sm:max-w-lg sm:rounded-2xl"
-              />
-            </picture>
+        <div className="relative mx-auto max-w-5xl px-4 pb-10 pt-8 sm:px-6 sm:pt-14 lg:px-8">
+          <div className="text-center">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-400/40 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 px-5 py-2.5 text-xs font-black uppercase tracking-wide text-emerald-300 shadow-lg shadow-emerald-500/20 backdrop-blur-sm sm:mb-8 sm:text-sm">
+              <Target className="h-4 w-4 flex-shrink-0" />
+              <span>Freedom Club · beginners welcome</span>
+            </div>
+
+            <h1 className="mb-4 px-1 text-4xl font-black leading-[1.05] tracking-tight text-white sm:mb-6 sm:px-0 sm:text-6xl md:text-7xl">
+              Learn How to Run Ads
+              <span className="block bg-gradient-to-r from-amber-400 via-emerald-300 to-teal-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(245,158,11,0.25)]">
+                That Actually Make Money
+              </span>
+              <span className="mt-2 block text-xl font-bold text-slate-300 sm:text-4xl md:text-5xl">
+                Even If You've Never Run a Single Ad Before
+              </span>
+            </h1>
+
+            <p className="mx-auto mb-6 max-w-2xl px-2 text-base leading-relaxed text-slate-300 sm:mb-8 sm:px-0 sm:text-xl">
+              If you want to make money online, this is where you start. Templates, prompts, ad hooks, live support, and a private community.
+            </p>
+
+            <div className="mb-8 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+              {HERO_CHIPS.map((chip) => (
+                <div
+                  key={chip}
+                  className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 sm:px-4"
+                >
+                  <Check className="h-4 w-4 flex-shrink-0 text-emerald-400" />
+                  <span className="text-xs font-medium text-slate-300 sm:text-sm">{chip}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Stat blocks, the signature closers.kenjiai.com element. Numbers
+                are the ones this page already stands behind. */}
+            <div className="mx-auto mb-10 grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6">
+              {STATS.map((stat) => (
+                <div
+                  key={stat.value}
+                  className={`rounded-2xl border bg-gradient-to-br p-5 backdrop-blur-sm transition-all duration-500 hover:shadow-2xl sm:p-6 ${stat.tint}`}
+                >
+                  <stat.icon className={`mx-auto mb-3 h-7 w-7 sm:h-8 sm:w-8 ${stat.iconColor}`} />
+                  <div className="mb-1 text-2xl font-black text-white sm:text-3xl">{stat.value}</div>
+                  <div className="text-sm text-slate-400">{stat.label}</div>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="order-1 lg:order-2">
-            <p className="mb-3 text-center text-sm font-bold text-white">
-              Two steps. Sign up first, pay second.
-            </p>
-            <OrderForm
-              step={step}
-              setStep={setStep}
-              details={details}
-              setDetails={setDetails}
-              addOn={addOn}
-              setAddOn={setAddOn}
-            />
+          <div className="grid items-start gap-8 lg:grid-cols-2">
+            <div className="relative order-2 lg:order-1">
+              <div className="pointer-events-none absolute inset-0 z-10 rounded-xl bg-gradient-to-t from-[#0B1120] via-transparent to-transparent sm:rounded-2xl" />
+              <picture>
+                <source
+                  type="image/webp"
+                  srcSet="/freedom-club-bundle-800w.webp 800w, /freedom-club-bundle-1200w.webp 1024w"
+                  sizes="(max-width: 1024px) 90vw, 32rem"
+                />
+                <img
+                  src="/freedom-club-bundle.jpg"
+                  alt="Freedom Club membership: ad templates, prompts, ad hooks, and private community"
+                  width={1024}
+                  height={1024}
+                  fetchPriority="high"
+                  decoding="async"
+                  className="mx-auto w-full max-w-[90vw] rounded-xl object-contain shadow-2xl shadow-emerald-500/10 sm:max-w-lg sm:rounded-2xl"
+                />
+              </picture>
+            </div>
+
+            <div className="order-1 lg:order-2">
+              {showUpsell ? (
+                <PostPurchaseUpsell details={details} />
+              ) : (
+                <>
+                  <p className="mb-3 text-center text-sm font-bold text-white">
+                    Fill this in once. Card details on the next screen, then you're in.
+                  </p>
+                  <OrderForm
+                    details={details}
+                    setDetails={setDetails}
+                    addOn={addOn}
+                    setAddOn={setAddOn}
+                  />
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -594,9 +675,12 @@ function JoinV2() {
       </div>
 
       {/* ==================== PAIN ==================== */}
-      <div className="border-y border-slate-800/50 bg-slate-900/50 px-4 py-16 sm:py-20">
+      <div className="border-y border-slate-800/50 bg-slate-900/40 px-4 py-16 sm:py-20">
         <div className="mx-auto max-w-4xl">
-          <h2 className="mb-4 text-center text-3xl font-black text-white sm:text-4xl">
+          <p className="mb-3 text-center text-xs font-black uppercase tracking-[0.2em] text-amber-400">
+            The part nobody warns you about
+          </p>
+          <h2 className="mb-4 text-center text-3xl font-black text-white sm:text-5xl">
             Sound Familiar?
           </h2>
           <p className="mb-12 text-center text-lg text-slate-400">
@@ -619,8 +703,8 @@ function JoinV2() {
           </div>
 
           <div className="text-center">
-            <div className="inline-block max-w-2xl rounded-2xl border border-emerald-500/20 bg-gradient-to-r from-emerald-500/10 to-green-500/10 p-8">
-              <p className="mb-3 text-xl font-bold text-emerald-400">
+            <div className="inline-block max-w-2xl rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/15 to-teal-500/10 p-8 backdrop-blur-sm">
+              <p className="mb-3 text-xl font-black text-emerald-300 sm:text-2xl">
                 It's not your fault. Nobody taught you the system.
               </p>
               <p className="leading-relaxed text-slate-300">
@@ -635,7 +719,10 @@ function JoinV2() {
       <div className="px-4 py-16 sm:py-20">
         <div className="mx-auto max-w-6xl">
           <div className="mb-12 text-center">
-            <h2 className="mb-4 text-3xl font-black text-white sm:text-4xl">
+            <p className="mb-3 text-xs font-black uppercase tracking-[0.2em] text-emerald-400">
+              What lands in your account today
+            </p>
+            <h2 className="mb-4 text-3xl font-black text-white sm:text-5xl">
               Everything Inside Your Membership
             </h2>
             <p className="mx-auto max-w-2xl text-lg text-slate-400">
@@ -647,9 +734,9 @@ function JoinV2() {
             {WHAT_YOU_GET.map((item) => (
               <div
                 key={item.title}
-                className="relative rounded-2xl border border-slate-700/50 bg-gradient-to-br from-slate-800/80 to-slate-900/80 p-6 transition-all duration-500 hover:-translate-y-1 hover:border-cyan-500/50"
+                className="relative rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/[0.08] to-teal-500/[0.04] p-6 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:border-emerald-500/50 hover:shadow-2xl hover:shadow-emerald-500/20"
               >
-                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 shadow-lg">
+                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 shadow-lg">
                   <item.icon className="h-5 w-5 text-white" />
                 </div>
                 <h3 className="mb-1.5 text-base font-bold leading-tight text-white">{item.title}</h3>
@@ -664,7 +751,7 @@ function JoinV2() {
               id="mid-cta"
               className="cta-glow group inline-flex items-center justify-center gap-3 rounded-2xl border border-emerald-400/50 bg-gradient-to-br from-emerald-500 to-teal-600 px-12 py-5 text-lg font-black text-white shadow-[0_0_30px_rgba(16,185,129,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_50px_rgba(20,184,166,0.5)] sm:text-xl"
             >
-              Start With Step 1
+              Join Freedom Club
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </button>
             <p className="mt-3 text-xs text-slate-500">
@@ -675,14 +762,14 @@ function JoinV2() {
       </div>
 
       {/* ==================== MEMBER AREA ==================== */}
-      <div className="border-y border-slate-800/50 bg-slate-900/50 px-4 py-16 sm:py-20">
+      <div className="border-y border-slate-800/50 bg-slate-900/40 px-4 py-16 sm:py-20">
         <div className="mx-auto max-w-6xl">
           <div className="mb-12 text-center">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-xs font-semibold text-emerald-300 sm:text-sm">
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-xs font-bold uppercase tracking-wide text-emerald-300 sm:text-sm">
               <Lock className="h-3.5 w-3.5" />
               Your login works the second you join
             </div>
-            <h2 className="mb-4 text-3xl font-black text-white sm:text-4xl">
+            <h2 className="mb-4 text-3xl font-black text-white sm:text-5xl">
               Here's What You See When You Log In
             </h2>
             <p className="mx-auto max-w-2xl text-lg text-slate-400">
@@ -691,7 +778,7 @@ function JoinV2() {
           </div>
 
           <figure className="relative mb-10">
-            <div className="pointer-events-none absolute -inset-4 rounded-3xl bg-gradient-to-r from-cyan-500/10 via-emerald-500/10 to-cyan-500/10 blur-2xl" />
+            <div className="pointer-events-none absolute -inset-4 rounded-3xl bg-gradient-to-r from-amber-500/10 via-emerald-500/10 to-teal-500/10 blur-2xl" />
             <picture>
               <source type="image/webp" srcSet="/dashboard-library.webp" />
               <img
@@ -701,7 +788,7 @@ function JoinV2() {
                 height={756}
                 loading="lazy"
                 decoding="async"
-                className="relative w-full rounded-xl border border-slate-700/60 shadow-2xl shadow-cyan-500/10 sm:rounded-2xl"
+                className="relative w-full rounded-xl border border-slate-700/60 shadow-2xl shadow-emerald-500/10 sm:rounded-2xl"
               />
             </picture>
             <figcaption className="relative mt-4 text-center text-sm text-slate-400">
@@ -720,7 +807,7 @@ function JoinV2() {
                   height={1012}
                   loading="lazy"
                   decoding="async"
-                  className="w-full rounded-xl border border-slate-700/60 shadow-xl shadow-cyan-500/5"
+                  className="w-full rounded-xl border border-slate-700/60 shadow-xl shadow-emerald-500/5"
                 />
               </picture>
               <figcaption className="mt-3 text-center text-sm text-slate-400">
@@ -738,7 +825,7 @@ function JoinV2() {
                   height={669}
                   loading="lazy"
                   decoding="async"
-                  className="w-full rounded-xl border border-slate-700/60 shadow-xl shadow-cyan-500/5"
+                  className="w-full rounded-xl border border-slate-700/60 shadow-xl shadow-emerald-500/5"
                 />
               </picture>
               <figcaption className="mt-3 text-center text-sm text-slate-400">
@@ -750,22 +837,25 @@ function JoinV2() {
       </div>
 
       {/* ==================== TESTIMONIALS ==================== */}
-      <div className="border-y border-slate-800/50 bg-slate-900/50 px-4 py-16 sm:py-20">
+      <div className="border-y border-slate-800/50 bg-slate-900/40 px-4 py-16 sm:py-20">
         <div className="mx-auto max-w-6xl">
           <div className="mb-12 text-center">
-            <h2 className="mb-4 text-3xl font-black text-white sm:text-4xl">
+            <p className="mb-3 text-xs font-black uppercase tracking-[0.2em] text-amber-400">
+              Real people, real results
+            </p>
+            <h2 className="mb-4 text-3xl font-black text-white sm:text-5xl">
               What Our Members Are Saying
             </h2>
             <p className="text-lg text-slate-400">Real results from real entrepreneurs</p>
           </div>
 
           <div className="mx-auto mb-12 flex max-w-3xl flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
-            <div className="flex items-center gap-2 rounded-xl border border-slate-700/50 bg-slate-800/50 px-6 py-4">
-              <Users className="h-5 w-5 flex-shrink-0 text-sky-400" />
+            <div className="flex items-center gap-2 rounded-xl border border-emerald-500/25 bg-gradient-to-br from-emerald-500/10 to-teal-500/[0.06] px-6 py-4">
+              <Users className="h-5 w-5 flex-shrink-0 text-emerald-400" />
               <span className="text-sm font-bold text-white sm:text-base">Join hundreds of entrepreneurs just like you</span>
             </div>
-            <div className="flex items-center gap-2 rounded-xl border border-slate-700/50 bg-slate-800/50 px-6 py-4">
-              <Award className="h-5 w-5 flex-shrink-0 text-sky-400" />
+            <div className="flex items-center gap-2 rounded-xl border border-amber-500/25 bg-gradient-to-br from-amber-500/10 to-orange-500/[0.06] px-6 py-4">
+              <Award className="h-5 w-5 flex-shrink-0 text-amber-400" />
               <span className="text-sm font-bold text-white sm:text-base">12 years in business</span>
             </div>
           </div>
@@ -791,12 +881,12 @@ function JoinV2() {
               <div key={t.name} className="rounded-2xl border border-slate-700/50 bg-slate-800/50 p-6">
                 <div className="mb-4 flex gap-1">
                   {Array.from({ length: 5 }).map((_, j) => (
-                    <Star key={j} className="h-4 w-4 fill-cyan-300 text-cyan-300" />
+                    <Star key={j} className="h-4 w-4 fill-amber-400 text-amber-400" />
                   ))}
                 </div>
                 <p className="mb-6 text-sm italic leading-relaxed text-slate-300">"{t.text}"</p>
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-sky-500 to-blue-600 text-sm font-bold text-white">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 text-sm font-bold text-white">
                     {t.name.charAt(0)}
                   </div>
                   <div>
@@ -816,7 +906,7 @@ function JoinV2() {
       {/* ==================== FAQ ==================== */}
       <div className="px-4 py-16 sm:py-20">
         <div className="mx-auto max-w-3xl">
-          <h2 className="mb-12 text-center text-3xl font-black text-white sm:text-4xl">
+          <h2 className="mb-12 text-center text-3xl font-black text-white sm:text-5xl">
             Common Questions
           </h2>
 
@@ -846,22 +936,22 @@ function JoinV2() {
       </div>
 
       {/* ==================== FINAL CTA ==================== */}
-      <div className="relative overflow-hidden border-t border-slate-700/50 bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800 px-4 py-20">
+      <div className="relative overflow-hidden border-t border-slate-700/50 bg-gradient-to-br from-slate-900 via-[#0B1120] to-slate-900 px-4 py-20">
         <div className="absolute inset-0">
-          <div className="absolute left-1/4 top-0 h-96 w-96 rounded-full bg-emerald-500/5 blur-3xl" />
-          <div className="absolute bottom-0 right-1/4 h-96 w-96 rounded-full bg-cyan-500/5 blur-3xl" />
+          <div className="absolute left-1/4 top-0 h-96 w-96 rounded-full bg-amber-500/[0.07] blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 h-96 w-96 rounded-full bg-emerald-500/[0.07] blur-3xl" />
         </div>
 
         <div className="relative z-10 mx-auto max-w-3xl text-center">
-          <h2 className="mb-6 text-3xl font-black leading-tight text-white sm:text-4xl md:text-5xl">
+          <h2 className="mb-6 text-3xl font-black leading-tight text-white sm:text-5xl md:text-6xl">
             Get Instant Access to
-            <span className="block bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-amber-400 via-emerald-300 to-teal-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(245,158,11,0.25)]">
               Freedom Club
             </span>
           </h2>
 
           <div className="mb-6 rounded-2xl border border-slate-700/50 bg-slate-900/80 p-8 backdrop-blur-sm">
-            <p className="mb-2 text-sm font-semibold text-amber-300">
+            <p className="mb-2 text-sm font-bold uppercase tracking-wide text-amber-300">
               Access is only open for a limited time.
             </p>
             <p className="mb-8 text-sm text-slate-400">Billed monthly · Cancel anytime</p>
@@ -871,7 +961,7 @@ function JoinV2() {
               id="final-cta"
               className="cta-glow group inline-flex w-full items-center justify-center gap-3 rounded-2xl border border-emerald-400/50 bg-gradient-to-br from-emerald-500 to-teal-600 px-14 py-6 text-xl font-black text-white shadow-[0_0_30px_rgba(16,185,129,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_50px_rgba(20,184,166,0.6)] sm:w-auto sm:text-2xl"
             >
-              Take Step 1 Now
+              Join Freedom Club
               <ArrowRight className="h-6 w-6 transition-transform group-hover:translate-x-1" />
             </button>
 
@@ -893,20 +983,21 @@ function JoinV2() {
         </div>
       </div>
 
-      <div className="border-t border-slate-800/50 bg-slate-950 px-4 py-8 pb-28 text-center text-sm text-slate-600 sm:pb-8">
+      <div className="border-t border-slate-800/50 bg-[#080D18] px-4 py-8 pb-28 text-center text-sm text-slate-600 sm:pb-8">
         <p>&copy; 2026 Freedom Club. All rights reserved.</p>
         <p className="mt-2 text-slate-700">Results vary. This is an educational product, not a guarantee of income.</p>
       </div>
 
-      {/* Sticky mobile CTA. Hidden once the form is past step 1, where it would
-          be telling someone to start something they are already halfway through. */}
-      <div className={`fixed bottom-0 left-0 right-0 z-50 border-t border-emerald-500/30 bg-slate-950/95 px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.6)] backdrop-blur-md ${step === 1 ? 'sm:hidden' : 'hidden'}`}>
+      {/* Sticky mobile CTA. Stands down while the order form is on screen, and
+          on the post-purchase upsell view, where it would be selling something
+          the buyer already owns. */}
+      <div className={`fixed bottom-0 left-0 right-0 z-50 border-t border-emerald-500/30 bg-[#0B1120]/95 px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.6)] backdrop-blur-md ${showUpsell || formInView ? 'hidden' : 'sm:hidden'}`}>
         <button
           onClick={scrollToForm}
           id="sticky-mobile-cta"
           className="cta-glow inline-flex w-full items-center justify-center gap-2 rounded-xl border border-emerald-400/50 bg-gradient-to-br from-emerald-500 to-teal-600 px-5 py-3.5 text-base font-black text-white shadow-[0_0_20px_rgba(16,185,129,0.4)]"
         >
-          <span>Start With Step 1</span>
+          <span>Join Freedom Club</span>
           <ArrowRight className="h-4 w-4" />
         </button>
       </div>
