@@ -715,6 +715,56 @@ function JoinV2() {
         </div>
       </div>
 
+      {/* ==================== FREE BONUS: PRE-CONVERTED ==================== */}
+      <div className="border-y border-amber-500/20 bg-gradient-to-br from-amber-500/[0.06] via-slate-900/40 to-orange-500/[0.04] px-4 py-16 sm:py-20">
+        <div className="mx-auto max-w-5xl">
+          <div className="flex flex-col items-center gap-8 md:flex-row md:items-center md:gap-12">
+            <div className="relative flex-shrink-0">
+              <div className="pointer-events-none absolute -inset-4 rounded-full bg-amber-500/20 blur-3xl" />
+              <picture>
+                <source
+                  type="image/webp"
+                  srcSet="/preconverted-cover-600w.webp 600w, /preconverted-cover-900w.webp 900w"
+                  sizes="(max-width: 640px) 208px, 260px"
+                />
+                <img
+                  src="/preconverted-cover.jpg"
+                  alt="Pre-Converted by Yousif Alias: How to Get High-Quality Leads Who Pay You First"
+                  width={260}
+                  height={390}
+                  loading="lazy"
+                  decoding="async"
+                  className="relative w-52 rounded-xl border border-amber-500/20 shadow-2xl shadow-amber-500/20 sm:w-64"
+                />
+              </picture>
+            </div>
+
+            <div className="text-center md:text-left">
+              <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-2 text-xs font-black uppercase tracking-wide text-amber-300 sm:text-sm">
+                <BookOpen className="h-3.5 w-3.5" />
+                Included free, a $97 value
+              </div>
+              <h2 className="mb-4 text-3xl font-black text-white sm:text-4xl">
+                Pre-Converted
+              </h2>
+              <p className="mx-auto mb-2 max-w-xl text-lg leading-relaxed text-slate-300 md:mx-0">
+                The exact system for attracting high-quality leads who are already sold before they ever talk to you.
+              </p>
+              <p className="mx-auto mb-6 max-w-xl text-slate-400 md:mx-0">
+                Normally $97 on its own. It's yours the moment you join Freedom Club, no extra charge.
+              </p>
+              <button
+                onClick={scrollToForm}
+                className="inline-flex items-center justify-center gap-3 rounded-2xl border border-amber-400/50 bg-gradient-to-br from-amber-500 to-orange-600 px-8 py-4 text-base font-black text-white shadow-[0_0_30px_rgba(245,158,11,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_50px_rgba(234,88,12,0.5)]"
+              >
+                Get Pre-Converted Free
+                <ArrowRight className="h-5 w-5" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* ==================== WHAT YOU GET ==================== */}
       <div className="px-4 py-16 sm:py-20">
         <div className="mx-auto max-w-6xl">
