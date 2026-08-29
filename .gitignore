@@ -14,3 +14,9 @@ dist/
 .idea/
 *.swp
 *.swo
+
+# local Claude Code tooling, not part of this site
+.agents/
+.claude/
+.netlify/
+skills-lock.json
