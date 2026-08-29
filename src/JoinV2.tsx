@@ -846,43 +846,23 @@ function JoinV2() {
             </figcaption>
           </figure>
 
-          <div className="grid gap-6 sm:grid-cols-2 sm:gap-8">
-            <figure>
-              <picture>
-                <source type="image/webp" srcSet="/dashboard-community.webp" />
-                <img
-                  src="/dashboard-community.jpg"
-                  alt="The Freedom Club community feed, where members post questions and share what is working"
-                  width={900}
-                  height={1012}
-                  loading="lazy"
-                  decoding="async"
-                  className="w-full rounded-xl border border-slate-700/60 shadow-xl shadow-emerald-500/5"
-                />
-              </picture>
-              <figcaption className="mt-3 text-center text-sm text-slate-400">
-                The community feed, where members ask questions and get answers.
-              </figcaption>
-            </figure>
-
-            <figure>
-              <picture>
-                <source type="image/webp" srcSet="/dashboard-courses.webp" />
-                <img
-                  src="/dashboard-courses.jpg"
-                  alt="Freedom Club courses including Pre-Launch Pre-Converted and a guide to self-liquidating Meta ad campaigns"
-                  width={900}
-                  height={669}
-                  loading="lazy"
-                  decoding="async"
-                  className="w-full rounded-xl border border-slate-700/60 shadow-xl shadow-emerald-500/5"
-                />
-              </picture>
-              <figcaption className="mt-3 text-center text-sm text-slate-400">
-                Open any course and start on day one.
-              </figcaption>
-            </figure>
-          </div>
+          <figure className="mx-auto max-w-2xl">
+            <picture>
+              <source type="image/webp" srcSet="/dashboard-courses.webp" />
+              <img
+                src="/dashboard-courses.jpg"
+                alt="Freedom Club courses including Pre-Launch Pre-Converted and a guide to self-liquidating Meta ad campaigns"
+                width={900}
+                height={669}
+                loading="lazy"
+                decoding="async"
+                className="w-full rounded-xl border border-slate-700/60 shadow-xl shadow-emerald-500/5"
+              />
+            </picture>
+            <figcaption className="mt-3 text-center text-sm text-slate-400">
+              Open any course and start on day one.
+            </figcaption>
+          </figure>
         </div>
       </div>
 
