@@ -509,9 +509,9 @@ function App() {
 
       {/* ==================== INSIDE THE MEMBER AREA ==================== */}
       {/*
-        Real screenshots of the live member area, not mockups. The community
-        shot is cropped to the feed column and has a member's surname blurred
-        so nothing identifying a private-group member ships on a public page.
+        No screenshots by design - members asked to see the actual value of
+        each training instead of a dashboard mockup. This lists the real
+        courses inside Freedom Club with what each one does for you.
       */}
       <div className="bg-slate-900/50 border-y border-slate-800/50 py-16 sm:py-20 px-4">
         <div className="max-w-6xl mx-auto">
@@ -521,68 +521,59 @@ function App() {
               Your login works the second you join
             </div>
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-              Here's What You See When You Log In
+              Here's What You Get When You Log In
             </h2>
             <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-              No mystery and no waiting around. This is the real member area, and every training in it is open to you from day one.
+              No mystery and no waiting around. Every training below is open to you from day one.
             </p>
           </div>
 
-          <figure className="relative mb-10">
-            <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500/10 via-emerald-500/10 to-cyan-500/10 blur-2xl rounded-3xl pointer-events-none" />
-            <picture>
-              <source type="image/webp" srcSet="/dashboard-library.webp" />
-              <img
-                src="/dashboard-library.jpg"
-                alt="The Freedom Club member area training library, showing courses on chargebacks, AI tools, business funding, closing deals, client attraction, and paid ads certification"
-                width={1400}
-                height={756}
-                loading="lazy"
-                decoding="async"
-                className="relative w-full rounded-xl sm:rounded-2xl border border-slate-700/60 shadow-2xl shadow-cyan-500/10"
-              />
-            </picture>
-            <figcaption className="relative text-slate-400 text-sm mt-4 text-center">
-              The training library, ready to watch the minute you log in.
-            </figcaption>
-          </figure>
-
           <div className="grid sm:grid-cols-2 gap-6 sm:gap-8 mb-10">
-            <figure>
-              <picture>
-                <source type="image/webp" srcSet="/dashboard-community.webp" />
-                <img
-                  src="/dashboard-community.jpg"
-                  alt="The Freedom Club community feed, where members post questions and share what is working"
-                  width={900}
-                  height={1012}
-                  loading="lazy"
-                  decoding="async"
-                  className="w-full rounded-xl border border-slate-700/60 shadow-xl shadow-cyan-500/5"
-                />
-              </picture>
-              <figcaption className="text-slate-400 text-sm mt-3 text-center">
-                The community feed, where members ask questions and get answers.
-              </figcaption>
-            </figure>
-
-            <figure>
-              <picture>
-                <source type="image/webp" srcSet="/dashboard-courses.webp" />
-                <img
-                  src="/dashboard-courses.jpg"
-                  alt="Freedom Club courses including Pre-Launch Pre-Converted and a guide to self-liquidating Meta ad campaigns"
-                  width={900}
-                  height={669}
-                  loading="lazy"
-                  decoding="async"
-                  className="w-full rounded-xl border border-slate-700/60 shadow-xl shadow-cyan-500/5"
-                />
-              </picture>
-              <figcaption className="text-slate-400 text-sm mt-3 text-center">
-                Open any course and start on day one.
-              </figcaption>
-            </figure>
+            {[
+              {
+                icon: Target,
+                title: 'Self-Liquidating Meta Ad Campaigns',
+                copy: 'Build ad campaigns structured to pay for themselves on the front end, so your ad spend funds its own scale instead of draining your bank account.',
+              },
+              {
+                icon: Sparkles,
+                title: 'The AI Tools I Use For Paid Ads',
+                copy: 'The exact AI tools used to make realistic, scroll-stopping ad creative, no camera crew, no designer, no waiting on an agency.',
+              },
+              {
+                icon: Award,
+                title: 'How To Close Deals From Paid Ads',
+                copy: 'Turn a paid ad lead into a closed deal, the real process from first reply to signed client.',
+              },
+              {
+                icon: Users,
+                title: 'Client Attraction Secrets',
+                copy: 'The positioning and outreach system that gets high-quality clients reaching out to you first, instead of you chasing them.',
+              },
+              {
+                icon: Shield,
+                title: 'Paid Ads Certified Course',
+                copy: 'A structured, certified path through paid traffic so you are not guessing your way through Meta and Google.',
+              },
+              {
+                icon: DollarSign,
+                title: 'The $1 Lead Method',
+                copy: 'How to generate qualified leads for about a dollar each, without a giant ad budget behind it.',
+              },
+            ].map((course) => (
+              <div
+                key={course.title}
+                className="bg-slate-800/40 border border-slate-700/60 rounded-xl sm:rounded-2xl p-6 flex gap-4 items-start"
+              >
+                <div className="shrink-0 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 rounded-xl p-3">
+                  <course.icon className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-white font-bold text-lg mb-1.5">{course.title}</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">{course.copy}</p>
+                </div>
+              </div>
+            ))}
           </div>
 
           <div className="text-center">

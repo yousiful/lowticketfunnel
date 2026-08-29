@@ -820,30 +820,60 @@ function JoinV2() {
               Your login works the second you join
             </div>
             <h2 className="mb-4 text-3xl font-black text-white sm:text-5xl">
-              Here's What You See When You Log In
+              Here's What You Get When You Log In
             </h2>
             <p className="mx-auto max-w-2xl text-lg text-slate-400">
-              No mystery and no waiting around. This is the real member area, and every training in it is open to you from day one.
+              No mystery and no waiting around. Every training below is open to you from day one.
             </p>
           </div>
 
-          <figure className="mx-auto max-w-2xl">
-            <picture>
-              <source type="image/webp" srcSet="/dashboard-courses.webp" />
-              <img
-                src="/dashboard-courses.jpg"
-                alt="Freedom Club courses including Pre-Launch Pre-Converted and a guide to self-liquidating Meta ad campaigns"
-                width={900}
-                height={669}
-                loading="lazy"
-                decoding="async"
-                className="w-full rounded-xl border border-slate-700/60 shadow-xl shadow-emerald-500/5"
-              />
-            </picture>
-            <figcaption className="mt-3 text-center text-sm text-slate-400">
-              Open any course and start on day one.
-            </figcaption>
-          </figure>
+          <div className="grid gap-6 sm:grid-cols-2 sm:gap-8">
+            {[
+              {
+                icon: Target,
+                title: 'Self-Liquidating Meta Ad Campaigns',
+                copy: 'Build ad campaigns structured to pay for themselves on the front end, so your ad spend funds its own scale instead of draining your bank account.',
+              },
+              {
+                icon: Sparkles,
+                title: 'The AI Tools I Use For Paid Ads',
+                copy: 'The exact AI tools used to make realistic, scroll-stopping ad creative, no camera crew, no designer, no waiting on an agency.',
+              },
+              {
+                icon: Award,
+                title: 'How To Close Deals From Paid Ads',
+                copy: 'Turn a paid ad lead into a closed deal, the real process from first reply to signed client.',
+              },
+              {
+                icon: Users,
+                title: 'Client Attraction Secrets',
+                copy: 'The positioning and outreach system that gets high-quality clients reaching out to you first, instead of you chasing them.',
+              },
+              {
+                icon: Shield,
+                title: 'Paid Ads Certified Course',
+                copy: 'A structured, certified path through paid traffic so you are not guessing your way through Meta and Google.',
+              },
+              {
+                icon: DollarSign,
+                title: 'The $1 Lead Method',
+                copy: 'How to generate qualified leads for about a dollar each, without a giant ad budget behind it.',
+              },
+            ].map((course) => (
+              <div
+                key={course.title}
+                className="flex items-start gap-4 rounded-xl border border-slate-700/60 bg-slate-800/40 p-6 sm:rounded-2xl"
+              >
+                <div className="shrink-0 rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-3 text-emerald-300">
+                  <course.icon className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="mb-1.5 text-lg font-bold text-white">{course.title}</h3>
+                  <p className="text-sm leading-relaxed text-slate-400">{course.copy}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
