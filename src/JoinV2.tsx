@@ -827,25 +827,6 @@ function JoinV2() {
             </p>
           </div>
 
-          <figure className="relative mb-10">
-            <div className="pointer-events-none absolute -inset-4 rounded-3xl bg-gradient-to-r from-amber-500/10 via-emerald-500/10 to-teal-500/10 blur-2xl" />
-            <picture>
-              <source type="image/webp" srcSet="/dashboard-library.webp" />
-              <img
-                src="/dashboard-library.jpg"
-                alt="The Freedom Club member area training library, showing courses on chargebacks, AI tools, business funding, closing deals, client attraction, and paid ads certification"
-                width={1400}
-                height={756}
-                loading="lazy"
-                decoding="async"
-                className="relative w-full rounded-xl border border-slate-700/60 shadow-2xl shadow-emerald-500/10 sm:rounded-2xl"
-              />
-            </picture>
-            <figcaption className="relative mt-4 text-center text-sm text-slate-400">
-              The training library, ready to watch the minute you log in.
-            </figcaption>
-          </figure>
-
           <figure className="mx-auto max-w-2xl">
             <picture>
               <source type="image/webp" srcSet="/dashboard-courses.webp" />
