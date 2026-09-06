@@ -753,6 +753,7 @@ function App() {
       <div className="bg-slate-950 py-8 px-4 pb-28 sm:pb-8 text-center text-slate-600 text-sm border-t border-slate-800/50">
         <p>&copy; 2026 Freedom Club. All rights reserved.</p>
         <p className="mt-2 text-slate-700">Results vary. This is an educational product, not a guarantee of income.</p>
+        <p className="mt-1 text-slate-700">This site is not part of, and has not been reviewed, approved, or endorsed by Facebook/Meta or Google in any way.</p>
       </div>
 
       {/* Sticky Mobile Bottom CTA */}
