@@ -576,6 +576,12 @@ function App() {
             ))}
           </div>
 
+          <div className="max-w-md mx-auto bg-slate-800/60 border border-emerald-500/30 rounded-2xl p-6 mb-10 text-center">
+            <p className="text-slate-400 text-sm mb-1">All 6 trainings above, full access</p>
+            <p className="text-emerald-300 font-black text-3xl mb-1">$7/mo</p>
+            <p className="text-slate-500 text-xs">Billed monthly, cancel anytime</p>
+          </div>
+
           <div className="text-center">
             <button
               onClick={() => handleCTAClick('monthly')}
@@ -659,6 +665,9 @@ function App() {
           </div>
           <p className="text-slate-600 text-xs text-center mt-6 max-w-xl mx-auto">
             Results may vary. These testimonials reflect individual experiences and are not a guarantee of income or ad performance.
+          </p>
+          <p className="text-emerald-300/80 text-sm text-center mt-4 font-semibold">
+            Got a win from the training? Screenshot it and send it to support, yours could be the next one featured here.
           </p>
         </div>
       </div>
@@ -745,6 +754,9 @@ function App() {
 
           <p className="text-slate-500 text-sm">
             Once we close enrollment, this page comes down and you'll have to wait until we open it again.
+          </p>
+          <p className="text-slate-600 text-sm mt-3 italic">
+            Or don't. Close the tab, keep running the same ads the same way, and see where that gets you.
           </p>
         </div>
       </div>
