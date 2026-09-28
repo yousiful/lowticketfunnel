@@ -211,6 +211,9 @@ function ExitIntentPopup({ ctaLabel, onCTA, onClose }: { ctaLabel: string; onCTA
   );
 }
 
+// Paste the VSL embed URL here once it's filmed; the hero image shows until then.
+const VSL_EMBED_URL = '';
+
 const REVIEWS_SCRIPT_SRC = 'https://reputationhub.site/reputation/assets/review-widget.js';
 const REVIEWS_IFRAME_SRC = 'https://reputationhub.site/reputation/widgets/review_widget/q5L4ttbBMHNxieXIcTVJ';
 
@@ -325,23 +328,36 @@ function App() {
         <div className="text-center">
           <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 px-3 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-medium mb-6 sm:mb-8">
             <Target className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
-            <span>Freedom Club · beginners welcome</span>
+            <span>Freedom Club · built for beginners</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4 sm:mb-6 leading-[1.1] tracking-tight px-1 sm:px-0">
-            Learn How to Run Ads
+            The Meta Ads System Behind
             <span className="block bg-gradient-to-r from-cyan-300 via-teal-300 to-emerald-400 bg-clip-text text-transparent">
-              That Actually Make Money
+              $3.35M Generated for Our Clients
             </span>
             <span className="block text-xl sm:text-4xl md:text-5xl mt-2 text-slate-300 font-bold">
-              Even If You've Never Run a Single Ad Before
+              Now Packaged for People Who've Never Run an Ad
             </span>
           </h1>
 
           <p className="text-base sm:text-xl text-slate-400 mb-6 sm:mb-10 max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
-            If you want to make money online, this is where you start. Templates, prompts, ad hooks, live support, and a private community.
+            Campaign templates, 30 ad hooks, AI prompts, 6 trainings and a private community. Built to start at $10/day in ad spend.
           </p>
 
+          {VSL_EMBED_URL ? (
+            <div className="mb-6 sm:mb-8 max-w-3xl mx-auto">
+              <div className="relative w-full overflow-hidden rounded-xl sm:rounded-2xl shadow-2xl shadow-cyan-500/10 border border-slate-700/50" style={{ paddingTop: '56.25%' }}>
+                <iframe
+                  src={VSL_EMBED_URL}
+                  title="Freedom Club video"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full"
+                />
+              </div>
+            </div>
+          ) : (
           <div className="mb-6 sm:mb-10 relative px-0 sm:px-4">
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent z-10 pointer-events-none rounded-xl sm:rounded-2xl"></div>
             <picture>
@@ -361,6 +377,7 @@ function App() {
               />
             </picture>
           </div>
+          )}
 
           <div className="max-w-xl mx-auto mb-4">
             <button
@@ -375,30 +392,26 @@ function App() {
               </span>
             </button>
             <p className="text-slate-400 text-xs sm:text-sm mt-4">
-              From the team behind <span className="text-emerald-300 font-semibold">$3.35M generated</span> for 500+ clients · 12 years in business
+              Instant access · Cancel anytime in one click
             </p>
           </div>
         </div>
       </div>
 
-      {/* Live Social Proof Ticker */}
-      <div className="w-full overflow-hidden py-3 bg-slate-900/50 border-y border-slate-800">
-        <div className="flex gap-12 whitespace-nowrap animate-[scroll_20s_linear_infinite] items-center h-8">
-          {[...Array(2)].map((_, i) => (
-            <div key={i} className="flex gap-12 items-center">
-              <span className="text-slate-400 text-sm font-medium flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Mark T. just joined the membership</span>
-              <span className="text-slate-400 text-sm font-medium flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Sarah K. launched 3 campaigns in 48 hours</span>
-              <span className="text-slate-400 text-sm font-medium flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Jessica M. booked 5 sales calls from one campaign</span>
-              <span className="text-slate-400 text-sm font-medium flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> David R. added 15 qualified leads using the AI templates</span>
+      {/* ==================== PROOF STACK ==================== */}
+      <div className="border-y border-slate-800 bg-slate-900/50 py-8 px-4">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {[
+            { stat: '$3.35M', label: 'generated for our clients' },
+            { stat: '500+', label: 'clients served in 12 years' },
+            { stat: '$186K', label: 'from a single funnel' },
+          ].map((p) => (
+            <div key={p.stat} className="text-center bg-slate-800/40 border border-slate-700/50 rounded-xl py-5 px-4">
+              <div className="text-3xl sm:text-4xl font-black text-emerald-300">{p.stat}</div>
+              <div className="text-slate-400 text-sm mt-1">{p.label}</div>
             </div>
           ))}
         </div>
-        <style>{`
-          @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
-          }
-        `}</style>
       </div>
 
       {/* ==================== PAIN AGITATION ==================== */}
@@ -526,6 +539,53 @@ function App() {
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
+          </div>
+        </div>
+      </div>
+
+      {/* ==================== HOW IT WORKS ==================== */}
+      <div className="py-16 sm:py-20 px-4">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-black text-white text-center mb-12">
+            How It Works
+          </h2>
+          <div className="grid sm:grid-cols-3 gap-5">
+            {[
+              { n: '1', t: 'Join', d: "You're inside the member area in under 60 seconds." },
+              { n: '2', t: 'Pick a template', d: 'Drop your offer into a proven campaign template and one of the 30 hooks.' },
+              { n: '3', t: 'Launch at $10/day', d: 'Start small, keep what works, and scale the ads that pay for themselves.' },
+            ].map((step) => (
+              <div key={step.n} className="bg-slate-800/40 border border-slate-700/60 rounded-2xl p-6">
+                <div className="w-10 h-10 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-black flex items-center justify-center mb-4">{step.n}</div>
+                <h3 className="text-white font-bold text-lg mb-1.5">{step.t}</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">{step.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ==================== OBJECTIONS ==================== */}
+      <div className="bg-slate-900/50 border-y border-slate-800/50 py-16 sm:py-20 px-4">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-black text-white text-center mb-10">
+            Built for Where You Are Right Now
+          </h2>
+          <div className="space-y-4">
+            {[
+              { q: "\u201cI've never run an ad.\u201d", a: 'Good. The training starts from zero and walks you through your first campaign.' },
+              { q: "\u201cI don't have a big budget.\u201d", a: "You don't need one. The system is built to start at $10/day." },
+              { q: "\u201cI don't have a website.\u201d", a: 'Send people to a booking link or your DMs. No site required.' },
+              { q: "\u201cAn agency already burned me.\u201d", a: "That's why this teaches you the system yourself. No retainer, no contract." },
+            ].map((o) => (
+              <div key={o.q} className="flex gap-4 items-start bg-slate-800/40 border border-slate-700/60 rounded-xl p-5">
+                <CheckCircle2 className="w-6 h-6 text-emerald-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-white font-bold">{o.q}</p>
+                  <p className="text-slate-400 text-sm mt-1 leading-relaxed">{o.a}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
