@@ -240,8 +240,19 @@ function ExitIntentPopup({ ctaLabel, onCTA, onClose }: { ctaLabel: string; onCTA
   );
 }
 
+const REVIEWS_SCRIPT_SRC = 'https://reputationhub.site/reputation/assets/review-widget.js';
+const REVIEWS_IFRAME_SRC = 'https://reputationhub.site/reputation/widgets/review_widget/q5L4ttbBMHNxieXIcTVJ';
+
 function App() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (document.querySelector(`script[src="${REVIEWS_SCRIPT_SRC}"]`)) return;
+    const script = document.createElement('script');
+    script.src = REVIEWS_SCRIPT_SRC;
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
   const [cta] = useState<CTAVariant>(pickCTAVariant);
   const [showExit, setShowExit] = useState(false);
 
@@ -621,50 +632,19 @@ function App() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                name: 'Marcus T.',
-                role: 'E-commerce Owner',
-                text: "I was burning $200/day on Facebook ads with nothing to show for it. After going through the training, I rebuilt my campaigns using their framework. Within 3 weeks I was getting a 4.2x return on ad spend.",
-                stars: 5,
-              },
-              {
-                name: 'Sarah K.',
-                role: 'Business Coach',
-                text: 'I was scared to touch paid ads. The step-by-step approach made it so simple. I launched my first Meta ads campaign following the exact templates and got 23 qualified leads in my first week.',
-                stars: 5,
-              },
-              {
-                name: 'David R.',
-                role: 'Agency Owner',
-                text: "I've been doing ads for years but was stuck at a plateau. The scaling strategies and the community feedback on my campaigns helped me identify blind spots. My agency added $8K/month in recurring revenue in 60 days.",
-                stars: 5,
-              },
-            ].map((testimonial, i) => (
-              <div key={i} className="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-6">
-                <div className="flex gap-1 mb-4">
-                  {Array.from({ length: testimonial.stars }).map((_, j) => (
-                    <Star key={j} className="w-4 h-4 text-cyan-300 fill-cyan-300" />
-                  ))}
-                </div>
-                <p className="text-slate-300 text-sm leading-relaxed mb-6 italic">
-                  "{testimonial.text}"
-                </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center text-white font-bold text-sm">
-                    {testimonial.name.charAt(0)}
-                  </div>
-                  <div>
-                    <div className="text-white font-semibold text-sm">{testimonial.name}</div>
-                    <div className="text-slate-400 text-xs">{testimonial.role}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="rounded-2xl overflow-hidden">
+            {/* min-height fallback: the iframe renders 0-tall on mobile if the resize script loads late. */}
+            <iframe
+              className="lc_reviews_widget min-h-[560px] sm:min-h-[420px]"
+              src={REVIEWS_IFRAME_SRC}
+              frameBorder="0"
+              scrolling="no"
+              style={{ minWidth: '100%', width: '100%' }}
+              title="KenjiAI Customer Reviews"
+            />
           </div>
           <p className="text-slate-600 text-xs text-center mt-6 max-w-xl mx-auto">
-            Results may vary. These testimonials reflect individual experiences and are not a guarantee of income or ad performance.
+            Results may vary. These reviews reflect individual experiences and are not a guarantee of income or ad performance.
           </p>
           <p className="text-emerald-300/80 text-sm text-center mt-4 font-semibold">
             Got a win from the training? Screenshot it and send it to support, yours could be the next one featured here.
