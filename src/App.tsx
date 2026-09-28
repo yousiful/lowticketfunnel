@@ -90,10 +90,6 @@ const FAQS = [
     a: "It's a small monthly membership, billed monthly with no contracts. You'll see the exact price before you confirm at checkout. Cancel anytime, no hidden fees.",
   },
   {
-    q: 'Is there a one-time payment option?',
-    a: 'Yes. Email support@kenjiai.com and ask about lifetime access for a single $27.79 payment, no recurring billing at all.',
-  },
-  {
     q: 'What happens after I buy?',
     a: "You get instant access to the full training, templates, prompt pack, and community. You'll be inside the member area in under 60 seconds.",
   },
@@ -396,8 +392,8 @@ function App() {
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
-            <p className="text-slate-500 text-xs mt-4">
-              Instant access
+            <p className="text-slate-400 text-xs sm:text-sm mt-4">
+              From the team behind <span className="text-emerald-300 font-semibold">$3.35M generated</span> for 500+ clients · 12 years in business
             </p>
           </div>
         </div>
@@ -577,9 +573,9 @@ function App() {
           </div>
 
           <div className="max-w-md mx-auto bg-slate-800/60 border border-emerald-500/30 rounded-2xl p-6 mb-10 text-center">
-            <p className="text-slate-400 text-sm mb-1">All 6 trainings above, full access</p>
-            <p className="text-emerald-300 font-black text-3xl mb-1">$7/mo</p>
-            <p className="text-slate-500 text-xs">Billed monthly, cancel anytime</p>
+            <p className="text-slate-400 text-sm mb-1">All 6 trainings above</p>
+            <p className="text-emerald-300 font-black text-2xl mb-1">Open to you the second you join</p>
+            <p className="text-slate-500 text-xs">Built by the team behind $3.35M generated for 500+ clients</p>
           </div>
 
           <div className="text-center">
@@ -618,6 +614,10 @@ function App() {
             <div className="flex items-center gap-2 bg-slate-800/50 border border-slate-700/50 rounded-xl py-4 px-6">
               <Award className="w-5 h-5 text-sky-400 flex-shrink-0" />
               <span className="text-white font-bold text-sm sm:text-base">12 years in business</span>
+            </div>
+            <div className="flex items-center gap-2 bg-slate-800/50 border border-slate-700/50 rounded-xl py-4 px-6">
+              <DollarSign className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+              <span className="text-white font-bold text-sm sm:text-base">$3.35M generated for 500+ clients</span>
             </div>
           </div>
 
@@ -725,7 +725,7 @@ function App() {
               Access is only open for a limited time.
             </p>
             <p className="text-slate-400 text-sm mb-8">
-              Billed monthly · Cancel anytime
+              Instant access · Cancel anytime · $3.35M generated for our clients
             </p>
 
             <button
