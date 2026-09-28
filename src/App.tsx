@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import {
-  CheckCircle2, Users, BookOpen, DollarSign, Lock, ArrowRight, Zap, Award,
-  Star, ChevronDown, ChevronUp, Shield, Target, Sparkles, Phone,
-  FileText, Clock, X
+  CheckCircle2, Users, DollarSign, Lock, ArrowRight, Zap, Award,
+  Star, ChevronDown, ChevronUp, Shield, Target, Sparkles, Clock, X
 } from 'lucide-react';
 
 // Same GHL checkout used before. The Stripe price on the GHL side has moved
@@ -55,34 +54,6 @@ function pickCTAVariant(): CTAVariant {
   }
   return variant;
 }
-
-const WHAT_YOU_GET = [
-  {
-    icon: FileText,
-    title: 'Meta Campaign Templates',
-    desc: 'Plug-and-play ad templates you can copy and use right away.',
-  },
-  {
-    icon: Sparkles,
-    title: '30 Ad Hooks Swipe File',
-    desc: 'Proven ad angles and hooks you can copy.',
-  },
-  {
-    icon: Sparkles,
-    title: 'AI Prompt Pack',
-    desc: 'Prompts for ad copy, targeting, and creative generation.',
-  },
-  {
-    icon: Users,
-    title: 'Private Community Access',
-    desc: 'Hundreds of entrepreneurs just like you, helping each other win.',
-  },
-  {
-    icon: Phone,
-    title: 'Optional 1:1 Campaign Map Call',
-    desc: 'A free strategy call to help you apply the system. Optional, not required.',
-  },
-];
 
 const FAQS = [
   {
@@ -464,52 +435,6 @@ function App() {
                 The difference between people who waste money on ads and people who make money with them? It's not talent. It's having the right system. That's what Freedom Club gives you.
               </p>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ==================== WHAT YOU GET ==================== */}
-      <div className="py-16 sm:py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-              Everything Inside Your Membership
-            </h2>
-            <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-              The full Freedom Club system, built to a standard most agencies don't bother with.
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
-            {WHAT_YOU_GET.map((item, i) => (
-              <div
-                key={i}
-                className="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-slate-700/50 rounded-2xl p-6 hover:border-cyan-500/50 hover:-translate-y-1 transition-all duration-500"
-              >
-                <div className="bg-gradient-to-br from-sky-500 to-blue-600 w-11 h-11 rounded-xl flex items-center justify-center mb-4 shadow-lg">
-                  <item.icon className="w-5 h-5 text-white" />
-                </div>
-                <h3 className="text-base font-bold text-white mb-1.5 leading-tight">{item.title}</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center">
-            <button
-              onClick={() => handleCTAClick('monthly')}
-              id="mid-cta"
-              className="cta-glow group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-lg sm:text-xl px-12 py-5 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:shadow-[0_0_50px_rgba(20,184,166,0.5)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-emerald-400/50 gap-3"
-            >
-              <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <span className="relative flex items-center gap-3">
-                {cta.label}
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </span>
-            </button>
-            <p className="text-slate-500 text-xs mt-3">
-              You'll be inside the member area in under 60 seconds.
-            </p>
           </div>
         </div>
       </div>
