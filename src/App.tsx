@@ -261,30 +261,6 @@ const TRAININGS = [
   },
 ];
 
-const AD_SCENES = [
-  {
-    src: '/ad-20k-one-lead.webp',
-    alt: 'Still from our ad: a man in an office eating a donut under the caption $20,000 on ads equals 1 lead',
-    title: '$20K on ads. 1 lead.',
-    caption: 'The one lead was the landlord asking about rent.',
-    pos: 'object-[50%_55%]',
-  },
-  {
-    src: '/ad-sardin-tank.webp',
-    alt: 'Still from our Sardin Tank ad: a man in pajamas crying under the caption $30,000 on ads, 20 leads missed',
-    title: '$30K on ads. 20 leads missed.',
-    caption: 'The leads came in. Nobody called them back.',
-    pos: 'object-[50%_45%]',
-  },
-  {
-    src: '/ad-stuck-in-1985.webp',
-    alt: 'Still from our ad: a serious close-up under the caption your agency is stuck in 1985',
-    title: 'Your agency is stuck in 1985.',
-    caption: 'Same playbook as 1985. Retainer priced like today.',
-    pos: 'object-[50%_28%]',
-  },
-];
-
 const PAINS = [
   'You boosted a post. Meta said thank you. Your bank account did not.',
   'You ran a real campaign. It lost money with total confidence.',
@@ -437,18 +413,18 @@ function App() {
 
               <h1 className="font-black uppercase leading-[0.95] tracking-tight mb-6">
                 <span className="thumb-stroke block text-white text-2xl sm:text-4xl lg:text-[2.6rem]">
-                  Spent thousands on ads
+                  Learn Meta ads once
                 </span>
                 <span className="thumb-stroke thumb-yellow block text-5xl sm:text-7xl lg:text-8xl mt-2">
-                  And got 1{' '}lead?
+                  Make money two ways
                 </span>
                 <span className="pill-red mt-5 px-3 sm:px-4 py-1.5 text-lg sm:text-2xl lg:text-3xl">
-                  It was your landlord.
+                  Your business or theirs.
                 </span>
               </h1>
 
-              <p className="text-base sm:text-xl text-neutral-300 mb-6 max-w-2xl leading-relaxed mx-auto md:mx-0">
-                Freedom Club gives you the Meta ads system behind <span className="text-[#FFE600] font-bold">$3.35M generated for our clients</span>, packaged for people who've never run an ad. Templates, 30 hooks, AI prompts, 6 trainings, the community, plus Yousif's book <span className="text-white font-bold whitespace-nowrap">Pre-Converted</span>. Built to start at $10/day in ad spend.
+              <p className="text-base sm:text-xl text-neutral-300 mb-6 max-w-2xl leading-relaxed mx-auto">
+                Run ads that bring more customers into your own business, or learn the skill and get paid running ads for other businesses. Freedom Club gives you the Meta ads system behind <span className="text-[#FFE600] font-bold">$3.35M generated for our clients</span>, built for people who've never run an ad. Templates, 30 hooks, AI prompts, 6 trainings, the community, plus Yousif's book <span className="text-white font-bold whitespace-nowrap">Pre-Converted</span>. Built to start at $10/day in ad spend.
               </p>
 
               <div className="mb-7 inline-flex items-start gap-2.5 bg-[#E61428]/15 border-2 border-[#E61428] rounded-xl px-4 py-3 text-left max-w-xl">
@@ -482,24 +458,6 @@ function App() {
               </div>
             </div>
 
-            {!VSL_EMBED_URL && (
-              <figure className="mx-auto w-full max-w-[340px] md:max-w-none">
-                <div className="relative rotate-[1.5deg] rounded-2xl overflow-hidden border-[3px] border-black shadow-[10px_10px_0_#E61428] bg-black">
-                  <img
-                    src="/ad-20k-one-lead.webp"
-                    alt="Still from our ad: a man in an office eating a donut under the caption $20,000 on ads equals 1 lead"
-                    width={810}
-                    height={1440}
-                    fetchPriority="high"
-                    decoding="async"
-                    className="w-full aspect-[4/5] object-cover object-[50%_55%]"
-                  />
-                </div>
-                <figcaption className="text-neutral-500 text-xs mt-4 text-center italic">
-                  Real still from one of our ads. The donut was the only thing that converted.
-                </figcaption>
-              </figure>
-            )}
           </div>
         </div>
       </section>
@@ -521,40 +479,62 @@ function App() {
         </div>
       </section>
 
-      {/* ==================== PAIN (the ads) ==================== */}
+      {/* ==================== TWO PATHS ==================== */}
       <section className="relative py-16 sm:py-24 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10 sm:mb-14">
-            <SectionTag tone="red">Sound familiar?</SectionTag>
+            <SectionTag tone="red">Pick your path</SectionTag>
             <h2 className="thumb-stroke text-4xl sm:text-6xl font-black uppercase leading-[0.95] mt-5 mb-4">
-              We made <span className="thumb-yellow">whole ads</span> about it
+              One skill. <span className="thumb-yellow">Two ways</span> to get paid.
             </h2>
             <p className="text-neutral-400 text-base sm:text-lg max-w-2xl mx-auto">
-              Because we've watched it happen to business owners for 12 years. These are real stills from our ads. Funny until it's your ad account.
+              Every business needs customers. The people who can bring them in with ads never run out of work.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-5 lg:gap-8 mb-12 sm:mb-16 max-w-sm sm:max-w-none mx-auto">
-            {AD_SCENES.map((s, i) => (
-              <figure key={s.src} className="group">
-                <div className={`rounded-2xl overflow-hidden border-[3px] border-black shadow-[6px_6px_0_#FFE600] bg-black ${i === 1 ? 'sm:-rotate-1' : 'sm:rotate-1'}`}>
-                  <img
-                    src={s.src}
-                    alt={s.alt}
-                    width={810}
-                    height={1440}
-                    loading="lazy"
-                    decoding="async"
-                    className={`w-full aspect-[4/5] object-cover ${s.pos}`}
-                  />
-                </div>
-                <figcaption className="mt-4">
-                  <p className="text-white font-black uppercase text-lg leading-tight">{s.title}</p>
-                  <p className="text-neutral-400 text-sm mt-1">{s.caption}</p>
-                </figcaption>
-              </figure>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-12 sm:mb-16 max-w-5xl mx-auto">
+            {[
+              {
+                tag: 'Path 1',
+                title: 'Grow your own business',
+                points: [
+                  'Run Meta ads that bring in real buyers, starting at $10/day',
+                  'Use the $1 lead method so ad spend stops disappearing',
+                  'Close more of the leads you get with the sales trainings',
+                ],
+                accent: '#FFE600',
+              },
+              {
+                tag: 'Path 2',
+                title: 'Get paid to run ads for other businesses',
+                points: [
+                  'Learn the same system we use for our own clients',
+                  'Earn the Paid Ads certificate and show proof of the skill',
+                  'Land your first client with the Client Attraction training',
+                ],
+                accent: '#E61428',
+              },
+            ].map((p) => (
+              <div key={p.tag} className="bg-white/[0.04] border-[3px] border-black rounded-2xl p-6 sm:p-8" style={{ boxShadow: `8px 8px 0 ${p.accent}` }}>
+                <span className="inline-block font-black uppercase text-sm px-3 py-1 rounded-md border-2 border-black text-black" style={{ background: p.accent === '#E61428' ? '#fff' : p.accent }}>
+                  {p.tag}
+                </span>
+                <h3 className="thumb-stroke text-white font-black uppercase text-2xl sm:text-3xl leading-tight mt-4 mb-5">{p.title}</h3>
+                <ul className="space-y-3">
+                  {p.points.map((pt) => (
+                    <li key={pt} className="flex items-start gap-2.5 text-neutral-200 text-sm sm:text-base leading-relaxed">
+                      <CheckCircle2 className="w-5 h-5 text-[#FFE600] flex-shrink-0 mt-0.5" />
+                      {pt}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ))}
           </div>
+
+          <p className="text-center text-neutral-400 text-base sm:text-lg max-w-2xl mx-auto mb-6">
+            Either way, here's what's been stopping you:
+          </p>
 
           <div className="max-w-3xl mx-auto space-y-3 mb-12">
             {PAINS.map((pain) => (
@@ -908,8 +888,8 @@ function App() {
 
         <div className="max-w-3xl mx-auto text-center relative z-10">
           <h2 className="font-black uppercase leading-[0.95] mb-8">
-            <span className="thumb-stroke block text-white text-2xl sm:text-4xl">Your next ad should bring</span>
-            <span className="thumb-stroke thumb-yellow block text-5xl sm:text-7xl mt-2">More than the landlord</span>
+            <span className="thumb-stroke block text-white text-2xl sm:text-4xl">Your business or theirs</span>
+            <span className="thumb-stroke thumb-yellow block text-5xl sm:text-7xl mt-2">Start making money with ads</span>
           </h2>
 
           <div className="bg-[#0d0d0d] border-2 border-white/15 rounded-2xl p-6 sm:p-8 mb-8">
