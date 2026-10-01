@@ -223,7 +223,7 @@ function ExitIntentPopup({ ctaLabel, onCTA, onClose }: { ctaLabel: string; onCTA
 }
 
 // Paste the VSL embed URL here once it's filmed; the ad still shows until then.
-const VSL_EMBED_URL = '';
+const VSL_EMBED_URL = '/videos/freedom-club-vsl.mp4';
 
 const REVIEWS_SCRIPT_SRC = 'https://reputationhub.site/reputation/assets/review-widget.js';
 const REVIEWS_IFRAME_SRC = 'https://reputationhub.site/reputation/widgets/review_widget/q5L4ttbBMHNxieXIcTVJ';
@@ -461,12 +461,14 @@ function App() {
               {VSL_EMBED_URL && (
                 <div className="mb-8 max-w-3xl mx-auto">
                   <div className="relative w-full overflow-hidden rounded-2xl border-[3px] border-black shadow-[8px_8px_0_#E61428]" style={{ paddingTop: '56.25%' }}>
-                    <iframe
+                    <video
                       src={VSL_EMBED_URL}
+                      poster="/videos/freedom-club-vsl-poster.jpg"
                       title="Freedom Club video"
-                      allow="autoplay; fullscreen; picture-in-picture"
-                      allowFullScreen
-                      className="absolute inset-0 w-full h-full"
+                      controls
+                      playsInline
+                      preload="metadata"
+                      className="absolute inset-0 w-full h-full bg-black"
                     />
                   </div>
                 </div>
