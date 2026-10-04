@@ -37,6 +37,8 @@ export function trackStep(step: string, extra: Record<string, string | number> =
     utm_source: params.get('utm_source') || '',
     utm_campaign: params.get('utm_campaign') || '',
     utm_content: params.get('utm_content') || '',
+    page: window.location.pathname.slice(0, 60),
+    version: __PAGE_VERSION__,
     device: window.innerWidth < 768 ? 'mobile' : 'desktop',
   });
   try {
@@ -95,4 +97,17 @@ export function trackVideo(video: HTMLVideoElement) {
     video.removeEventListener('timeupdate', onTime);
     video.removeEventListener('ended', onEnded);
   };
+}
+
+/** Scroll depth: scroll_25 / 50 / 75 / 100 (% of the page height reached). */
+export function trackScrollDepth() {
+  const marks = [25, 50, 75, 100];
+  const onScroll = () => {
+    const doc = document.documentElement;
+    const seen = ((window.scrollY + window.innerHeight) / doc.scrollHeight) * 100;
+    for (const m of marks) if (seen >= m - 1) trackStep('scroll_' + m);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  return () => window.removeEventListener('scroll', onScroll);
 }

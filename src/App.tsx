@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { trackStep, observeSections, trackTimeOnPage, trackVideo } from './funnelTrack';
+import { trackStep, observeSections, trackTimeOnPage, trackVideo, trackScrollDepth } from './funnelTrack';
 import {
   CheckCircle2, Users, DollarSign, Lock, ArrowRight, Zap, Award,
   Star, ChevronDown, ChevronUp, Shield, Target, Sparkles, Clock, X
@@ -30,7 +30,7 @@ type TrackingWindow = Window & {
 type CTAVariant = { id: string; label: string };
 
 const CTA_VARIANTS: CTAVariant[] = [
-  { id: 'ads-money', label: 'YES! I Want To Make Money With Ads' },
+  { id: 'ads-money-warm', label: 'Yes, I want to make money with ads' },
 ];
 
 const CTA_STORAGE_KEY = 'kenji_cta_variant';
@@ -98,118 +98,6 @@ const FAQS = [
   },
 ];
 
-/**
- * Urgency bar, honest version. No fake countdown - this codebase had one
- * (a rolling 48h per-visitor timer that never actually expired) and it had
- * already been added, called out as fake scarcity, and removed twice
- * before. Do not reintroduce one. The urgency here is a plain statement of
- * a real operational fact instead: enrollment is a limited-time window and
- * this page comes down when it closes. Nothing counts down and nothing
- * claims a specific deadline the offer cannot keep.
- */
-function UrgencyBar() {
-  const scrollToCTA = () =>
-    document.getElementById('final-cta')?.scrollIntoView({ behavior: 'smooth' });
-
-  return (
-    <div className="relative z-50 w-full overflow-hidden bg-gradient-to-r from-violet-600 via-fuchsia-600 to-violet-600 text-white">
-      <div
-        className="pointer-events-none absolute inset-0 opacity-20"
-        style={{ backgroundImage: 'repeating-linear-gradient(90deg, rgba(255,255,255,0.12) 0 28px, transparent 28px 56px)' }}
-      />
-      <div className="relative mx-auto flex max-w-6xl flex-col items-center justify-center gap-2 px-4 py-2 text-center sm:flex-row sm:gap-4">
-        <p className="flex items-center gap-1.5 text-xs font-semibold sm:text-sm">
-          <Clock className="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />
-          Access is open for a limited time. When it closes, this page comes down.
-        </p>
-        <button
-          onClick={scrollToCTA}
-          className="shrink-0 rounded-full bg-white px-4 py-1.5 text-xs font-extrabold uppercase tracking-wide text-violet-700 shadow-sm transition-transform hover:-translate-y-0.5 active:scale-95"
-        >
-          Sign up →
-        </button>
-      </div>
-    </div>
-  );
-}
-
-/**
- * Exit-intent recovery popup. Fires once per browser session, on whichever
- * comes first: the mouse leaving toward the browser chrome (desktop) or a
- * 45s idle timer (covers mobile, where there's no real exit signal). Never
- * shows price — deliberately framed as a low-investment, take-it-seriously
- * nudge instead of a discount.
- */
-const EXIT_POPUP_SESSION_KEY = 'kenji_exit_popup_shown';
-const EXIT_POPUP_IDLE_MS = 45000;
-
-function ExitIntentPopup({ ctaLabel, onCTA, onClose }: { ctaLabel: string; onCTA: () => void; onClose: () => void }) {
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, [onClose]);
-
-  return (
-    <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="exit-popup-heading"
-      onClick={onClose}
-    >
-      <style>{`
-        @keyframes exitFadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes exitPopIn { from { opacity: 0; transform: scale(0.95) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-      `}</style>
-      <div
-        className="relative w-full max-w-md bg-gradient-to-br from-slate-900 to-slate-800 border border-violet-500/30 rounded-2xl p-8 shadow-2xl"
-        style={{ animation: 'exitPopIn 0.25s ease-out' }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button
-          onClick={onClose}
-          aria-label="Close"
-          className="absolute top-4 right-4 text-slate-500 hover:text-slate-300 transition-colors"
-        >
-          <X className="w-5 h-5" />
-        </button>
-
-        <div className="text-center">
-          <div className="inline-flex items-center gap-2 bg-violet-500/10 border border-violet-500/20 text-violet-300 px-3 py-1.5 rounded-full text-xs font-bold mb-5">
-            <Shield className="w-3.5 h-3.5" />
-            Before you close this tab
-          </div>
-
-          <h3 id="exit-popup-heading" className="text-2xl sm:text-3xl font-black text-white mb-4 leading-tight">
-            Wait. Before you go.
-          </h3>
-
-          <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
-            This isn't a knockoff freebie you'll forget about. It's a very low monthly investment, low enough to say yes today, real enough that you'll actually show up and use it. Hundreds of entrepreneurs just like you already are.
-          </p>
-
-          <button
-            onClick={onCTA}
-            className="cta-glow w-full group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-base sm:text-lg px-8 py-4 rounded-xl shadow-[0_0_25px_rgba(16,185,129,0.4)] hover:shadow-[0_0_40px_rgba(20,184,166,0.6)] transform hover:-translate-y-0.5 transition-all duration-300 inline-flex items-center justify-center border border-emerald-400/50 gap-2 mb-4"
-          >
-            <span>{ctaLabel}</span>
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </button>
-
-          <button
-            onClick={onClose}
-            className="text-slate-500 hover:text-slate-400 text-xs underline underline-offset-2 transition-colors"
-          >
-            No thanks, I'll pass
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 // Freedom Club walkthrough VSL, shown first thing in the hero.
 const VSL_EMBED_URL = '/videos/freedom-club-vsl.mp4';
@@ -235,14 +123,15 @@ function App() {
     trackStep('page_view');
     const stopSections = observeSections();
     const stopTimer = trackTimeOnPage();
+    const stopScroll = trackScrollDepth();
     const stopVideo = videoRef.current ? trackVideo(videoRef.current) : () => {};
     return () => {
       stopSections();
       stopTimer();
+      stopScroll();
       stopVideo();
     };
   }, []);
-  const [showExit, setShowExit] = useState(false);
 
   // Report the assigned CTA variant once so checkouts can be segmented by it.
   useEffect(() => {
@@ -251,41 +140,6 @@ function App() {
     w.dataLayer?.push({ event: 'cta_variant_assigned', cta_variant: cta.id });
   }, [cta]);
 
-  // Exit-intent recovery: fires once per session on mouse-leave-to-top
-  // (desktop) or a 45s idle fallback (covers mobile, no real exit signal).
-  useEffect(() => {
-    let alreadySeen = false;
-    try {
-      alreadySeen = sessionStorage.getItem(EXIT_POPUP_SESSION_KEY) === '1';
-    } catch {
-      /* sessionStorage blocked (private mode) — allow it once per mount instead */
-    }
-    if (alreadySeen) return;
-
-    let triggered = false;
-    const trigger = () => {
-      if (triggered) return;
-      triggered = true;
-      setShowExit(true);
-      trackStep('exit_popup_shown');
-      try {
-        sessionStorage.setItem(EXIT_POPUP_SESSION_KEY, '1');
-      } catch {
-        /* ignore persistence failure */
-      }
-    };
-
-    const onMouseLeave = (e: MouseEvent) => {
-      if (e.clientY <= 0) trigger();
-    };
-    document.addEventListener('mouseleave', onMouseLeave);
-    const idleTimer = setTimeout(trigger, EXIT_POPUP_IDLE_MS);
-
-    return () => {
-      document.removeEventListener('mouseleave', onMouseLeave);
-      clearTimeout(idleTimer);
-    };
-  }, []);
 
   const PLAN_DETAILS: Record<Plan, { name: string; contentId: string; value: number; url: string }> = {
     monthly: { name: 'Freedom Club - Monthly Membership', contentId: 'ace-monthly', value: 7.00, url: CHECKOUT_URL_MONTHLY },
@@ -310,42 +164,15 @@ function App() {
     window.location.href = details.url;
   };
 
-  const handleExitCTA = () => {
-    const w = window as TrackingWindow;
-    w.fbq?.('trackCustom', 'ExitPopupCTA');
-    w.dataLayer?.push({ event: 'exit_popup_cta_click' });
-    handleCTAClick('monthly', 'exit-popup');
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
-      <UrgencyBar />
-      {/* Trust Banner */}
-      <div className="bg-gradient-to-r from-slate-800 to-slate-900 text-white py-3 px-4 text-center sticky top-0 z-40 border-b border-slate-700/50 backdrop-blur-sm">
-        <div className="flex items-center justify-center gap-3 flex-wrap">
-          <span className="flex items-center gap-1.5 text-sm font-semibold text-amber-300">
-            <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
-            Premium Membership
-          </span>
-          <span className="text-slate-600 hidden sm:inline">·</span>
-          <span className="flex items-center gap-1.5 text-sm text-slate-300">
-            <Zap className="w-4 h-4 text-cyan-400" />
-            Instant Access
-          </span>
-          <span className="text-slate-600 hidden sm:inline">·</span>
-          <span className="flex items-center gap-1.5 text-sm text-slate-300">
-            <Users className="w-4 h-4 text-blue-400" />
-            Hundreds of Entrepreneurs
-          </span>
-        </div>
-      </div>
-
       {/* ==================== HERO SECTION ==================== */}
       {/* Video first so visitors see it without scrolling, short headline under it. */}
       <div data-track-section="hero" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-10 pb-8 sm:pb-12">
         <div className="text-center">
           <p className="text-sm sm:text-lg font-bold text-cyan-300 mb-3 sm:mb-5">
-            Watch this first: how beginners get paying clients with Meta ads
+            Start here. A short walkthrough of how beginners get paying clients with Meta ads.
           </p>
 
           <div className="mb-6 sm:mb-8 max-w-3xl mx-auto">
@@ -378,7 +205,7 @@ function App() {
             <button
               onClick={() => handleCTAClick('monthly', 'hero-cta')}
               id="hero-cta"
-              className="cta-glow w-full sm:w-auto group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-lg sm:text-xl px-12 py-5 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:shadow-[0_0_50px_rgba(20,184,166,0.5)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-emerald-400/50"
+              className="w-full sm:w-auto group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-lg sm:text-xl px-12 py-5 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:shadow-[0_0_50px_rgba(20,184,166,0.5)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-emerald-400/50"
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center gap-3">
@@ -387,7 +214,7 @@ function App() {
               </span>
             </button>
             <p className="text-slate-400 text-xs sm:text-sm mt-4">
-              Instant access · Cancel anytime in one click
+              Instant access. Cancel anytime, no questions.
             </p>
           </div>
         </div>
@@ -406,44 +233,6 @@ function App() {
               <div className="text-slate-400 text-sm mt-1">{p.label}</div>
             </div>
           ))}
-        </div>
-      </div>
-
-      {/* ==================== PAIN AGITATION ==================== */}
-      <div data-track-section="pain" className="bg-slate-900/50 border-y border-slate-800/50 py-16 sm:py-20 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl font-black text-white text-center mb-4">
-            Sound Familiar?
-          </h2>
-          <p className="text-slate-400 text-center mb-12 text-lg">
-            If you've tried running ads before, you've probably hit these walls:
-          </p>
-
-          <div className="grid sm:grid-cols-2 gap-4 mb-12">
-            {[
-              "You boosted posts and watched the money disappear.",
-              "You tried running campaigns, but they lost money.",
-              "You're overwhelmed by targeting, bidding, and constant platform changes.",
-              "You can't justify $2,000+/month agency fees.",
-              "Your income swings because you rely on organic reach and referrals.",
-            ].map((pain, i) => (
-              <div key={i} className="flex items-start gap-3 bg-slate-800/50 border border-slate-700/50 rounded-xl p-5">
-                <span className="text-red-400 text-lg mt-0.5 flex-shrink-0">✕</span>
-                <p className="text-slate-300 text-sm leading-relaxed">{pain}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center">
-            <div className="inline-block bg-gradient-to-r from-emerald-500/10 to-green-500/10 border border-emerald-500/20 rounded-2xl p-8 max-w-2xl">
-              <p className="text-emerald-400 font-bold text-xl mb-3">
-                It's not your fault. Nobody taught you the system.
-              </p>
-              <p className="text-slate-300 leading-relaxed">
-                The difference between people who waste money on ads and people who make money with them? It's not talent. It's having the right system. That's what Freedom Club gives you.
-              </p>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -526,7 +315,7 @@ function App() {
             <button
               onClick={() => handleCTAClick('monthly', 'dashboard-cta')}
               id="dashboard-cta"
-              className="cta-glow group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-lg sm:text-xl px-12 py-5 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:shadow-[0_0_50px_rgba(20,184,166,0.5)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-emerald-400/50 gap-3"
+              className="group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-lg sm:text-xl px-12 py-5 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:shadow-[0_0_50px_rgba(20,184,166,0.5)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-emerald-400/50 gap-3"
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center gap-3">
@@ -674,15 +463,15 @@ function App() {
 
         <div className="max-w-3xl mx-auto text-center relative z-10">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
-            Get Instant Access to
+            Whenever you're ready,
             <span className="block bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">
-              Freedom Club
+              we'll be here
             </span>
           </h2>
 
           <div className="bg-slate-900/80 border border-slate-700/50 rounded-2xl p-8 mb-6 backdrop-blur-sm">
-            <p className="text-amber-300 text-sm font-semibold mb-2">
-              Access is only open for a limited time.
+            <p className="text-slate-300 text-base mb-2">
+              Come learn the system we use for our own clients, at your own pace.
             </p>
             <p className="text-slate-400 text-sm mb-8">
               Instant access · Cancel anytime · $3.35M generated for our clients
@@ -691,7 +480,7 @@ function App() {
             <button
               onClick={() => handleCTAClick('monthly', 'final-cta')}
               id="final-cta"
-              className="cta-glow w-full sm:w-auto group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-xl sm:text-2xl px-14 py-6 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:shadow-[0_0_50px_rgba(20,184,166,0.6)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-emerald-400/50 gap-3"
+              className="w-full sm:w-auto group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-xl sm:text-2xl px-14 py-6 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:shadow-[0_0_50px_rgba(20,184,166,0.6)] transform hover:-translate-y-1 transition-all duration-300 inline-flex items-center justify-center border border-emerald-400/50 gap-3"
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center gap-3">
@@ -713,10 +502,7 @@ function App() {
           </div>
 
           <p className="text-slate-500 text-sm">
-            Once we close enrollment, this page comes down and you'll have to wait until we open it again.
-          </p>
-          <p className="text-slate-600 text-sm mt-3 italic">
-            Or don't. Close the tab, keep running the same ads the same way, and see where that gets you.
+            Questions first? The answers above cover most of them, and support is a message away once you're in.
           </p>
         </div>
       </div>
@@ -729,9 +515,6 @@ function App() {
       </div>
 
 
-      {showExit && (
-        <ExitIntentPopup ctaLabel={cta.label} onCTA={handleExitCTA} onClose={() => setShowExit(false)} />
-      )}
     </div>
   );
 }
