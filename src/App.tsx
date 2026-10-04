@@ -728,17 +728,6 @@ function App() {
         <p className="mt-1 text-slate-700">This site is not part of, and has not been reviewed, approved, or endorsed by Facebook/Meta or Google in any way.</p>
       </div>
 
-      {/* Sticky Mobile Bottom CTA */}
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-md border-t border-emerald-500/30 px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.6)]">
-        <button
-          onClick={() => handleCTAClick('monthly', 'sticky-mobile-cta')}
-          id="sticky-mobile-cta"
-          className="cta-glow w-full group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-black text-base px-5 py-3.5 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.4)] border border-emerald-400/50 inline-flex items-center justify-center gap-2"
-        >
-          <span>{cta.label}</span>
-          <ArrowRight className="w-4 h-4" />
-        </button>
-      </div>
 
       {showExit && (
         <ExitIntentPopup ctaLabel={cta.label} onCTA={handleExitCTA} onClose={() => setShowExit(false)} />
