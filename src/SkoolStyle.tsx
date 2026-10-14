@@ -58,7 +58,7 @@ const EXTRAS = [
 ];
 
 const STATS = [
-  ['$3.35M', 'Generated'],
+  ['1,200+', 'Brands tested'],
   ['500+', 'Clients'],
   ['12 yrs', 'In business'],
 ];
@@ -170,7 +170,7 @@ function SkoolStyle() {
           className="min-w-0 rounded-xl border border-[#E4E4E0] bg-white p-4 sm:p-8 lg:col-start-1 lg:row-start-1 lg:rounded-b-none lg:border-b-0 lg:pb-2"
         >
           <h1 className="mb-1 text-2xl font-bold">Freedom Club</h1>
-          <p className="mb-4 text-sm text-[#65676B]">The Meta ads system behind $3.35M generated for our clients</p>
+          <p className="mb-4 text-sm text-[#65676B]">The Meta ads system tested with over 1,200 brands</p>
 
           <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-[#111]">
             {active.video && playing ? (
@@ -274,7 +274,7 @@ function SkoolStyle() {
             <p>Learn the Meta ads system we use for our own clients, at your own pace.</p>
             <p>
               Freedom Club is where beginners learn to run ads that bring in paying clients. It's the same system behind
-              $3.35M generated for our clients, broken into short trainings you can start the day you join. You don't need
+              The system we tested with over 1,200 brands, broken into short trainings you can start the day you join. You don't need
               a website or a big budget. It starts at $10/day in ad spend.
             </p>
             <p>Built by Yousif Alias and the KenjiAI team. 12 years running ads, 500+ clients served and $186K from a single funnel.</p>

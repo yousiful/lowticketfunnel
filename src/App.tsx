@@ -194,7 +194,7 @@ function App() {
           <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-white mb-3 sm:mb-5 leading-[1.1] tracking-tight px-1 sm:px-0">
             The Meta Ads System Behind
             <span className="block bg-gradient-to-r from-cyan-300 via-teal-300 to-emerald-400 bg-clip-text text-transparent">
-              $3.35M Generated for Our Clients
+              Tested With Over 1,200 Brands
             </span>
           </h1>
 
@@ -225,7 +225,7 @@ function App() {
       <div data-track-section="proof" className="border-y border-slate-800 bg-slate-900/50 py-8 px-4">
         <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
-            { stat: '$3.35M', label: 'generated for our clients' },
+            { stat: '1,200+', label: 'brands tested with this system' },
             { stat: '500+', label: 'clients served in 12 years' },
             { stat: '$186K', label: 'from a single funnel' },
           ].map((p) => (
@@ -309,7 +309,7 @@ function App() {
           <div className="max-w-md mx-auto bg-slate-800/60 border border-emerald-500/30 rounded-2xl p-6 mb-10 text-center">
             <p className="text-slate-400 text-sm mb-1">All 6 trainings above</p>
             <p className="text-emerald-300 font-black text-2xl mb-1">Open to you the second you join</p>
-            <p className="text-slate-500 text-xs">Built by the team behind $3.35M generated for 500+ clients</p>
+            <p className="text-slate-500 text-xs">Tested with over 1,200 brands generating 8 figures in revenue</p>
           </div>
 
           <div className="text-center">
@@ -398,7 +398,7 @@ function App() {
             </div>
             <div className="flex items-center gap-2 bg-slate-800/50 border border-slate-700/50 rounded-xl py-4 px-6">
               <DollarSign className="w-5 h-5 text-emerald-400 flex-shrink-0" />
-              <span className="text-white font-bold text-sm sm:text-base">$3.35M generated for 500+ clients</span>
+              <span className="text-white font-bold text-sm sm:text-base">Tested with 1,200+ brands</span>
             </div>
           </div>
 
@@ -475,7 +475,7 @@ function App() {
               Come learn the system we use for our own clients, at your own pace.
             </p>
             <p className="text-slate-400 text-sm mb-8">
-              Instant access · Cancel anytime · $3.35M generated for our clients
+              Instant access · Cancel anytime · Tested with 1,200+ brands
             </p>
 
             <button
