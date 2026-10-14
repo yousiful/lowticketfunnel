@@ -11,7 +11,7 @@ import {
 // below has to be updated by hand whenever it changes on the GHL side, or
 // the pixel value silently drifts from what's actually charged. No separate
 // yearly plan exists.
-const CHECKOUT_URL_MONTHLY = 'https://freedom.kenjiai.com/startnow';
+export const CHECKOUT_URL_MONTHLY = 'https://freedom.kenjiai.com/startnow';
 const CHECKOUT_URL_LIFETIME = 'https://freedom.kenjiai.com/startnow';
 
 type Plan = 'monthly' | 'lifetime';
@@ -55,7 +55,7 @@ function pickCTAVariant(): CTAVariant {
   return variant;
 }
 
-const FAQS = [
+export const FAQS = [
   {
     q: 'How much does this cost?',
     a: "It's a small monthly membership, billed monthly with no contracts. You'll see the exact price before you confirm at checkout. Cancel anytime, no hidden fees.",
@@ -159,8 +159,9 @@ function App() {
       currency: 'USD',
       num_items: 1,
       cta_variant: cta.id,
+      page_variant: 'control',
     });
-    w.dataLayer?.push({ event: 'initiate_checkout', plan, cta_variant: cta.id });
+    w.dataLayer?.push({ event: 'initiate_checkout', plan, cta_variant: cta.id, page_variant: 'control' });
     window.location.href = details.url;
   };
 

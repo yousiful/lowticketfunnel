@@ -24,6 +24,14 @@ function sessionId(): string {
 const SID = typeof window === 'undefined' ? '' : sessionId();
 const sent = new Set<string>();
 
+// Default-route split test variant (see pageVariant.ts). The server only keeps
+// `version` (40 chars) from page_view, so the variant rides on it as a suffix,
+// e.g. 2026-10-13-abc1234-skool, and funnel-stats splits by it as is.
+let pageVariant = '';
+export function setPageVariant(variant: string) {
+  pageVariant = variant;
+}
+
 /** Send a funnel step once per page load. `step` must be on the server's allowlist. */
 export function trackStep(step: string, extra: Record<string, string | number> = {}) {
   if (!SID || sent.has(step)) return;
@@ -38,7 +46,8 @@ export function trackStep(step: string, extra: Record<string, string | number> =
     utm_campaign: params.get('utm_campaign') || '',
     utm_content: params.get('utm_content') || '',
     page: window.location.pathname.slice(0, 60),
-    version: __PAGE_VERSION__,
+    version: pageVariant ? `${__PAGE_VERSION__}-${pageVariant}` : __PAGE_VERSION__,
+    page_variant: pageVariant,
     device: window.innerWidth < 768 ? 'mobile' : 'desktop',
   });
   try {
