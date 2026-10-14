@@ -1,3 +1,4 @@
+import { checkoutUrl } from './pageVariant';
 import { useEffect, useRef, useState } from 'react';
 import { Lock, Tag, Check, Play, ChevronDown } from 'lucide-react';
 import { trackStep, observeSections, trackTimeOnPage, trackVideo, trackScrollDepth } from './funnelTrack';
@@ -77,7 +78,7 @@ function joinCheckout(source: string) {
     page_variant: 'skool',
   });
   w.dataLayer?.push({ event: 'initiate_checkout', plan: 'monthly', page_variant: 'skool' });
-  window.location.href = CHECKOUT_URL_MONTHLY;
+  window.location.href = checkoutUrl(CHECKOUT_URL_MONTHLY);
 }
 
 function JoinButton({ source, id }: { source: string; id: string }) {

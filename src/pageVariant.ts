@@ -49,8 +49,27 @@ export function assignPageVariant(): PageVariant {
   }
 
   setPageVariant(variant);
+  current = variant;
+  currentBy = assignedBy;
   const w = window as TrackingWindow;
   w.fbq?.('trackCustom', 'PageVariant', { variant, assigned_by: assignedBy });
   w.dataLayer?.push({ event: 'page_variant_assigned', page_variant: variant, assigned_by: assignedBy });
   return variant;
+}
+
+let current: PageVariant | null = null;
+let currentBy: 'url' | 'saved' | 'new' | null = null;
+
+// Checkout link tagged with the page version (pv) so GHL saves it on the buyer's
+// contact (lastAttributionSource.url) and sales can be split by variant. Ad params
+// from the landing URL (utm_*, fbclid) are carried over too. QA visits forced with
+// ?v= are tagged pv_qa so they never count as a real variant sale.
+export function checkoutUrl(base: string): string {
+  const u = new URL(base);
+  const here = new URLSearchParams(window.location.search);
+  here.forEach((value, key) => {
+    if (key.startsWith('utm_') || key === 'fbclid') u.searchParams.set(key, value);
+  });
+  if (current) u.searchParams.set('pv', currentBy === 'url' ? `${current}_qa` : current);
+  return u.toString();
 }

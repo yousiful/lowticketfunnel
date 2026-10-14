@@ -1,3 +1,4 @@
+import { checkoutUrl } from './pageVariant';
 import { useState, useEffect, useRef } from 'react';
 import { trackStep, observeSections, trackTimeOnPage, trackVideo, trackScrollDepth } from './funnelTrack';
 import {
@@ -162,7 +163,7 @@ function App() {
       page_variant: 'control',
     });
     w.dataLayer?.push({ event: 'initiate_checkout', plan, cta_variant: cta.id, page_variant: 'control' });
-    window.location.href = details.url;
+    window.location.href = checkoutUrl(details.url);
   };
 
 
