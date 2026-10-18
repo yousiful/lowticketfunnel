@@ -48,23 +48,28 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     </script>
     <!-- End Meta Pixel -->
 
-    <!-- DataTagManager Pixel -->
-    <script type="text/javascript">
-    (function(s, p, i, c, e) {
-        s[e] = s[e] || function() { (s[e].a = s[e].a || []).push(arguments); };
-        s[e].l = 1 * new Date();
-        var k = c.createElement("script"), a = c.getElementsByTagName("script")[0];
-        k.async = 1, k.src = p, a.parentNode.insertBefore(k, a);
-        s.pixelClientId = i;
-    })(window, "https://datatagmanager.s3.us-east-2.amazonaws.com/pixel_popup.js", "0219d3e9-3cad-42f3-9bd1-111525982334", document, "script");
-    </script>
-    <script src="https://pixel.datatagmanager.com/pixel.js?pid=0219d3e9-3cad-42f3-9bd1-111525982334" defer></script>
-    <script id="datatagmanager-id" src="https://cdn.pixel.datatagmanager.com/pixels/0219d3e9-3cad-42f3-9bd1-111525982334/p.js" async></script>
-    <!-- KenjiAI external tracking -->
-    <script
-      src="https://safeclick.kenjiai.com/js/external-tracking.js"
-      data-tracking-id="tk_76d68546c8534d479179b49a1784584c"
-      defer>
+    <!-- DataTagManager + KenjiAI tracking load after the page has painted.
+         They are ~400KB together and were delaying first paint by ~2s on mobile. -->
+    <script>
+      window.addEventListener('load', function () {
+        setTimeout(function () {
+          (function(s, p, i, c, e) {
+              s[e] = s[e] || function() { (s[e].a = s[e].a || []).push(arguments); };
+              s[e].l = 1 * new Date();
+              var k = c.createElement("script"), a = c.getElementsByTagName("script")[0];
+              k.async = 1, k.src = p, a.parentNode.insertBefore(k, a);
+              s.pixelClientId = i;
+          })(window, "https://datatagmanager.s3.us-east-2.amazonaws.com/pixel_popup.js", "0219d3e9-3cad-42f3-9bd1-111525982334", document, "script");
+          [["https://pixel.datatagmanager.com/pixel.js?pid=0219d3e9-3cad-42f3-9bd1-111525982334"],
+           ["https://cdn.pixel.datatagmanager.com/pixels/0219d3e9-3cad-42f3-9bd1-111525982334/p.js", "datatagmanager-id"],
+           ["https://safeclick.kenjiai.com/js/external-tracking.js", null, "tk_76d68546c8534d479179b49a1784584c"]].forEach(function (x) {
+            var t = document.createElement('script'); t.src = x[0]; t.async = true;
+            if (x[1]) t.id = x[1];
+            if (x[2]) t.setAttribute('data-tracking-id', x[2]);
+            document.head.appendChild(t);
+          });
+        }, 0);
+      });
     </script>
   </head>
   <body>
