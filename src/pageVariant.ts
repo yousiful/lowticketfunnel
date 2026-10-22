@@ -1,4 +1,4 @@
-// Page-level split test on the default route: 'control' (App.tsx) vs 'skool'
+// Page-level split test on the default route: 'control' (App.tsx) vs 'skool' (ENDED 2026-10-22, all traffic gets control)
 // (SkoolStyle.tsx, the community "About" page layout). Each new visitor gets
 // a 50/50 pick, saved in localStorage so returns see the same page.
 // ?v=control or ?v=skool forces a page for QA without touching the saved pick.
@@ -35,12 +35,11 @@ export function assignPageVariant(): PageVariant {
   if (isVariant(forced)) {
     variant = forced;
     assignedBy = 'url';
-  } else if (isVariant(saved)) {
-    variant = saved;
-    assignedBy = 'saved';
   } else {
-    variant = Math.random() < 0.5 ? 'control' : 'skool';
-    assignedBy = 'new';
+    // Test ended 2026-10-22: control won (19% vs 5.5% CTA clicks, 3 sales vs 0
+    // over ~195 visits each). Everyone, including saved skool visitors, gets control.
+    variant = 'control';
+    assignedBy = saved === 'control' ? 'saved' : 'new';
     try {
       localStorage.setItem(STORAGE_KEY, variant);
     } catch {
