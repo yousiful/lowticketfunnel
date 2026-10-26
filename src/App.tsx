@@ -100,8 +100,22 @@ export const FAQS = [
 ];
 
 
-// Freedom Club walkthrough VSL, shown first thing in the hero.
-const VSL_EMBED_URL = '/videos/freedom-club-vsl.mp4';
+// Freedom Club walkthrough VSL, shown first thing in the hero. 720p re-encode
+// (12MB vs the 52MB 1080p original) so it starts fast on phones.
+const VSL_EMBED_URL = '/videos/freedom-club-vsl-720.mp4';
+const VSL_POSTER = '/videos/freedom-club-vsl-poster-720.jpg';
+
+// Only 4% of visitors pressed play on a still poster (Oct 2026 funnel-stats),
+// but the ones who did mostly watched to 75%+. The video has burned-in
+// captions, so it autoplays muted and a tap restarts it from the top with
+// sound. Muted autoplay is NOT tracked; video_play and the milestones count
+// only sound-on watches, so the numbers stay comparable with before.
+function canAutoplay(): boolean {
+  if (typeof window === 'undefined') return false;
+  const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+  if (conn?.saveData) return false;
+  return !window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+}
 
 const REVIEWS_SCRIPT_SRC = 'https://reputationhub.site/reputation/assets/review-widget.js';
 const REVIEWS_IFRAME_SRC = 'https://reputationhub.site/reputation/widgets/review_widget/q5L4ttbBMHNxieXIcTVJ';
@@ -118,6 +132,9 @@ function App() {
   }, []);
   const [cta] = useState<CTAVariant>(pickCTAVariant);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const stopVideoRef = useRef<() => void>(() => {});
+  const [autoplay] = useState(canAutoplay);
+  const [soundOn, setSoundOn] = useState(false);
 
   // Funnel drop-off tracking (see funnelTrack.ts and kenjiai.com/funnel-stats/).
   useEffect(() => {
@@ -125,14 +142,35 @@ function App() {
     const stopSections = observeSections();
     const stopTimer = trackTimeOnPage();
     const stopScroll = trackScrollDepth();
-    const stopVideo = videoRef.current ? trackVideo(videoRef.current) : () => {};
     return () => {
       stopSections();
       stopTimer();
       stopScroll();
-      stopVideo();
+      stopVideoRef.current();
     };
   }, []);
+
+  // React doesn't set the DOM `muted` property before autoplay, and iOS refuses
+  // to autoplay a video it thinks has sound, so set it by hand and nudge play.
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v || !autoplay) return;
+    v.muted = true;
+    v.play().catch(() => {});
+  }, [autoplay]);
+
+  const watchWithSound = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = false;
+    v.loop = false;
+    v.currentTime = 0;
+    v.controls = true;
+    setSoundOn(true);
+    stopVideoRef.current = trackVideo(v);
+    trackStep('video_play');
+    v.play().catch(() => {});
+  };
 
   // Report the assigned CTA variant once so checkouts can be segmented by it.
   useEffect(() => {
@@ -182,18 +220,35 @@ function App() {
               <video
                 ref={videoRef}
                 src={VSL_EMBED_URL}
-                poster="/videos/freedom-club-vsl-poster.jpg"
+                poster={VSL_POSTER}
                 title="Freedom Club video"
-                controls
+                autoPlay={autoplay}
+                muted={!soundOn}
+                loop={!soundOn}
                 playsInline
-                preload="metadata"
+                preload={autoplay ? 'auto' : 'metadata'}
                 className="absolute inset-0 w-full h-full bg-black"
               />
+              {!soundOn && (
+                <button
+                  type="button"
+                  id="vsl-sound"
+                  onClick={watchWithSound}
+                  aria-label="Watch the video with sound"
+                  className="absolute inset-0 w-full h-full flex items-start justify-center pt-3 sm:pt-5 bg-black/10 hover:bg-black/20 transition-colors"
+                >
+                  <span className="inline-flex items-center gap-2 bg-black/75 border border-white/20 text-white font-bold text-sm sm:text-base px-4 py-2.5 rounded-full backdrop-blur-sm">
+                    <span aria-hidden="true" className="w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center text-xs">&#9654;</span>
+                    {autoplay ? 'Tap to watch with sound' : 'Watch the walkthrough'}
+                    <span className="text-white/60 font-medium">2:50</span>
+                  </span>
+                </button>
+              )}
             </div>
           </div>
 
           <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-white mb-3 sm:mb-5 leading-[1.1] tracking-tight px-1 sm:px-0">
-            The Meta Ads System Behind
+            The Meta Ads System We've
             <span className="block bg-gradient-to-r from-cyan-300 via-teal-300 to-emerald-400 bg-clip-text text-transparent">
               Tested With Over 1,200 Brands
             </span>
