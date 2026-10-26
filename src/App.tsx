@@ -463,6 +463,7 @@ function App() {
             <iframe
               className="lc_reviews_widget min-h-[560px] sm:min-h-[420px]"
               src={REVIEWS_IFRAME_SRC}
+              loading="lazy"
               frameBorder="0"
               scrolling="no"
               style={{ minWidth: '100%', width: '100%' }}
